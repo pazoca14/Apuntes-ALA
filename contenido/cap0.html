@@ -1,0 +1,206 @@
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Un mensaje es una lista de ceros y unos. Un <strong>código</strong> es un grupo de listas permitidas (las <em>palabras del código</em>). Si las palabras permitidas están lejos unas de otras, un bit dañado no convierte una en otra y el receptor puede <em>detectar</em> el daño, o incluso <em>corregirlo</em>. La distancia se mide contando en cuántos bits difieren dos palabras: es la <strong>distancia de Hamming</strong>.</p>
+</div>
+<h3>Mini-diccionario</h3>
+<div class="table-wrap"><table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Bit</strong></td>
+<td style="text-align: left;">Un símbolo que vale 0 o 1.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Palabra</strong></td>
+<td style="text-align: left;">Una lista de <span class="math inline">\(n\)</span> bits, por ejemplo <code>1011</code>. <span class="math inline">\(V_n\)</span> es el conjunto de todas las palabras de longitud <span class="math inline">\(n\)</span> (hay <span class="math inline">\(2^n\)</span>).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Código</strong></td>
+<td style="text-align: left;">El grupo de palabras permitidas. Cualquier otra palabra indica un error.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Redundancia</strong></td>
+<td style="text-align: left;">Bits extra (de paridad) que se añaden al mensaje para detectar o corregir errores.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Peso <span class="math inline">\(\mathrm{w}(v)\)</span></strong></td>
+<td style="text-align: left;">Número de unos de <span class="math inline">\(v\)</span>; es su distancia a <span class="math inline">\(00\dots0\)</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Distancia <span class="math inline">\(d(x,y)\)</span></strong></td>
+<td style="text-align: left;">Número de bits en que difieren <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>. Es igual a <span class="math inline">\(\mathrm{w}(x+y)\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Distancia mínima <span class="math inline">\(d\)</span></strong></td>
+<td style="text-align: left;">La menor distancia entre dos palabras distintas del código. En un código lineal es el menor peso de una palabra no nula.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Código lineal</strong></td>
+<td style="text-align: left;">Código en el que la suma de dos palabras del código vuelve a estar en el código (<em>cerradura</em>). Es un subespacio de <span class="math inline">\(V_n\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><span class="math inline">\([n,k,d]\)</span></strong></td>
+<td style="text-align: left;">Longitud <span class="math inline">\(n\)</span>, <span class="math inline">\(k\)</span> bits de mensaje (hay <span class="math inline">\(2^k\)</span> palabras) y distancia mínima <span class="math inline">\(d\)</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Matriz generadora <span class="math inline">\(G\)</span></strong></td>
+<td style="text-align: left;">Sus filas son una base del código: toda palabra es una suma de filas. Sirve para <em>construir</em> el código.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Matriz de control <span class="math inline">\(H\)</span></strong></td>
+<td style="text-align: left;">Cada fila es una ecuación que cumplen todas las palabras: <span class="math inline">\(Hc^{T}=0\)</span>. Sirve para <em>comprobar</em> (el código es su núcleo).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Forma estándar</strong></td>
+<td style="text-align: left;"><span class="math inline">\(G=(I_k\mid A)\)</span> y <span class="math inline">\(H=(A^{T}\mid I_{n-k})\)</span>: los primeros <span class="math inline">\(k\)</span> bits son el mensaje y los demás, la redundancia.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Síndrome <span class="math inline">\(s\)</span></strong></td>
+<td style="text-align: left;">El resultado <span class="math inline">\(Hy^{T}\)</span> de revisar las ecuaciones con lo recibido. Si es 0, no se ve error; si no, indica qué falló.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Líder</strong></td>
+<td style="text-align: left;">El error con menos unos que da un síndrome; es el error más probable.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Detectar / corregir</strong></td>
+<td style="text-align: left;">Detectar es darse cuenta de que hubo error; corregir es, además, saber qué bit cambiar.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Ortogonal</strong></td>
+<td style="text-align: left;">Dos palabras con producto punto 0 (en binario: comparten un número par de unos).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Código dual <span class="math inline">\(C^{\perp}\)</span></strong></td>
+<td style="text-align: left;">Todas las palabras ortogonales a todo el código.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Perfecto</strong></td>
+<td style="text-align: left;">Código cuyas «burbujas» de radio <span class="math inline">\(t\)</span> llenan todo <span class="math inline">\(V_n\)</span> sin huecos ni traslapes.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Borrado</strong></td>
+<td style="text-align: left;">Símbolo ilegible <em>cuya posición conocemos</em>; es más fácil de reparar que un error.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Espacio, peso y distancia</h3>
+<div class="callout defi"><div class="callout-title">Definición. El espacio <span class="math inline">\(V_n\)</span></div>
+<p><span class="math inline">\(V_n=\mathbb{F}_2^n\)</span> es el conjunto de las <span class="math inline">\(2^n\)</span> palabras binarias de longitud <span class="math inline">\(n\)</span>. Se suma bit a bit módulo 2 (es decir, <span class="math inline">\(1+1=0\)</span>).</p>
+<ul>
+<li><p><strong>Peso:</strong> <span class="math inline">\(\mathrm{w}(v)\)</span> es el número de unos de <span class="math inline">\(v\)</span>.</p></li>
+<li><p><strong>Distancia de Hamming:</strong> <span class="math inline">\(d(x,y)=\mathrm{w}(x+y)\)</span>, el número de posiciones en que difieren.</p></li>
+<li><p><strong>Producto punto:</strong> <span class="math inline">\(x\cdot y=x_1y_1+\dots+x_ny_n\in\mathbb{F}_2\)</span>. Son ortogonales si <span class="math inline">\(x\cdot y=0\)</span>.</p></li>
+</ul>
+</div>
+<h3>Código lineal</h3>
+<div class="callout defi"><div class="callout-title">Definición. Código lineal <span class="math inline">\([n,k,d]\)</span></div>
+<p>Un código lineal <span class="math inline">\(C\subseteq V_n\)</span> es un subespacio de <span class="math inline">\(V_n\)</span>: contiene a <span class="math inline">\(0\)</span> y es cerrado bajo la suma. Tiene <span class="math inline">\(\#C=2^k\)</span> palabras, con <span class="math inline">\(k=\dim C\)</span>. Sus parámetros son <span class="math display">\[[n,k,d],\qquad d=\min\{d(x,y):x\neq y\in C\}=\min\{\mathrm{w}(c):c\in C,\ c\neq 0\},\]</span> y su <strong>tasa</strong> es <span class="math inline">\(k/n\)</span>: la parte de cada palabra que es mensaje útil (el resto es protección).</p>
+</div>
+<p>Un código lineal se puede dar de dos maneras equivalentes:</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>Como imagen</strong></th>
+<th style="text-align: left;"><strong>Como núcleo</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Matriz</td>
+<td style="text-align: left;"><span class="math inline">\(G\)</span> de tamaño <span class="math inline">\(k\times n\)</span>, rango <span class="math inline">\(k\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(H\)</span> de tamaño <span class="math inline">\((n-k)\times n\)</span>, rango <span class="math inline">\(n-k\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Código</td>
+<td style="text-align: left;"><span class="math inline">\(C=\{uG: u\in\mathbb{F}_2^k\}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(C=\{c\in V_n: Hc^{T}=0\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Las filas son</td>
+<td style="text-align: left;">una base de <span class="math inline">\(C\)</span></td>
+<td style="text-align: left;">las ecuaciones de <span class="math inline">\(C\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Relación</td>
+<td colspan="2" style="text-align: center;"><span class="math inline">\(GH^{T}=0\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout defi"><div class="callout-title">Forma estándar</div>
+<p>Si <span class="math inline">\(G=(I_k\mid A)\)</span>, con <span class="math inline">\(A\)</span> de tamaño <span class="math inline">\(k\times(n-k)\)</span>, entonces <span class="math display">\[H=(A^{T}\mid I_{n-k})\]</span> es una matriz de control de <span class="math inline">\(C\)</span>. Al codificar <span class="math inline">\(c=uG=(u\mid uA)\)</span>: los primeros <span class="math inline">\(k\)</span> bits son el mensaje y los últimos <span class="math inline">\(n-k\)</span>, los bits de paridad.</p>
+</div>
+<h3>Distancia, detección y corrección</h3>
+<div class="callout defi"><div class="callout-title">Criterio con la matriz <span class="math inline">\(H\)</span></div>
+<p>La distancia mínima <span class="math inline">\(d\)</span> es el menor número de columnas de <span class="math inline">\(H\)</span> que suman cero (columnas linealmente dependientes). En particular:</p>
+<ul>
+<li><p><span class="math inline">\(d\ge 2\)</span> <span class="math inline">\(\iff\)</span> ninguna columna de <span class="math inline">\(H\)</span> es cero (se detecta todo error de un bit);</p></li>
+<li><p><span class="math inline">\(d\ge 3\)</span> <span class="math inline">\(\iff\)</span> además las columnas son distintas entre sí (se corrige todo error de un bit).</p></li>
+</ul>
+</div>
+<p>Con distancia mínima <span class="math inline">\(d\)</span>, un código detecta hasta <span class="math inline">\(d-1\)</span> errores y corrige hasta <span class="math inline">\(t=\lfloor (d-1)/2\rfloor\)</span>. Puede corregir <span class="math inline">\(t\)</span> y, a la vez, detectar <span class="math inline">\(t&#39;\ge t\)</span> errores si y sólo si <span class="math inline">\(t+t&#39;\le d-1\)</span>.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(d\)</span></th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">detecta</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">corrige <span class="math inline">\(t\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">corrige <span class="math inline">\(t\)</span> y detecta <span class="math inline">\(t&#39;\)</span> a la vez</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;"><span class="math inline">\((1,1)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\((1,2)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\((2,2)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\((2,3)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\((3,3)\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Cada columna de <span class="math inline">\(H\)</span> es el síndrome de un error en ese bit. Si una columna es cero, ese error no se nota. Si dos columnas son iguales, dos errores distintos se ven igual y no se sabe cuál corregir.</p>
+</div>
+<h3>Cotas y conteos</h3>
+<div class="callout defi"><div class="callout-title">Cotas</div>
+<ul>
+<li><p><strong>Cota de esferas:</strong> si <span class="math inline">\(C\subseteq V_n\)</span> corrige <span class="math inline">\(t\)</span> errores, <span class="math inline">\(\#C\cdot\sum_{j=0}^{t}\binom{n}{j}\le 2^n\)</span>. Si hay igualdad, el código es <em>perfecto</em>.</p></li>
+<li><p><strong>Cota de Singleton:</strong> <span class="math inline">\(d\le n-k+1\)</span>.</p></li>
+<li><p><strong>Número de códigos:</strong> hay <span class="math inline">\(\displaystyle\binom{n}{k}_{2}=\prod_{i=0}^{k-1}\frac{2^{n-i}-1}{2^{i+1}-1}\)</span> subespacios de dimensión <span class="math inline">\(k\)</span> en <span class="math inline">\(V_n\)</span>.</p></li>
+</ul>
+</div>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p><strong>Esferas:</strong> cada palabra necesita su propia burbuja de vecinas a <span class="math inline">\(t\)</span> bits, y todas las burbujas deben caber en <span class="math inline">\(V_n\)</span>. <strong>Singleton:</strong> la distancia no puede pasar de la redundancia <span class="math inline">\(n-k\)</span> más uno. <strong>Perfecto:</strong> las burbujas llenan todo <span class="math inline">\(V_n\)</span>.</p>
+</div>
+<h3>Síndrome y decodificación</h3>
+<p>Si se envía <span class="math inline">\(c\)</span> y se recibe <span class="math inline">\(y=c+e\)</span>, el síndrome es <span class="math display">\[s=Hy^{T}=He^{T},\]</span> y sólo depende del error <span class="math inline">\(e\)</span>. Decodificar por síndrome tiene tres pasos: (1) calcular <span class="math inline">\(s\)</span>; (2) buscar el líder <span class="math inline">\(e\)</span>, el vector de menor peso con <span class="math inline">\(He^{T}=s\)</span> (el error más probable); (3) decodificar <span class="math inline">\(\hat c=y+e\)</span>. Las palabras con el mismo síndrome forman una <strong>clase lateral</strong> <span class="math inline">\(y+C\)</span>; hay <span class="math inline">\(2^{n-k}\)</span> clases.</p>

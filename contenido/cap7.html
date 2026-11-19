@@ -1,0 +1,249 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Se agrega un bit más, la paridad de toda la palabra, y la distancia sube de 3 a 4. Así se <strong>corrige un error y se detectan dos</strong> (SECDED). Truco de lectura: mira el síndrome <span class="math inline">\(s\)</span> y la paridad global <span class="math inline">\(\sigma\)</span>. Si <span class="math inline">\(s\neq0\)</span> y <span class="math inline">\(\sigma=1\)</span>, hubo un error simple; si <span class="math inline">\(s\neq0\)</span> y <span class="math inline">\(\sigma=0\)</span>, hubo dos errores.</p>
+</div>
+<p>El Hamming <span class="math inline">\([7,4,3]\)</span> corrige un error, pero si ocurren dos los confunde con uno solo y corrige mal. El código extendido añade un octavo bit, la <strong>paridad global</strong>, que sube la distancia de 3 a 4: corrige 1 error y detecta 2 a la vez. Esta combinación se llama SECDED (<em>single error correction, double error detection</em>) y es la que usan las memorias ECC.</p>
+<div class="callout defi"><div class="callout-title">Corrección y detección simultáneas</div>
+<p>Un código con distancia <span class="math inline">\(d\)</span> corrige <span class="math inline">\(t\)</span> errores y detecta <span class="math inline">\(t&#39;\ge t\)</span> a la vez si y sólo si <span class="math inline">\(t+t&#39;\le d-1\)</span>. Con <span class="math inline">\(d=3\)</span> sólo cabe <span class="math inline">\((1,1)\)</span>; con <span class="math inline">\(d=4\)</span> cabe <span class="math inline">\((1,2)\)</span>: corregir 1 y detectar 2.</p>
+</div>
+<div class="callout defi"><div class="callout-title">Definición. Código extendido</div>
+<p>Si <span class="math inline">\(C_7\)</span> es el Hamming, el código extendido es <span class="math display">\[C=\{(c_1,\dots,c_7,c_8):\ (c_1,\dots,c_7)\in C_7,\ c_8=c_1+\dots+c_7\}.\]</span> Toda palabra de <span class="math inline">\(C\)</span> tiene peso par.</p>
+</div>
+<h3>Matrices</h3>
+<p>Cada fila de <span class="math inline">\(G_7\)</span> se extiende con su paridad: <span class="math inline">\(g_1,g_2,g_3\)</span> (peso 3) reciben un 1 y <span class="math inline">\(g_4\)</span> (peso 4) recibe un 0. <span class="math display">\[G=(I_4\mid A&#39;)=\begin{pmatrix}1&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0&amp;1\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1&amp;1\\0&amp;0&amp;1&amp;0&amp;0&amp;1&amp;1&amp;1\\0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1&amp;0\end{pmatrix},\qquad
+A&#39;=\begin{pmatrix}1&amp;1&amp;0&amp;1\\1&amp;0&amp;1&amp;1\\0&amp;1&amp;1&amp;1\\1&amp;1&amp;1&amp;0\end{pmatrix},\]</span> <span class="math display">\[H=(A&#39;^{T}\mid I_4)=\begin{pmatrix}1&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0&amp;0\\1&amp;0&amp;1&amp;1&amp;0&amp;1&amp;0&amp;0\\0&amp;1&amp;1&amp;1&amp;0&amp;0&amp;1&amp;0\\1&amp;1&amp;1&amp;0&amp;0&amp;0&amp;0&amp;1\end{pmatrix}.\]</span> Las paridades son las de Hamming más <span class="math inline">\(p_8=u_1+u_2+u_3\)</span>.</p>
+<div class="callout defi"><div class="callout-title">Proposición</div>
+<p>Si un código lineal binario tiene distancia <span class="math inline">\(d\)</span> impar, su extendido tiene distancia <span class="math inline">\(d+1\)</span>. (Las palabras de peso <span class="math inline">\(d\)</span> reciben un 1 y pasan a peso <span class="math inline">\(d+1\)</span>; en el extendido todos los pesos son pares.)</p>
+</div>
+<h3>Decodificación SECDED</h3>
+<p>Para <span class="math inline">\(y\in V_8\)</span> se calculan dos cosas: <span class="math display">\[s=H_7\,(y_1,\dots,y_7)^{T}\in\mathbb{F}_2^3\quad\text{(síndrome de Hamming)},\qquad \sigma=y_1+\dots+y_8\quad\text{(paridad global)}.\]</span> Con las filas de <span class="math inline">\(H_7\)</span> del capítulo 6, <span class="math inline">\(s_1=y_1+y_2+y_4+y_5\)</span>, <span class="math inline">\(s_2=y_1+y_3+y_4+y_6\)</span> y <span class="math inline">\(s_3=y_2+y_3+y_4+y_7\)</span>. Es lo mismo que usar la matriz de control <span class="math inline">\(H_{\mathrm{ext}}\)</span> de <span class="math inline">\(4\times8\)</span> formada por <span class="math inline">\(H_7\)</span> (con una columna de ceros añadida) y una última fila de unos. El síndrome completo es el par <span class="math inline">\((s,\sigma)\)</span>: hay <span class="math inline">\(2^{8-4}=16\)</span>.</p>
+<p>Por qué funciona: con <span class="math inline">\(d=4\)</span>, si <span class="math inline">\(d(y,c)=2\)</span>, entonces <span class="math inline">\(d(y,c&#39;)\ge4-2=2\)</span> para toda <span class="math inline">\(c&#39;\neq c\)</span>. Así <span class="math inline">\(y\)</span> no cae en ninguna bola de radio 1 y el decodificador lo declara error doble en lugar de corregir mal.</p>
+<h3>Tablas del código extendido <span class="math inline">\([8,4,4]\)</span></h3>
+<p><strong>Tabla 7.1. Arreglo estándar completo: las 16 clases laterales <span class="math inline">\(e+C\)</span>.</strong> Cuadrícula con las 16 filas del arreglo estándar: síndrome <span class="math inline">\((s,\sigma)\)</span>, líder o representante y las 16 palabras de cada clase. La primera fila es el código <span class="math inline">\(C\)</span> con los mensajes en orden <span class="math inline">\(u=0000,\dots,1111\)</span>; en las demás filas, cada palabra es la de la primera fila en la misma columna más el representante. Las 9 primeras clases tienen líder único (de peso 0 o 1); las 7 últimas son las clases de error doble, y su representante es uno de sus cuatro vectores de peso 2.</p>
+@@TAB:tab7_array@@
+<p><strong>Desglose de las 7 clases de error doble.</strong> Cada clase con <span class="math inline">\(s\neq0\)</span> y <span class="math inline">\(\sigma=0\)</span> contiene exactamente cuatro vectores de peso 2 (entre paréntesis, las posiciones de los dos unos). Tres de ellos son parejas <span class="math inline">\((i,j)\)</span> con <span class="math inline">\(h_i+h_j=s\)</span>, y el cuarto es <span class="math inline">\((j,8)\)</span> con <span class="math inline">\(h_j=s\)</span>. Por eso un error doble se detecta, pero no se puede saber cuál de los cuatro ocurrió: <span class="math inline">\(7\times4=28=\binom82\)</span> errores dobles en total.</p>
+@@TAB:tab7_dobles@@
+<p><strong>Tabla 7.2. Tabla de doble entrada SECDED (<span class="math inline">\(s\)</span> frente a <span class="math inline">\(\sigma\)</span>).</strong> Cruza los casos <span class="math inline">\(s=0\)</span> y <span class="math inline">\(s=h_i\)</span> con <span class="math inline">\(\sigma=0\)</span> (número par de errores) y <span class="math inline">\(\sigma=1\)</span> (número impar de errores). Es todo lo que el decodificador necesita consultar.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><span class="math inline">\(\sigma=0\)</span>  (número par de errores)</th>
+<th style="text-align: left;"><span class="math inline">\(\sigma=1\)</span>  (número impar de errores)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(s=0\)</span></td>
+<td style="text-align: left;"><strong>Sin error</strong>: se acepta <span class="math inline">\(y\)</span> (un error de peso 4 que sea palabra del código también cae aquí y no se detecta).</td>
+<td style="text-align: left;"><strong>Un error en el bit 8</strong>: se corrige el bit 8 (el mensaje no se toca).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(s=h_i\neq0\)</span></td>
+<td style="text-align: left;"><strong>Dos errores</strong>: se detectan, no se corrigen (se pide reenvío).</td>
+<td style="text-align: left;"><strong>Un error en el bit <span class="math inline">\(i\)</span></strong>: se corrige el bit <span class="math inline">\(i\)</span>.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><strong>Tabla 7.3. Clasificación de los 256 patrones de error.</strong> Como el código es lineal, el resultado sólo depende del error <span class="math inline">\(e\)</span>, no de la palabra enviada. La tabla agrupa los <span class="math inline">\(2^8=256\)</span> errores posibles por su peso <span class="math inline">\(\mathrm{w}(e)\)</span>: cuántos hay, cuántos se decodifican bien (aciertos), cuántos se detectan sin corregir y cuántos producen un fallo sin aviso (corrección equivocada o error no detectado).</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(\mathrm{w}(e)\)</span></th>
+<th style="text-align: center;">Patrones</th>
+<th style="text-align: center;">Aciertos</th>
+<th style="text-align: center;">Detecciones</th>
+<th style="text-align: center;">Fallos sin aviso</th>
+<th style="text-align: left;">Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: left;">No hubo error: <span class="math inline">\((s,\sigma)=(0,0)\)</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: left;"><span class="math inline">\(\sigma=1\)</span>: el líder es el error; se corrige siempre.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: left;"><span class="math inline">\(\sigma=0\)</span> y <span class="math inline">\(s\neq0\)</span>: error doble detectado.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: left;"><span class="math inline">\(\sigma=1\)</span>: parece un error simple y se corrige mal (el resultado es otra palabra del código).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">56</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: left;">14 son palabras del código (<span class="math inline">\(s=0\)</span>, <span class="math inline">\(\sigma=0\)</span>): no se detectan. Las otras 56 caen en clases de error doble.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5 a 8</td>
+<td style="text-align: center;">93</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: left;">Peso 5: 56 se corrigen mal; peso 6: 28 se detectan; peso 7: 8 se corrigen mal; peso 8: <span class="math inline">\(11111111\in C\)</span>, no se detecta.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Total</td>
+<td style="text-align: center;">256</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">112</td>
+<td style="text-align: center;">135</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><strong>Probabilidades dominantes frente al <span class="math inline">\([7,4,3]\)</span>.</strong> Si cada bit se daña de forma independiente con probabilidad <span class="math inline">\(p\)</span> (pequeña), los términos que dominan vienen de los errores de menor peso. Los valores numéricos son exactos (suma sobre todos los patrones de error).</p>
+@@TAB:tab7_prob@@
+<p>Lectura: el <span class="math inline">\([8,4,4]\)</span> convierte casi todos los fallos silenciosos del <span class="math inline">\([7,4,3]\)</span> en detecciones. Con <span class="math inline">\(p=10^{-3}\)</span>, el fallo sin aviso baja unas 375 veces (de <span class="math inline">\(\approx21p^2\)</span> a <span class="math inline">\(\approx56p^3\)</span>).</p>
+<p><strong>Tabla 7.4. Comparación final: <span class="math inline">\([7,4,3]\)</span> frente a <span class="math inline">\([8,4,4]\)</span>.</strong> Resumen lado a lado de todas las propiedades de los dos códigos.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Propiedad</th>
+<th style="text-align: left;">Hamming <span class="math inline">\([7,4,3]\)</span></th>
+<th style="text-align: left;">Extendido <span class="math inline">\([8,4,4]\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Parámetros</td>
+<td style="text-align: left;"><span class="math inline">\(n=7\)</span>, <span class="math inline">\(k=4\)</span>, <span class="math inline">\(d=3\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n=8\)</span>, <span class="math inline">\(k=4\)</span>, <span class="math inline">\(d=4\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redundancia</td>
+<td style="text-align: left;">3 bits</td>
+<td style="text-align: left;">4 bits (3 de Hamming + paridad global)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tasa</td>
+<td style="text-align: left;"><span class="math inline">\(4/7\approx0.571\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(4/8=0.5\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pesos</td>
+<td style="text-align: left;"><span class="math inline">\(0{:}1,\ 3{:}7,\ 4{:}7,\ 7{:}1\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(0{:}1,\ 4{:}14,\ 8{:}1\)</span> (todos pares)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cota de Hamming (<span class="math inline">\(t=1\)</span>)</td>
+<td style="text-align: left;"><span class="math inline">\(16\cdot8=128=2^7\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(16\cdot9=144&lt;256=2^8\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">¿Perfecto?</td>
+<td style="text-align: left;">Sí</td>
+<td style="text-align: left;">No (112 vectores fuera de las bolas)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clases laterales</td>
+<td style="text-align: left;"><span class="math inline">\(2^3=8\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(2^4=16\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Líderes</td>
+<td style="text-align: left;">8, todos únicos (peso 0 o 1)</td>
+<td style="text-align: left;">9 únicos (peso 0 o 1) y 7 clases con 4 líderes de peso 2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Matrices</td>
+<td style="text-align: left;"><span class="math inline">\(G\)</span>: <span class="math inline">\(4\times7\)</span>,  <span class="math inline">\(H\)</span>: <span class="math inline">\(3\times7\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(G\)</span>: <span class="math inline">\(4\times8\)</span>,  <span class="math inline">\(H\)</span>: <span class="math inline">\(4\times8\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dualidad</td>
+<td style="text-align: left;"><span class="math inline">\(C^{\perp}\)</span> = símplex <span class="math inline">\([7,3,4]\)</span></td>
+<td style="text-align: left;">Autodual: <span class="math inline">\(C^{\perp}=C\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Errores dobles</td>
+<td style="text-align: left;">Se corrigen mal (sin aviso)</td>
+<td style="text-align: left;">Se detectan siempre (28 de 28)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Patrón no detectable más ligero</td>
+<td style="text-align: left;">Una palabra de peso 3 (7 patrones)</td>
+<td style="text-align: left;">Una palabra de peso 4 (14 patrones)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aplicaciones</td>
+<td style="text-align: left;">Transmisión simple, enseñanza, base de otros códigos</td>
+<td style="text-align: left;">Memorias ECC (formato <span class="math inline">\([72,64]\)</span>), SECDED en hardware</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><strong>Tabla 7.5. Evaluación del síndrome en ejemplos resueltos.</strong> Para cada caso se envía la palabra <span class="math inline">\(c=01010101\)</span> (mensaje <span class="math inline">\(u=0101\)</span>) y se detallan <span class="math inline">\(s_1\)</span>, <span class="math inline">\(s_2\)</span>, <span class="math inline">\(s_3\)</span> y <span class="math inline">\(\sigma\)</span> (sumas módulo 2), el diagnóstico de la tabla 7.2 y el resultado.</p>
+@@TAB:tab7_ejemplos@@
+<div class="callout nota">
+<p><strong>Autodual.</strong> Todos los pesos de <span class="math inline">\(C\)</span> son 0, 4 u 8, múltiplos de 4. Entonces <span class="math inline">\(x\cdot y=\tfrac12\big(\mathrm{w}(x)+\mathrm{w}(y)-\mathrm{w}(x+y)\big)\bmod2=0\)</span> para toda pareja, así que <span class="math inline">\(C\subseteq C^{\perp}\)</span>; como <span class="math inline">\(\dim C=\dim C^{\perp}=4\)</span>, <span class="math inline">\(C^{\perp}=C\)</span>. El <span class="math inline">\([8,4,4]\)</span> es autodual y su <span class="math inline">\(H\)</span> genera al propio código.</p>
+</div>
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Receta SECDED.</strong> Calcula <span class="math inline">\(s=H_7(y_1\dots y_7)^{T}\)</span> y <span class="math inline">\(\sigma=y_1+\dots+y_8\)</span>. Si <span class="math inline">\((0,0)\)</span>: sin error. Si <span class="math inline">\((\neq0,1)\)</span>: corrige el bit <span class="math inline">\(j\)</span> con <span class="math inline">\(h_j=s\)</span>. Si <span class="math inline">\((0,1)\)</span>: corrige el bit 8. Si <span class="math inline">\((\neq0,0)\)</span>: dos errores; sólo se detectan.</p>
+</div>
+<div class="callout nota">
+<p>En los ejercicios y soluciones de este capítulo, <span class="math inline">\(p\)</span> denota la paridad global, que en el texto llamamos <span class="math inline">\(\sigma\)</span>.</p>
+</div>
+@@INTERACTIVO@@
+<h3 id="ejercicios">Ejercicios</h3>
+<p class="ejercicio"><span class="ej-tag">7.1</span> Obtén <span class="math inline">\(G\)</span> del <span class="math inline">\([8,4,4]\)</span> extendiendo <span class="math inline">\(G_7\)</span> y codifica <span class="math inline">\(u=1010\)</span> calculando <span class="math inline">\(p_8=u_1+u_2+u_3\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">7.2</span> Da la distribución de pesos del <span class="math inline">\([8,4,4]\)</span> y demuestra que <span class="math inline">\(d=4\)</span> usando la Proposición.</p>
+<p class="ejercicio"><span class="ej-tag">7.3</span> Extiende con un bit de paridad global: (a) el <span class="math inline">\([5,2,3]\)</span> con <span class="math inline">\(G=\left(\begin{smallmatrix}1&amp;0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;1&amp;1\end{smallmatrix}\right)\)</span>; (b) la repetición <span class="math inline">\([3,1,3]\)</span>; (c) la paridad <span class="math inline">\([3,2,2]\)</span>. Halla <span class="math inline">\(d\)</span> en cada caso.</p>
+<p class="ejercicio"><span class="ej-tag">7.4</span> Con <span class="math inline">\(H_7=\left(\begin{smallmatrix}1&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0\\1&amp;0&amp;1&amp;1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;1&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span>, escribe el diagnóstico <span class="math inline">\((s,p)\)</span> de cada tipo de error: un error en el bit <span class="math inline">\(j\le7\)</span>, en el bit 8 y dos errores en los bits <span class="math inline">\(i,j\le7\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">7.5</span> Se envía <span class="math inline">\(10101010\)</span>. Decodifica con SECDED los recibidos <span class="math inline">\(10001010\)</span>, <span class="math inline">\(11100010\)</span>, <span class="math inline">\(10101011\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">7.6</span> Se envía la palabra nula y ocurren errores en los bits 1 y 2. Compara el comportamiento del <span class="math inline">\([7,4,3]\)</span> y del <span class="math inline">\([8,4,4]\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">7.7</span> Para <span class="math inline">\(d=3,4,5\)</span> lista todos los pares <span class="math inline">\((t,t&#39;)\)</span> con <span class="math inline">\(t\le t&#39;\)</span> y <span class="math inline">\(t+t&#39;\le d-1\)</span> que el código puede cumplir.</p>
+<p class="ejercicio"><span class="ej-tag">7.8</span> Demuestra que el <span class="math inline">\([8,4,4]\)</span> es autodual calculando <span class="math inline">\(GG^{T}\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">7.9</span> El <span class="math inline">\([8,4,4]\)</span> tiene <span class="math inline">\(2^{8-4}=16\)</span> síndromes. Clasifícalos según el peso del líder y su unicidad. ¿Cuántos errores dobles hay y cómo se reparten?</p>
+<p class="ejercicio"><span class="ej-tag">7.10</span> (Memorias ECC) El extendido de Hamming de longitud <span class="math inline">\(2^r\)</span> es un <span class="math inline">\([2^r,2^r-r-1,4]\)</span>. Para <span class="math inline">\(r=7\)</span> da <span class="math inline">\([128,120,4]\)</span>. ¿Qué código SECDED resulta para palabras de datos de 64 bits y cuál es su tasa?</p>
+<h3 id="soluciones">Soluciones</h3>
+<details class="sol"><summary>Solución 7.1</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Se extiende cada fila de <span class="math inline">\(G_7\)</span> con un bit que haga el peso par.</p>
+<p><strong>Paso a paso.</strong> Los pesos de las filas de <span class="math inline">\(G_7\)</span> son <span class="math inline">\(3,3,3,4\)</span>, así que se añade <span class="math inline">\(1,1,1,0\)</span> (columna <span class="math inline">\(1110^{T}\)</span>). Para <span class="math inline">\(u=1010\)</span>: <span class="math inline">\(p_1=1\)</span>, <span class="math inline">\(p_2=0\)</span>, <span class="math inline">\(p_3=1\)</span> (Hamming) y <span class="math inline">\(p_8=1+0+1=0\)</span>, es decir <span class="math inline">\(c=10101010\)</span>. Comprobación: tiene peso 4, par.</p>
+</div></details><details class="sol"><summary>Solución 7.2</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Todas las palabras del extendido tienen peso par; cuenta cuántas hay de cada peso.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(w=0\)</span>: 1, <span class="math inline">\(w=4\)</span>: 14, <span class="math inline">\(w=8\)</span>: 1. El Hamming tiene <span class="math inline">\(d=3\)</span> (impar); las 7 palabras de peso 3 reciben un 1 y pasan a peso 4, la de peso 7 pasa a 8 y las de peso 4 conservan su peso. Todos los pesos son pares, por lo que no hay peso 3: <span class="math inline">\(d=4\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 7.3</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Si <span class="math inline">\(d\)</span> es impar, al agregar la paridad las palabras de peso <span class="math inline">\(d\)</span> suben a <span class="math inline">\(d+1\)</span>; si <span class="math inline">\(d\)</span> es par no cambia nada.</p>
+<p><strong>Paso a paso.</strong> (a) Se obtiene <span class="math inline">\(\{000000,010111,101101,111010\}\)</span> con pesos <span class="math inline">\(4,4,4\)</span>: <span class="math inline">\([6,2,4]\)</span> (<span class="math inline">\(d\)</span> de 3 a 4). (b) <span class="math inline">\(\{000,111\}\to\{0000,1111\}\)</span>: <span class="math inline">\([4,1,4]\)</span>. (c) <span class="math inline">\(d=2\)</span> es par: todas las palabras ya tienen peso par y se añade siempre un 0, <span class="math inline">\(\{000,011,101,110\}\to\{0000,0110,1010,1100\}\)</span> con <span class="math inline">\(d=2\)</span>: no mejora. La proposición exige <span class="math inline">\(d\)</span> impar.</p>
+</div></details><details class="sol"><summary>Solución 7.4</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Mira qué hace cada error en el síndrome <span class="math inline">\(s\)</span> y en la paridad global <span class="math inline">\(p\)</span>.</p>
+<p><strong>Paso a paso.</strong> Un error en el bit <span class="math inline">\(j\le7\)</span>: <span class="math inline">\(s=h_j\neq0\)</span> y <span class="math inline">\(p=1\)</span>. Un error en el bit 8: <span class="math inline">\(s=0\)</span> y <span class="math inline">\(p=1\)</span>. Dos errores <span class="math inline">\(i,j\le7\)</span>: <span class="math inline">\(s=h_i+h_j\neq0\)</span> (columnas distintas) y <span class="math inline">\(p=1+1=0\)</span>. Dos errores con uno de ellos en el bit 8: <span class="math inline">\(s=h_i\neq0\)</span> y <span class="math inline">\(p=0\)</span>. En los dos últimos casos <span class="math inline">\(p=0\)</span> y <span class="math inline">\(s\neq0\)</span>: error doble detectado.</p>
+</div></details><details class="sol"><summary>Solución 7.5</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Calcula <span class="math inline">\(s\)</span> y <span class="math inline">\(p\)</span> de cada recibido y aplica la tabla SECDED.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(y=10001010\)</span> (un error): <span class="math inline">\(s=011\)</span>, <span class="math inline">\(p=1\Rightarrow\)</span> un error en el bit 3, se corrige: <span class="math inline">\(\hat c=10101010\)</span>. <span class="math inline">\(y=11100010\)</span> (dos errores): <span class="math inline">\(s=001\)</span>, <span class="math inline">\(p=0\Rightarrow\)</span> error doble detectado, no se corrige. <span class="math inline">\(y=10101011\)</span> (un error en la paridad global): <span class="math inline">\(s=000\)</span>, <span class="math inline">\(p=1\Rightarrow\)</span> error en el bit 8, se corrige: <span class="math inline">\(\hat c=10101010\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 7.6</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Con dos errores el Hamming corrige mal; el extendido se da cuenta de que son dos y no corrige.</p>
+<p><strong>Paso a paso.</strong> En el <span class="math inline">\([7,4,3]\)</span>: <span class="math inline">\(y=1100000\)</span>, <span class="math inline">\(s=h_1+h_2=011=h_3\)</span>, se corrige el bit 3 y resulta <span class="math inline">\(1110000\in C_7\)</span> (peso 3): corrección equivocada. En el <span class="math inline">\([8,4,4]\)</span>: <span class="math inline">\(y=11000000\)</span>, <span class="math inline">\(s=011\neq0\)</span> y <span class="math inline">\(p=0\)</span>: se declara error doble, no se corrige y no se entrega un dato falso.</p>
+</div></details><details class="sol"><summary>Solución 7.7</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Una pareja <span class="math inline">\((t,t&#39;)\)</span> es posible cuando <span class="math inline">\(t+t&#39;\le d-1\)</span>.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(d=3\)</span>: <span class="math inline">\((0,1),(0,2),(1,1)\)</span>. <span class="math inline">\(d=4\)</span>: <span class="math inline">\((0,1),(0,2),(0,3),(1,1),(1,2)\)</span>. <span class="math inline">\(d=5\)</span>: <span class="math inline">\((0,1),(0,2),(0,3),(0,4),(1,1),(1,2),(1,3),(2,2)\)</span>. El par <span class="math inline">\((0,d-1)\)</span> es sólo detección. El <span class="math inline">\([8,4,4]\)</span> admite <span class="math inline">\((1,2)\)</span>: corrige 1 y detecta 2.</p>
+</div></details><details class="sol"><summary>Solución 7.8</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Si <span class="math inline">\(GG^{T}=0\)</span> el código está dentro de su dual, y por dimensiones es igual a él.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(GG^{T}=\left(\begin{smallmatrix}0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0\end{smallmatrix}\right)=0\)</span>. Cada fila tiene peso par (<span class="math inline">\(w=4,4,4,4\)</span>) y las distintas se solapan en un número par de unos, así que <span class="math inline">\(C\subseteq C^{\perp}\)</span>. Como <span class="math inline">\(\dim C=\dim C^{\perp}=4\)</span>, <span class="math inline">\(C^{\perp}=C\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 7.9</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Hay 16 síndromes: uno nulo, ocho de errores simples y siete de errores dobles.</p>
+<p><strong>Paso a paso.</strong> 1 síndrome (nulo, líder de peso 0); 8 síndromes con líder único de peso 1 (los 8 errores de un bit); y <span class="math inline">\(16-9=7\)</span> síndromes cuyas clases tienen cuatro líderes de peso 2 cada una, no corregibles de forma única. Errores dobles: <span class="math inline">\(\binom82=28=7\cdot4\)</span>: se reparten en esas 7 clases, con 4 por clase.</p>
+</div></details><details class="sol"><summary>Solución 7.10</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Acortar un código es fijar bits de información en cero y quitarlos: <span class="math inline">\(n\)</span> y <span class="math inline">\(k\)</span> bajan lo mismo.</p>
+<p><strong>Paso a paso.</strong> Se acorta <span class="math inline">\([128,120,4]\)</span> fijando <span class="math inline">\(120-64=56\)</span> bits de información en cero y eliminándolos: se obtiene <span class="math inline">\([128-56,64,\ge4]=[72,64,4]\)</span>, con 8 bits de control. Mantiene <span class="math inline">\(d=4\)</span> (acortar no disminuye la distancia). Tasa <span class="math inline">\(64/72=8/9\approx0.89\)</span>, frente a <span class="math inline">\(4/8=1/2\)</span> del <span class="math inline">\([8,4,4]\)</span> sin acortar. Es el formato 72/64 de las memorias ECC.</p>
+</div></details>

@@ -1,0 +1,67 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Una matriz $A$ de $m\times n$ toma vectores de $\mathbb{R}^n$ y devuelve vectores de $\mathbb{R}^m$. Cada uno de esos dos espacios se parte, en ángulo recto, en dos piezas: en la entrada, la parte que $A$ <strong>sí ve</strong> (el espacio fila) y la que <strong>manda a cero</strong> (el espacio nulo); en la salida, lo que $A$ <strong>puede alcanzar</strong> (el espacio columna) y lo que <strong>nunca alcanza</strong> (el nulo izquierdo). Con eso se responde todo sobre $Ax=b$: si tiene solución, cuántas tiene y cuál es la más corta.</p>
+</div>
+
+<h3>Los cuatro subespacios fundamentales</h3>
+<p>Sea $A\in\mathbb{R}^{m\times n}$ de rango $r$ y $T(x)=Ax$.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Subespacio</th><th>Vive en</th><th>Qué contiene</th><th>Dimensión</th></tr></thead>
+<tbody>
+<tr><td><strong>Espacio fila</strong> $C(A^{T})$</td><td>$\mathbb{R}^n$</td><td>combinaciones de las filas de $A$</td><td>$r$</td></tr>
+<tr><td><strong>Espacio nulo</strong> $N(A)$</td><td>$\mathbb{R}^n$</td><td>los $x$ con $Ax=0$</td><td>$n-r$ (teorema del rango y la nulidad)</td></tr>
+<tr><td><strong>Espacio columna</strong> $C(A)$</td><td>$\mathbb{R}^m$</td><td>combinaciones de las columnas (la imagen de $T$)</td><td>$r$</td></tr>
+<tr><td><strong>Nulo izquierdo</strong> $N(A^{T})$</td><td>$\mathbb{R}^m$</td><td>los $y$ con $A^{T}y=0$</td><td>$m-r$</td></tr>
+</tbody></table></div>
+
+<h3>Ortogonalidad y suma directa</h3>
+<div class="callout defi"><div class="callout-title">Teorema Fundamental del Álgebra Lineal</div>
+<p>Los dos espacios se descomponen como suma directa de subespacios perpendiculares:
+$$\mathbb{R}^n=C(A^{T})\oplus N(A),\qquad C(A^{T})=N(A)^{\perp},$$
+$$\mathbb{R}^m=C(A)\oplus N(A^{T}),\qquad C(A)=N(A^{T})^{\perp}.$$</p>
+<p><strong>Por qué.</strong> $Ax=0$ significa que $x$ tiene producto punto cero con cada fila de $A$; es decir, $N(A)$ es justamente lo perpendicular al espacio fila. Lo mismo, con $A^{T}$, da la segunda igualdad. Y las dimensiones cuadran: $r+(n-r)=n$ y $r+(m-r)=m$.</p>
+</div>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Diagrama de los cuatro subespacios fundamentales</figcaption>
+<div class="fig">@@FIG:tfal_cuatro@@</div>
+<p class="desc"><strong>Descripción:</strong> Muestra cómo se dividen en ángulos rectos el espacio de entrada y el de salida, y cómo $A$ transforma lo relevante ($C(A^{T})\to C(A)$) mientras manda a cero el espacio nulo ($N(A)\to0$).</p>
+</figure>
+
+<h3>El espacio fila y el espacio columna son «el mismo» espacio</h3>
+<p>$A$ aplasta todo $N(A)$ en el vector cero, pero si se restringe al espacio fila no pierde nada: la restricción
+$$A\big|_{C(A^{T})}:\ C(A^{T})\longrightarrow C(A)$$
+es un <strong>isomorfismo</strong> (lineal y biyectiva). Por eso, para cada $b\in C(A)$ existe un único $x_r\in C(A^{T})$ con $Ax_r=b$, y cualquier otra solución es
+$$x=x_r+x_n,\qquad x_n\in N(A).$$
+La solución $x_r$ es la de <strong>norma mínima</strong>, porque $\|x\|^2=\|x_r\|^2+\|x_n\|^2$ (Pitágoras). Es exactamente la que da la pseudoinversa: $x_r=A^{+}b$.</p>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Descomposición ortogonal de un vector $x=x_r+x_n$</figcaption>
+<div class="fig">@@FIG:tfal_3d@@</div>
+<p class="desc"><strong>Descripción:</strong> Visualiza en 3D cómo cualquier vector se separa en dos piezas perpendiculares: una sobre el plano fila ($x_r$) y otra sobre la recta nula ($x_n$).</p>
+</figure>
+<p class="small">En la figura, $A=\begin{bmatrix}1&0&1\\0&1&1\end{bmatrix}$: el espacio fila es el plano generado por $(1,0,1)$ y $(0,1,1)$, y el espacio nulo es la recta generada por $(1,1,-1)$, perpendicular a ambas filas.</p>
+
+<h3>Los cuatro subespacios con la SVD</h3>
+<p>La SVD da bases ortonormales «perfectas» para los cuatro subespacios. Si se parten $U$ y $V$ según el rango,
+$U=\begin{bmatrix}U_r&U_{m-r}\end{bmatrix}$ y $V=\begin{bmatrix}V_r&V_{n-r}\end{bmatrix}$:</p>
+<ul>
+<li>$C(A^{T})=\operatorname{gen}\{v_1,\dots,v_r\}$ (columnas de $V_r$)</li>
+<li>$N(A)=\operatorname{gen}\{v_{r+1},\dots,v_n\}$ (columnas de $V_{n-r}$)</li>
+<li>$C(A)=\operatorname{gen}\{u_1,\dots,u_r\}$ (columnas de $U_r$)</li>
+<li>$N(A^{T})=\operatorname{gen}\{u_{r+1},\dots,u_m\}$ (columnas de $U_{m-r}$)</li>
+</ul>
+<p>En esas bases, $A$ es una matriz de cuatro bloques en la que sólo uno no es cero:
+$$A=\begin{bmatrix}U_r&U_{m-r}\end{bmatrix}\begin{bmatrix}\Sigma_r&0\\0&0\end{bmatrix}\begin{bmatrix}V_r&V_{n-r}\end{bmatrix}^{T}=U_r\Sigma_rV_r^{T}.$$
+Los bloques nulos se anulan: la acción de $A$ es «girar el espacio fila, estirar por los $\sigma_i$ y colocarlo en el espacio columna».</p>
+
+<h3>Alternativa de Fredholm: ¿cuándo tiene solución $Ax=b$?</h3>
+<div class="callout defi"><div class="callout-title">Teorema. Alternativa de Fredholm</div>
+<p>Dados $A\in\mathbb{R}^{m\times n}$ y $b\in\mathbb{R}^m$, el sistema $Ax=b$ tiene solución si y sólo si $b\in C(A)$, lo que equivale a que $b$ sea perpendicular al nulo izquierdo:
+$$Ax=b\ \text{tiene solución}\iff b\perp N(A^{T})\iff y^{T}b=0\ \text{para todo }y\text{ con }A^{T}y=0.$$</p>
+</div>
+<p>Dicho de otro modo: o bien $Ax=b$ tiene solución, o bien existe un $y$ con $A^{T}y=0$ y $y^{T}b\ne0$ que demuestra que no la tiene; nunca las dos cosas. Ese $y$ es un «certificado» de imposibilidad.</p>
+
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Para analizar una matriz.</strong> (1) Escalona $A$ y cuenta pivotes: eso es $r$. (2) Las filas no nulas de la forma escalonada son base de $C(A^{T})$; las columnas pivote de $A$, base de $C(A)$. (3) Resuelve $Ax=0$ (una solución por cada variable libre) para $N(A)$ y $A^{T}y=0$ para $N(A^{T})$. (4) Comprueba dimensiones: $r$, $n-r$, $r$, $m-r$. (5) Para $Ax=b$: hay solución si $b\perp N(A^{T})$; la solución general es $x_r+N(A)$.</p>
+</div>
+
+@@INTERACTIVO@@

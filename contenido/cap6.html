@@ -1,0 +1,268 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Un mensaje de 4 bits se convierte en una palabra de 7 bits: los 4 primeros son el mensaje y los 3 últimos, redundancia. Si llega con un error, el síndrome (3 bits) coincide con una columna de <span class="math inline">\(H\)</span> y esa columna dice qué posición cambiar. Un error en la redundancia no daña el mensaje, pero también se corrige. Con dos errores, el decodificador se equivoca.</p>
+</div>
+<p>El código de Hamming añade 3 bits de paridad a cada mensaje de 4 bits. Su distancia mínima es 3, así que corrige cualquier error de un bit. Además es perfecto: las 16 bolas de radio 1 cubren exactamente los <span class="math inline">\(2^7=128\)</span> vectores de <span class="math inline">\(V_7\)</span>.</p>
+<div class="callout nota">
+<p><strong>Precisiones.</strong> (1) Las clases laterales son del código <span class="math inline">\(C\)</span>, no de <span class="math inline">\(G\)</span>: son los conjuntos <span class="math inline">\(y+C\)</span>, y hay <span class="math inline">\(128/16=8\)</span>. (2) Se codifica el mensaje <span class="math inline">\(u\in V_4\)</span> como <span class="math inline">\(c=uG\in V_7\)</span>; se recibe <span class="math inline">\(y=c+e\)</span>; el mensaje se lee al final, en los primeros 4 bits de <span class="math inline">\(\hat c\)</span>. (3) Con <span class="math inline">\(d=3\)</span> se corrige 1 error <em>o</em> se detectan 2, pero no ambas cosas a la vez.</p>
+</div>
+<h3>Matrices <span class="math inline">\(G\)</span> y <span class="math inline">\(H\)</span> en forma estándar</h3>
+<p><span class="math display">\[G=(I_4\mid A)=\begin{pmatrix}1&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1\\0&amp;0&amp;1&amp;0&amp;0&amp;1&amp;1\\0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\end{pmatrix},\qquad
+A=\begin{pmatrix}1&amp;1&amp;0\\1&amp;0&amp;1\\0&amp;1&amp;1\\1&amp;1&amp;1\end{pmatrix},\]</span> <span class="math display">\[H=(A^{T}\mid I_3)=\begin{pmatrix}1&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0\\1&amp;0&amp;1&amp;1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;1&amp;0&amp;0&amp;1\end{pmatrix}.\]</span> Las filas de <span class="math inline">\(A\)</span> son los cuatro vectores de <span class="math inline">\(\mathbb{F}_2^3\)</span> de peso <span class="math inline">\(\ge2\)</span>. Así, las siete columnas de <span class="math inline">\(H\)</span> son los siete vectores no nulos de <span class="math inline">\(\mathbb{F}_2^3\)</span>: eso es lo que define a un código de Hamming. Las paridades son <span class="math display">\[p_1=u_1+u_2+u_4,\qquad p_2=u_1+u_3+u_4,\qquad p_3=u_2+u_3+u_4,\qquad c=(u_1,u_2,u_3,u_4,p_1,p_2,p_3).\]</span> Como <span class="math inline">\(C\)</span> es lineal, <span class="math inline">\(d=\min\{\mathrm{w}(c):c\neq0\}=3\)</span> (ver la distribución de pesos en la tabla 6.5).</p>
+<h3>Tablas del código de Hamming <span class="math inline">\([7,4,3]\)</span></h3>
+<p><strong>Tabla 6.1. Ecuaciones de paridad y vigilancia por bit.</strong> Relaciona cada fila de la matriz de control <span class="math inline">\(H\)</span> con su ecuación de paridad (<span class="math inline">\(E_1\)</span>, <span class="math inline">\(E_2\)</span>, <span class="math inline">\(E_3\)</span>) y muestra en qué posiciones de los 7 bits interviene cada ecuación (marcadas con <span class="math inline">\(\bullet\)</span>), junto con el valor de cada columna <span class="math inline">\(h_1,\dots,h_7\)</span> en binario y en decimal. Cada bit está vigilado por una combinación distinta de ecuaciones; esa combinación es su síndrome.</p>
+@@TAB:tab6_ecuaciones@@
+<p><strong>Tabla 6.2. Partición completa de <span class="math inline">\(V_7\)</span>: las 8 clases laterales y sus 16 palabras.</strong> Organiza los 128 vectores de <span class="math inline">\(V_7\)</span> en 8 filas, una por cada clase lateral <span class="math inline">\(e+C\)</span>, encabezadas por su síndrome <span class="math inline">\(s\)</span> y su líder <span class="math inline">\(e\)</span> (de peso 0 o 1), con las 16 palabras que forman cada clase. La primera fila es el propio código <span class="math inline">\(C\)</span>, con los mensajes en orden <span class="math inline">\(u=0000,0001,\dots,1111\)</span>; cada palabra de las demás filas es la de la primera fila en la misma columna más el líder.</p>
+@@TAB:tab6_part@@
+<p><strong>Tabla 6.3. Casos de error y diagnóstico.</strong> Resume distintos escenarios al transmitir la palabra <span class="math inline">\(c=1011010\)</span> (mensaje <span class="math inline">\(u=1011\)</span>): el síndrome obtenido, la decisión que toma el decodificador y si el mensaje final se recupera bien o falla.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Tipo de error</th>
+<th style="text-align: center;"><span class="math inline">\(e\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(y=c+e\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(s=Hy^{T}\)</span></th>
+<th style="text-align: left;">Decodificador</th>
+<th style="text-align: left;">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sin error</td>
+<td style="text-align: center;"><code>0000000</code></td>
+<td style="text-align: center;"><code>1011010</code></td>
+<td style="text-align: center;"><code>000</code></td>
+<td style="text-align: left;">acepta <span class="math inline">\(y\)</span></td>
+<td style="text-align: left;">bien: <span class="math inline">\(\hat u=1011\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1 error en el mensaje (bit 4)</td>
+<td style="text-align: center;"><code>0001000</code></td>
+<td style="text-align: center;"><code>1010010</code></td>
+<td style="text-align: center;"><code>111</code> <span class="math inline">\(=h_4\)</span></td>
+<td style="text-align: left;">cambia el bit 4</td>
+<td style="text-align: left;">bien: <span class="math inline">\(\hat u=1011\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1 error en la paridad (bit 7)</td>
+<td style="text-align: center;"><code>0000001</code></td>
+<td style="text-align: center;"><code>1011011</code></td>
+<td style="text-align: center;"><code>001</code> <span class="math inline">\(=h_7\)</span></td>
+<td style="text-align: left;">cambia el bit 7</td>
+<td style="text-align: left;">bien: <span class="math inline">\(\hat u=1011\)</span> (el mensaje no se tocó)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2 errores (bits 2 y 5)</td>
+<td style="text-align: center;"><code>0100100</code></td>
+<td style="text-align: center;"><code>1111110</code></td>
+<td style="text-align: center;"><code>001</code> <span class="math inline">\(=h_2+h_5\)</span></td>
+<td style="text-align: left;">cree que es el bit 7 y lo cambia: <span class="math inline">\(\hat c=1111111\)</span></td>
+<td style="text-align: left;">corrige mal: <span class="math inline">\(\hat u=1111\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3 errores (bits 1, 4 y 5)</td>
+<td style="text-align: center;"><code>1001100</code></td>
+<td style="text-align: center;"><code>0010110</code></td>
+<td style="text-align: center;"><code>101</code> <span class="math inline">\(=h_2\)</span></td>
+<td style="text-align: left;">cambia el bit 2: <span class="math inline">\(\hat c=0110110\)</span></td>
+<td style="text-align: left;">corrige mal: <span class="math inline">\(\hat u=0110\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3 errores que forman una palabra del código (bits 1, 2, 3)</td>
+<td style="text-align: center;"><code>1110000</code></td>
+<td style="text-align: center;"><code>0101010</code></td>
+<td style="text-align: center;"><code>000</code></td>
+<td style="text-align: left;">acepta <span class="math inline">\(y\)</span></td>
+<td style="text-align: left;">pasa inadvertido: <span class="math inline">\(\hat u=0101\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><strong>Tabla 6.4. Correspondencia entre la forma estándar y el orden de Hamming.</strong> Compara la numeración de posiciones de la forma sistemática <span class="math inline">\(G=(I_4\mid A)\)</span> con la presentación original de Hamming, en la que cada columna se coloca en la posición que indica su valor binario. Así se ve cómo se reordenan las columnas y dónde quedan los bits de mensaje y de paridad.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Posición estándar</td>
+<td style="text-align: center;">Columna <span class="math inline">\(h_j\)</span></td>
+<td style="text-align: center;">Valor binario</td>
+<td style="text-align: center;">Posición en orden</td>
+<td style="text-align: center;">Papel en forma</td>
+<td style="text-align: center;">Papel en orden</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(j\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">(decimal)</td>
+<td style="text-align: center;">de Hamming</td>
+<td style="text-align: center;">estándar</td>
+<td style="text-align: center;">de Hamming</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><code>110</code></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">mensaje <span class="math inline">\(u_1\)</span></td>
+<td style="text-align: center;">mensaje</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><code>101</code></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">mensaje <span class="math inline">\(u_2\)</span></td>
+<td style="text-align: center;">mensaje</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><code>011</code></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">mensaje <span class="math inline">\(u_3\)</span></td>
+<td style="text-align: center;">mensaje</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><code>111</code></td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">mensaje <span class="math inline">\(u_4\)</span></td>
+<td style="text-align: center;">mensaje</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><code>100</code></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">paridad <span class="math inline">\(p_1\)</span></td>
+<td style="text-align: center;">paridad</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"><code>010</code></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">paridad <span class="math inline">\(p_2\)</span></td>
+<td style="text-align: center;">paridad</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"><code>001</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">paridad <span class="math inline">\(p_3\)</span></td>
+<td style="text-align: center;">paridad</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>En el orden de Hamming los bits de paridad quedan en las posiciones 1, 2 y 4 (las potencias de 2), y los de mensaje en 3, 5, 6 y 7. La <span class="math inline">\(H\)</span> reordenada es la del capítulo 5, <span class="math inline">\(\left(\begin{smallmatrix}0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span>, y su síndrome leído en binario es directamente la posición del error.</p>
+<p><strong>Tabla 6.5. Cotas y comparación rápida del <span class="math inline">\([7,4,3]\)</span>.</strong> Resume los parámetros clave y las métricas teóricas del código de Hamming <span class="math inline">\([7,4,3]\)</span>, y contrasta su capacidad de corrección y detección con los límites de esferas y de Singleton.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Concepto</th>
+<th style="text-align: left;">Valor</th>
+<th style="text-align: left;">Lectura</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Parámetros</td>
+<td style="text-align: left;"><span class="math inline">\([7,4,3]\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n=7\)</span> bits, <span class="math inline">\(k=4\)</span> de mensaje, <span class="math inline">\(d=3\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Redundancia</td>
+<td style="text-align: left;"><span class="math inline">\(n-k=3\)</span></td>
+<td style="text-align: left;">3 bits de paridad</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tasa</td>
+<td style="text-align: left;"><span class="math inline">\(4/7\approx0.571\)</span></td>
+<td style="text-align: left;">el 57 % de cada palabra es mensaje</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Número de palabras</td>
+<td style="text-align: left;"><span class="math inline">\(2^4=16\)</span></td>
+<td style="text-align: left;">una por cada mensaje</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Distribución de pesos</td>
+<td style="text-align: left;"><span class="math inline">\(0{:}1,\ 3{:}7,\ 4{:}7,\ 7{:}1\)</span></td>
+<td style="text-align: left;">el menor peso no nulo es 3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Radio de corrección</td>
+<td style="text-align: left;"><span class="math inline">\(t=\lfloor(3-1)/2\rfloor=1\)</span></td>
+<td style="text-align: left;">corrige 1 error (o detecta 2)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Volumen de la bola de radio 1</td>
+<td style="text-align: left;"><span class="math inline">\(1+7=8\)</span></td>
+<td style="text-align: left;">la palabra y sus 7 vecinas</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cota de esferas</td>
+<td style="text-align: left;"><span class="math inline">\(16\times8=128=2^7\)</span></td>
+<td style="text-align: left;">igualdad: el código es <strong>perfecto</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cota de Singleton</td>
+<td style="text-align: left;"><span class="math inline">\(3\le7-4+1=4\)</span></td>
+<td style="text-align: left;">desigualdad estricta: <strong>no es MDS</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clases laterales</td>
+<td style="text-align: left;"><span class="math inline">\(2^{7-4}=8\)</span></td>
+<td style="text-align: left;">una por síndrome, líder único de peso <span class="math inline">\(\le1\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout defi"><div class="callout-title">Algoritmo de decodificación</div>
+<p>(1) Calcular <span class="math inline">\(s=Hy^{T}\)</span>. (2) Si <span class="math inline">\(s=0\)</span>, <span class="math inline">\(\hat c=y\)</span>. (3) Si no, <span class="math inline">\(s=h_j\)</span> para un único <span class="math inline">\(j\)</span>: <span class="math inline">\(\hat c=y+e_j\)</span>. (4) El mensaje son los primeros 4 bits de <span class="math inline">\(\hat c\)</span>. Con dos errores el síndrome no es nulo, pero la corrección produce una palabra equivocada (tabla 6.3).</p>
+</div>
+<div class="callout nota">
+<p><strong>Orden de Hamming.</strong> En la presentación original, la columna <span class="math inline">\(j\)</span> de <span class="math inline">\(H\)</span> es el número <span class="math inline">\(j\)</span> en binario y los bits de paridad están en las posiciones 1, 2 y 4. No es forma sistemática, pero el código es <em>equivalente</em>: se pasa de uno a otro permutando coordenadas (tabla 6.4). En ese orden, el síndrome es directamente la posición del error.</p>
+</div>
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Receta de decodificación (Hamming).</strong> (1) <span class="math inline">\(s=Hy^{T}\)</span>. (2) Si <span class="math inline">\(s=0\)</span>, <span class="math inline">\(\hat c=y\)</span>. (3) Si no, busca la columna <span class="math inline">\(h_j=s\)</span> y cambia el bit <span class="math inline">\(j\)</span>. (4) El mensaje son los 4 primeros bits de <span class="math inline">\(\hat c\)</span>.</p>
+</div>
+@@INTERACTIVO@@
+<h3 id="ejercicios">Ejercicios</h3>
+<p class="ejercicio"><span class="ej-tag">6.1</span> Codifica los mensajes <span class="math inline">\(1011\)</span>, <span class="math inline">\(0110\)</span> y <span class="math inline">\(1101\)</span> con la <span class="math inline">\(G\)</span> de este capítulo.</p>
+<p class="ejercicio"><span class="ej-tag">6.2</span> Calcula <span class="math inline">\(p_1,p_2,p_3\)</span> para <span class="math inline">\(u=1010\)</span> con las ecuaciones de paridad y comprueba con la tabla.</p>
+<p class="ejercicio"><span class="ej-tag">6.3</span> Demuestra que <span class="math inline">\(GH^{T}=0\)</span> usando la forma de bloques. Comprueba además que <span class="math inline">\(g_4\cdot h_j=0\)</span> para las tres filas <span class="math inline">\(h_j\)</span> de <span class="math inline">\(H\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">6.4</span> ¿Cuántas palabras de cada peso tiene <span class="math inline">\(C\)</span>? Deduce <span class="math inline">\(d\)</span> y explica por qué <span class="math inline">\(1111111\in C\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">6.5</span> Decodifica por síndrome los vectores recibidos <span class="math inline">\(1010111\)</span>, <span class="math inline">\(0011001\)</span>, <span class="math inline">\(1100111\)</span> y recupera el mensaje.</p>
+<p class="ejercicio"><span class="ej-tag">6.6</span> Construye la tabla completa de clases laterales: síndrome y líder. ¿Cuántas clases hay y cuántos vectores tiene cada una?</p>
+<p class="ejercicio"><span class="ej-tag">6.7</span> Se envía <span class="math inline">\(1010101\)</span> y ocurren dos errores, en los bits 1 y 2. Decodifica y explica qué pasa.</p>
+<p class="ejercicio"><span class="ej-tag">6.8</span> Demuestra que el código es perfecto y comprueba que <span class="math inline">\(1110110\)</span> está a distancia 1 de exactamente una palabra.</p>
+<p class="ejercicio"><span class="ej-tag">6.9</span> Con las columnas de <span class="math inline">\(H\)</span>, demuestra que <span class="math inline">\(d=3\)</span>: encuentra tres columnas dependientes y explica por qué no hay dos.</p>
+<p class="ejercicio"><span class="ej-tag">6.10</span> Reordena las columnas de <span class="math inline">\(H\)</span> para que la columna <span class="math inline">\(j\)</span> sea el número <span class="math inline">\(j\)</span> en binario. ¿Qué permutación de coordenadas se usa y qué <span class="math inline">\(H\)</span> resulta?</p>
+<h3 id="soluciones">Soluciones</h3>
+<details class="sol"><summary>Solución 6.1</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Para codificar, suma las filas de <span class="math inline">\(G\)</span> que correspondan a los unos del mensaje.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(1011\mapsto1000110+0010011+0001111=1011010\)</span>; <span class="math inline">\(0110\mapsto0100101+0010011=0110110\)</span>; <span class="math inline">\(1101\mapsto1000110+0100101+0001111=1101100\)</span>. Los primeros 4 bits repiten el mensaje y los 3 últimos son las paridades.</p>
+</div></details><details class="sol"><summary>Solución 6.2</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Cada bit de paridad es la suma de ciertos bits del mensaje; sustituye y suma módulo 2.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(p_1=1+0+0=1\)</span>, <span class="math inline">\(p_2=1+1+0=0\)</span>, <span class="math inline">\(p_3=0+1+0=1\)</span>, así que <span class="math inline">\(c=1010101\)</span>, que aparece en la tabla.</p>
+</div></details><details class="sol"><summary>Solución 6.3</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Con <span class="math inline">\(G=(I\mid A)\)</span> y <span class="math inline">\(H=(A^{T}\mid I)\)</span> el producto es <span class="math inline">\(A+A=0\)</span> en binario. Luego comprueba una fila a mano.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(GH^{T}=(I_4\mid A)\left(\begin{smallmatrix}A\\I_3\end{smallmatrix}\right)=A+A=0\)</span> en <span class="math inline">\(\mathbb{F}_2\)</span>. Directamente, con <span class="math inline">\(g_4=0001111\)</span>: <span class="math inline">\(g_4\cdot1101100=1+1=0\)</span>, <span class="math inline">\(g_4\cdot1011010=1+1=0\)</span>, <span class="math inline">\(g_4\cdot0111001=1+1=0\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 6.4</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Cuenta cuántas palabras tienen 0, 3, 4 o 7 unos; el menor peso no nulo es <span class="math inline">\(d\)</span>.</p>
+<p><strong>Paso a paso.</strong> Pesos: 0 (1 palabra), 3 (7), 4 (7) y 7 (1). Peso mínimo no nulo 3, luego <span class="math inline">\(d=3\)</span>. <span class="math inline">\(1111111=g_1+g_2+g_3+g_4\in C\)</span> (mensaje <span class="math inline">\(1111\)</span>); por linealidad, si <span class="math inline">\(c\in C\)</span> también <span class="math inline">\(c+1111111\)</span> (el complemento): por eso los pesos 3 y 4 aparecen en parejas.</p>
+</div></details><details class="sol"><summary>Solución 6.5</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Para cada recibido: síndrome, busca la columna igual, cambia ese bit y lee los 4 primeros bits.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(y=1010111\)</span>: <span class="math inline">\(s=010=h_6\)</span>, se corrige el bit 6: <span class="math inline">\(\hat c=1010101\)</span>, mensaje <span class="math inline">\(\hat u=1010\)</span>. <span class="math inline">\(y=0011001\)</span>: <span class="math inline">\(s=101=h_2\)</span>, se corrige el bit 2: <span class="math inline">\(\hat c=0111001\)</span>, mensaje <span class="math inline">\(\hat u=0111\)</span>. <span class="math inline">\(y=1100111\)</span>: <span class="math inline">\(s=100=h_5\)</span>, se corrige el bit 5: <span class="math inline">\(\hat c=1100011\)</span>, mensaje <span class="math inline">\(\hat u=1100\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 6.6</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Hay <span class="math inline">\(2^{7-4}=8\)</span> clases y cada una se identifica con su síndrome y su líder.</p>
+<p><strong>Paso a paso.</strong> Hay <span class="math inline">\(2^{7-4}=8\)</span> clases con 16 vectores cada una (<span class="math inline">\(8\cdot16=128\)</span>). Líderes: <span class="math inline">\(000\to0000000\)</span>, <span class="math inline">\(110\to1000000\)</span>, <span class="math inline">\(101\to0100000\)</span>, <span class="math inline">\(011\to0010000\)</span>, <span class="math inline">\(111\to0001000\)</span>, <span class="math inline">\(100\to0000100\)</span>, <span class="math inline">\(010\to0000010\)</span>, <span class="math inline">\(001\to0000001\)</span>. Cada clase tiene un único vector de peso <span class="math inline">\(\le1\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 6.7</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Con dos errores el síndrome es la suma de dos columnas, que coincide con una tercera; el decodificador cambia el bit equivocado.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(y=0110101\)</span> y <span class="math inline">\(s=h_1+h_2=110+101=011=h_3\)</span>: el decodificador cree que hubo un solo error en el bit 3 y produce <span class="math inline">\(\hat c=0100101\in C\)</span>, pero <span class="math inline">\(\hat c\neq c\)</span> (a distancia 3). El síndrome no nulo avisó que algo falló, pero la corrección fue equivocada.</p>
+</div></details><details class="sol"><summary>Solución 6.8</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Perfecto significa que las burbujas de radio 1 cubren todo <span class="math inline">\(V_7\)</span> sin traslapes.</p>
+<p><strong>Paso a paso.</strong> La bola de radio 1 tiene <span class="math inline">\(1+7=8\)</span> vectores y <span class="math inline">\(16\cdot8=128=2^7\)</span>: las bolas son disjuntas (porque <span class="math inline">\(d=3\)</span>) y cubren <span class="math inline">\(V_7\)</span>. Para <span class="math inline">\(y=1110110\)</span>, la única palabra a distancia <span class="math inline">\(\le1\)</span> es <span class="math inline">\(0110110\)</span> (a distancia 1).</p>
+</div></details><details class="sol"><summary>Solución 6.9</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Si tres columnas suman cero, la palabra de peso 3 con unos en esas posiciones está en el código.</p>
+<p><strong>Paso a paso.</strong> Las siete columnas son no nulas y distintas, así que ninguna columna ni pareja suma 0: <span class="math inline">\(d\ge3\)</span>. Además <span class="math inline">\(h_1+h_5+h_6=110+100+010=000\)</span>, que corresponde a la palabra <span class="math inline">\(1000110=g_1\in C\)</span> de peso 3. Por tanto <span class="math inline">\(d=3\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 6.10</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Reordena las columnas de <span class="math inline">\(H\)</span> para que la columna <span class="math inline">\(j\)</span> sea el número <span class="math inline">\(j\)</span> en binario; eso es una permutación de coordenadas.</p>
+<p><strong>Paso a paso.</strong> Poniendo en las posiciones <span class="math inline">\(1,\dots,7\)</span> las columnas <span class="math inline">\(h_7,h_6,h_3,h_5,h_2,h_1,h_4\)</span> (que son <span class="math inline">\(001,010,011,100,101,110,111\)</span>) resulta <span class="math inline">\(H&#39;=\left(\begin{smallmatrix}0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span>. Aplicando la misma permutación a las coordenadas de las palabras se obtiene un código equivalente, con los bits de paridad en las posiciones 1, 2, 4. Es el Hamming del capítulo 5.</p>
+</div></details>

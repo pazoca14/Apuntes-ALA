@@ -1,0 +1,184 @@
+<p class="source-note">Basado en los apuntes «Tema 1. Campos finitos» del Dr. José de Jesús Ángel Ángel (Universidad Anáhuac México).</p>
+
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Un <strong>campo finito</strong> es un conjunto con un número finito de elementos donde se puede sumar, restar, multiplicar y dividir (entre algo distinto de cero) como con los números de siempre. Existen exactamente para los tamaños $q=p^n$ ($p$ primo): hay campos de 2, 4, 8, 16 o 256 elementos, pero no de 6 ni de 10. Los de tamaño $2^n$ son los favoritos de la computación porque <strong>cada elemento es una palabra de $n$ bits</strong>: sumar es hacer XOR y multiplicar es desplazar bits y hacer XOR. Con ellos funcionan AES, los códigos QR, RAID-6 y los códigos de Reed–Solomon.</p>
+</div>
+
+<h3>Preliminares: grupo, campo y característica</h3>
+<p>La idea de fondo es la misma que llevó de los reales a los complejos: <em>agrandar el conjunto de números hasta que cierta ecuación tenga solución</em>. Así como $\mathbb{C}=\mathbb{R}[x]/(x^2+1)$ añade una raíz de $x^2+1$, los campos finitos se construyen añadiendo una raíz de un polinomio irreducible.</p>
+<ul>
+<li><strong>Grupo</strong> $(A,+)$: la operación es cerrada y asociativa, hay neutro $0$ y cada $a$ tiene inverso $-a$. Si además $a+b=b+a$, el grupo es <em>abeliano</em>.</li>
+<li><strong>Campo</strong> $(A,+,\cdot)$: $(A,+)$ y $(A^{*},\cdot)$ son grupos abelianos (con $A^{*}=A\setminus\{0\}$) y se cumple $a(b+c)=ab+ac$. Ejemplos: $\mathbb{Q}$, $\mathbb{R}$, $\mathbb{C}$.</li>
+<li><strong>Característica</strong> $\operatorname{car}(K)$: el menor $m\gt0$ con $1+1+\dots+1=0$ ($m$ sumandos); si no existe, es 0.</li>
+<li><strong>Campos primos:</strong> $\mathbb{F}_p=\mathbb{Z}/(p)$ es campo si y sólo si $p$ es primo. En $\mathbb{Z}/(6)$, por ejemplo, $2\cdot3=0$ y no hay inversos.</li>
+</ul>
+<div class="callout defi"><div class="callout-title">Proposición. La característica de un campo finito es un primo</div>
+<p>Si $K$ es finito, $\operatorname{car}(K)=p$ es primo y $K$ contiene una copia de $\mathbb{F}_p$. <strong>Idea:</strong> si fuera $m=ab$ con $1\lt a,b\lt m$, entonces $(a\cdot1)(b\cdot1)=0$ sin que ningún factor sea cero, y en un campo eso no puede pasar.</p>
+</div>
+
+<h3>Polinomios irreducibles</h3>
+<p>$\mathbb{F}_p[x]$ son los polinomios con coeficientes en $\mathbb{F}_p$. Se pueden dividir con residuo como los enteros. Un polinomio de grado $m\ge1$ es <strong>irreducible</strong> si no se puede escribir como producto de dos polinomios de grado menor; juegan el papel de los números primos.</p>
+<div class="callout nota"><p><strong>Criterio rápido para grados 2 y 3:</strong> son irreducibles si y sólo si no tienen raíces en $\mathbb{F}_p$. En $\mathbb{F}_2$: $0$ es raíz si el término independiente es 0, y $1$ es raíz si el número de términos es par. <strong>Cuidado:</strong> desde grado 4 no basta; $x^4+x^2+1=(x^2+x+1)^2$ no tiene raíces y es reducible.</p></div>
+<div class="table-wrap"><table class="t-compact">
+<thead><tr><th>grado</th><th>polinomios irreducibles sobre $\mathbb{F}_2$</th><th>#</th></tr></thead><tbody>
+<tr><td class="c">1</td><td>$x,\ x+1$</td><td class="c">2</td></tr>
+<tr><td class="c">2</td><td>$x^2+x+1$</td><td class="c">1</td></tr>
+<tr><td class="c">3</td><td>$x^3+x+1,\ x^3+x^2+1$</td><td class="c">2</td></tr>
+<tr><td class="c">4</td><td>$x^4+x+1,\ x^4+x^3+1,\ x^4+x^3+x^2+x+1$</td><td class="c">3</td></tr>
+<tr><td class="c">5</td><td>$x^5+x^2+1,\ x^5+x^3+1,\ x^5+x^3+x^2+x+1,\ \dots$</td><td class="c">6</td></tr>
+<tr><td class="c">8</td><td>$x^8+x^4+x^3+x+1$ (AES), $x^8+x^4+x^3+x^2+1$ (QR), …</td><td class="c">30</td></tr>
+</tbody></table></div>
+<div class="callout defi"><div class="callout-title">Teorema. Conteo de Gauss</div>
+<p>El número de polinomios mónicos irreducibles de grado $n$ sobre $\mathbb{F}_q$ es
+$$N_q(n)=\frac1n\sum_{d\mid n}\mu(d)\,q^{n/d},$$
+con $\mu$ la función de Möbius. Siempre es positivo: hay irreducibles de todos los grados. Por ejemplo $N_2(4)=\frac14(2^4-2^2)=3$, $N_2(6)=\frac16(2^6-2^3-2^2+2)=9$ y $N_2(8)=\frac18(2^8-2^4)=30$.</p>
+</div>
+
+<h3>Construcción de $\mathbb{F}_{p^n}$</h3>
+<div class="callout defi"><div class="callout-title">Teorema. Existencia y construcción</div>
+<p>Si $P(x)\in\mathbb{F}_p[x]$ es irreducible de grado $n$, entonces $\mathbb{F}_p[x]/(P(x))$ es un campo con exactamente $p^n$ elementos. Recíprocamente, todo campo finito tiene $p^n$ elementos, y dos campos del mismo tamaño son isomorfos. Se denota $\mathbb{F}_{p^n}$ o $GF(p^n)$.</p>
+<p><strong>Idea.</strong> Los elementos son los residuos módulo $P$, es decir, los polinomios de grado $\lt n$: $p$ opciones para cada uno de los $n$ coeficientes. Todo $f\ne0$ es invertible porque $\gcd(f,P)=1$, y Euclides extendido da $uf+vP=1$, o sea $f^{-1}=u$.</p>
+</div>
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Construir $\mathbb{F}_{2^n}$ en tres pasos.</strong> (1) Escoge $P(x)$ irreducible de grado $n$ sobre $\mathbb{F}_2$. (2) Declara $\alpha$ raíz de $P$: $P(\alpha)=0$. Eso da la regla de reducción; con $P=x^4+x+1$, $\alpha^4=\alpha+1$. (3) Los $2^n$ elementos son $a_{n-1}\alpha^{n-1}+\dots+a_1\alpha+a_0$ con $a_i\in\{0,1\}$. Se suma coeficiente a coeficiente (XOR) y se multiplica como polinomios, reduciendo con la regla.</p>
+</div>
+
+<h3>Notación por cadenas de bits</h3>
+<p>La cadena $a_{n-1}\cdots a_1a_0$ representa al polinomio $a_{n-1}x^{n-1}+\dots+a_1x+a_0$; el bit de la izquierda es el coeficiente de la potencia más alta. Por ejemplo, $1011\leftrightarrow x^3+x+1$ y $0110\leftrightarrow x^2+x$.</p>
+<figure class="figcaso"><figcaption class="figcaso-title">Diccionario de representación (polinomio ↔ bits ↔ hex)</figcaption>
+<div class="fig">@@FIG:gf_diccionario@@</div>
+<p class="desc"><strong>Descripción:</strong> Ilustra cómo una palabra de $n$ bits se mapea a un polinomio de grado $\lt n$ y a su valor hexadecimal, con el desplazamiento <code>&lt;&lt; 1</code> y la reducción <code>XOR P</code> cuando se desborda el grado $n$.</p>
+</figure>
+<p class="tcap-out"><strong>Tabla 12.1. Operaciones en polinomios frente a bits ($\mathbb{F}_{2^n}$).</strong> Compara suma/resta (XOR), multiplicación por $x$ (<code>&lt;&lt; 1</code> y reducción <code>XOR P</code>), cuadrado ($a^2$ es lineal en característica 2), multiplicación general ($O(n)$ frente a tablas $O(1)$) e inverso multiplicativo.</p>
+@@TAB:gf_operaciones@@
+<p>En característica 2, $a+a=0$, es decir $-a=a$: sumar y restar son lo mismo. Por eso el cifrado XOR de Vernam se descifra con la misma operación: $c=m\oplus k$ y $m=c\oplus k$.</p>
+
+<h3>Elemento primitivo y logaritmo discreto</h3>
+<div class="callout defi"><div class="callout-title">Teorema. El grupo multiplicativo es cíclico</div>
+<p>$\mathbb{F}_q^{*}=\mathbb{F}_q\setminus\{0\}$ es cíclico de orden $q-1$. Un generador $\alpha$ (con $\operatorname{ord}(\alpha)=q-1$) se llama <strong>elemento primitivo</strong>; hay $\varphi(q-1)$ de ellos. Un polinomio irreducible es <strong>primitivo</strong> si su raíz es un elemento primitivo; de grado $n$ sobre $\mathbb{F}_2$ hay $\varphi(2^n-1)/n$.</p>
+</div>
+<p>Si $\alpha$ es primitivo, cada $a\ne0$ es $a=\alpha^k$ con un único $0\le k\le q-2$, su <strong>logaritmo discreto</strong>. Con una tabla de logaritmos, multiplicar e invertir se vuelven sumas de enteros:
+$$a\cdot b=\alpha^{(\log a+\log b)\bmod(q-1)},\qquad a^{-1}=\alpha^{(q-1)-\log a}.$$</p>
+<div class="callout nota"><p><strong>Irreducible no es lo mismo que primitivo.</strong> Todo primitivo es irreducible, pero no al revés. El ejemplo mínimo es $x^4+x^3+x^2+x+1$: es irreducible, pero su raíz cumple $\gamma^5=1$, así que sólo genera 5 de los 15 elementos no nulos. También el polinomio de AES, $x^8+x^4+x^3+x+1$, es irreducible pero no primitivo: allí $\operatorname{ord}(\texttt{0x02})=51$ y se usa $\texttt{0x03}$ como generador.</p></div>
+<figure class="figcaso"><figcaption class="figcaso-title">Ciclo multiplicativo y elemento primitivo ($\alpha^0\dots\alpha^{q-1}$)</figcaption>
+<div class="fig">@@FIG:gf_ciclo@@</div>
+<p class="desc"><strong>Descripción:</strong> Muestra cómo las potencias de un elemento primitivo recorren los $q-1$ elementos no nulos antes de volver a 1, contrastando con un elemento de orden menor (como $\gamma^5=1$ en $\mathbb{F}_{16}$).</p>
+</figure>
+
+<h3>Galería: $\mathbb{F}_2$, $\mathbb{F}_4$, $\mathbb{F}_8$ y $\mathbb{F}_{16}$</h3>
+<p><strong>$\mathbb{F}_2=\{0,1\}$</strong> con $1+1=0$: su suma es la compuerta XOR y su producto la compuerta AND. Es el campo de las matrices de bits y de los códigos binarios de los capítulos 1 a 7.</p>
+<p><strong>$\mathbb{F}_4=\mathbb{F}_2[x]/(x^2+x+1)$.</strong> El único irreducible de grado 2 es $x^2+x+1$ ($x^2$, $x^2+1=(x+1)^2$ y $x^2+x=x(x+1)$ se factorizan). Con $\alpha^2=\alpha+1$: $\alpha^0=1$, $\alpha^1=\alpha$, $\alpha^2=\alpha+1$, $\alpha^3=\alpha^2+\alpha=1$. El ciclo se cierra en $3=4-1$: es primitivo, y $\mathbb{F}_4=\{0,1,\alpha,1+\alpha\}=\{00,01,10,11\}$.</p>
+<div class="tgrid">
+<div class="tcol"><div class="table-wrap"><table class="t-mult"><tr><th>+</th><th>0</th><th>1</th><th>$\alpha$</th><th>$1+\alpha$</th></tr>
+<tr><th>0</th><td>0</td><td>1</td><td>$\alpha$</td><td>$1+\alpha$</td></tr>
+<tr><th>1</th><td>1</td><td>0</td><td>$1+\alpha$</td><td>$\alpha$</td></tr>
+<tr><th>$\alpha$</th><td>$\alpha$</td><td>$1+\alpha$</td><td>0</td><td>1</td></tr>
+<tr><th>$1+\alpha$</th><td>$1+\alpha$</td><td>$\alpha$</td><td>1</td><td>0</td></tr></table></div></div>
+<div class="tcol"><div class="table-wrap"><table class="t-mult"><tr><th>·</th><th>0</th><th>1</th><th>$\alpha$</th><th>$1+\alpha$</th></tr>
+<tr><th>0</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><th>1</th><td>0</td><td>1</td><td>$\alpha$</td><td>$1+\alpha$</td></tr>
+<tr><th>$\alpha$</th><td>0</td><td>$\alpha$</td><td>$1+\alpha$</td><td class="one">1</td></tr>
+<tr><th>$1+\alpha$</th><td>0</td><td>$1+\alpha$</td><td class="one">1</td><td>$\alpha$</td></tr></table></div></div>
+</div>
+<div class="callout nota"><p><strong>$\mathbb{F}_4$ no es $\mathbb{Z}_4$.</strong> En $\mathbb{Z}_4$, $2\cdot2=0$: el 2 no tiene inverso y $\mathbb{Z}_4$ no es campo. En $\mathbb{F}_4$ todo elemento no nulo es invertible ($\alpha^{-1}=1+\alpha$) y $a+a=0$ siempre. Tienen el mismo tamaño pero son estructuras distintas.</p></div>
+<p><strong>$\mathbb{F}_8=\mathbb{F}_2[x]/(x^3+x+1)$</strong> con $\alpha^3=\alpha+1$ y <strong>$\mathbb{F}_{16}=\mathbb{F}_2[x]/(x^4+x+1)$</strong> con $\alpha^4=\alpha+1$: en ambos las potencias de $\alpha$ recorren todos los elementos no nulos antes de volver a 1, así que los dos polinomios son primitivos. Por ejemplo, en $\mathbb{F}_{16}$: $\alpha^7=\alpha\cdot\alpha^6=\alpha(\alpha^3+\alpha^2)=\alpha^4+\alpha^3=\alpha^3+\alpha+1=1011$. En bits: $1100\ll1=11000$; el bit 4 está encendido, así que $11000\oplus10011=01011$.</p>
+<p class="tcap-out"><strong>Tabla 12.2. Potencias, representación y logaritmos por campo ($\mathbb{F}_4$, $\mathbb{F}_8$, $\mathbb{F}_{16}$).</strong> Enumera los elementos generados por $\alpha^k$ junto con su polinomio, cadena de bits, valor hexadecimal (cuando aplique), logaritmo discreto $\log_\alpha a$ e inverso $a^{-1}$.</p>
+@@TAB:gf_potencias@@
+<details class="more"><summary>Tablas completas del producto en $\mathbb{F}_8$ y $\mathbb{F}_{16}$ (el 1 de cada renglón, resaltado, marca el inverso)</summary>
+<p><strong>$\mathbb{F}_8$</strong> (elementos como enteros $a_2a_1a_0$; se omiten la fila y la columna del 0):</p>
+@@TAB:gf_prod8@@
+<p><strong>$\mathbb{F}_{16}$</strong> (notación hexadecimal):</p>
+@@TAB:gf_prod16@@
+<p>La tabla es simétrica (el producto conmuta) y cada renglón tiene exactamente un 1 (cada elemento tiene un único inverso). La suma no necesita tabla: es XOR.</p>
+</details>
+
+<h3>$\mathbb{F}_{16}$: tres irreducibles, dos primitivos</h3>
+<p>Los irreducibles de grado 4 son $x^4+x+1$, $x^4+x^3+1$ y $x^4+x^3+x^2+x+1$. Como $\varphi(15)/4=2$, exactamente dos son primitivos. Con $x^4+x^3+1$ ($\beta^4=\beta^3+1$) las potencias también recorren los 15 elementos, pero en otro orden: la tabla de producto cambia aunque el conjunto de elementos sea el mismo. Con $x^4+x^3+x^2+x+1$ se obtiene $\gamma^5=1$: sigue siendo un campo de 16 elementos, pero esta representación no sirve para tablas de logaritmos. La razón: $x^4+x^3+x^2+x+1=\dfrac{x^5-1}{x-1}$, así que sus raíces son raíces quintas de la unidad, y $5\mid15$.</p>
+<p class="tcap-out"><strong>Tabla 12.3. Polinomios irreducibles frente a primitivos.</strong> Contrasta polinomios irreducibles de grados 2, 3, 4 y 8 indicando cuáles generan todo el grupo multiplicativo ($\operatorname{ord}(\alpha)=2^n-1$) y cuáles tienen orden menor o se usan en estándares concretos. Los órdenes se calcularon con el código del sitio.</p>
+@@TAB:gf_irreducibles@@
+
+<h3>Unicidad, subcampos y Frobenius</h3>
+<div class="callout defi"><div class="callout-title">Teoremas</div>
+<ul>
+<li><strong>Unicidad:</strong> dos campos finitos del mismo tamaño son isomorfos; por eso se dice <em>el</em> campo $\mathbb{F}_q$. Por ejemplo, $\varphi(\alpha)=\beta^2+\beta$ extiende a un isomorfismo de $\mathbb{F}_2[x]/(x^4+x+1)$ en $\mathbb{F}_2[x]/(x^4+x^3+1)$.</li>
+<li><strong>Frobenius:</strong> $a\mapsto a^p$ es un automorfismo de $\mathbb{F}_{p^n}$, y genera un grupo cíclico de orden $n$. En característica 2, $(a+b)^2=a^2+b^2$: elevar al cuadrado es <em>lineal</em> y se implementa intercalando ceros entre los bits.</li>
+<li><strong>Subcampos:</strong> $\mathbb{F}_{p^m}\subseteq\mathbb{F}_{p^n}$ si y sólo si $m\mid n$, y el subcampo es único: $\{a\in\mathbb{F}_{p^n}:a^{p^m}=a\}$.</li>
+</ul>
+</div>
+<p>Ejemplo: dentro de $\mathbb{F}_{16}$ vive $\mathbb{F}_4=\{0,1,\alpha^5,\alpha^{10}\}=\{0000,0001,0110,0111\}$. Se comprueba con la tabla: $6\cdot6=7$ y $6\oplus7=1$, o sea $(\alpha^5)^2=\alpha^5+1$, la misma regla $y^2=y+1$ de $\mathbb{F}_4$. En cambio $\mathbb{F}_8\not\subset\mathbb{F}_{16}$ porque $3\nmid4$.</p>
+<figure class="figcaso"><figcaption class="figcaso-title">Retículo de subcampos ($\mathbb{F}_{p^m}\subseteq\mathbb{F}_{p^n}$)</figcaption>
+<div class="fig">@@FIG:gf_reticulo@@</div>
+<p class="desc"><strong>Descripción:</strong> Muestra la jerarquía de inclusión de subcampos determinada por la divisibilidad $m\mid n$ (por ejemplo, $\mathbb{F}_2\subset\mathbb{F}_4\subset\mathbb{F}_{16}$).</p>
+</figure>
+<p><strong>Todos los campos con a lo más 16 elementos.</strong> Los tamaños posibles son las potencias de primo; no existen campos de 6, 10, 12, 14 ni 15 elementos.</p>
+@@TAB:gf_campos16@@
+<p>El caso $\mathbb{F}_9=\mathbb{F}_3[x]/(x^2+1)=\{a+bi:a,b\in\mathbb{F}_3\}$ es «los complejos, pero finitos»: $1+i$ tiene orden 8 y es primitivo. Ahí la suma ya no es XOR (la característica es 3), por eso en hardware se prefieren los campos de característica 2.</p>
+
+<h3>Aritmética en la computadora</h3>
+<p>Se representa $P$ como un entero de $n+1$ bits ($x^4+x+1\to\texttt{0x13}$, $x^8+x^4+x^3+x+1\to\texttt{0x11B}$).</p>
+<ul>
+<li><strong>Suma:</strong> $a+b=a\oplus b$ (una instrucción XOR).</li>
+<li><strong>Multiplicación por $x$ (xtime):</strong> $\operatorname{xtime}(a)=a\ll1$ si el bit $n-1$ de $a$ es 0; si no, $(a\ll1)\oplus P$.</li>
+<li><strong>Multiplicación general (campesino ruso):</strong> recorrer los bits de $b$; si el bit es 1, acumular $r\mathrel{\oplus}=a$; luego $a=\operatorname{xtime}(a)$. Son $n$ pasos: $O(n)$.</li>
+<li><strong>Tablas logarítmicas:</strong> si $\alpha$ es primitivo se precalculan <code>exp</code> y <code>log</code> (menos de 1 KB para $\mathbb{F}_{256}$) y cada producto cuesta $O(1)$. Es la técnica de las bibliotecas de Reed–Solomon y RAID-6.</li>
+<li><strong>Inverso, tres caminos:</strong> Euclides extendido ($O(n^2)$, siempre funciona); Fermat, $a^{-1}=a^{q-2}$ ($O(\log q)$ productos; en $\mathbb{F}_{16}$, $a^{-1}=a^{14}$); tabla, $a^{-1}=\alpha^{(q-1)-\log a}$ ($O(1)$).</li>
+</ul>
+<pre class="code"><code>/* Multiplicación en GF(2^n). MOD contiene P(x) sin el bit x^n.
+   F_16 con x^4+x+1: N = 4, MOD = 0x3;  AES (x^8+x^4+x^3+x+1): N = 8, MOD = 0x1B */
+#define N 4
+#define MOD 0x3
+unsigned mul(unsigned a, unsigned b) {
+    unsigned r = 0;
+    while (b) {
+        if (b &amp; 1) r ^= a;                  /* acumula si el bit está prendido */
+        b &gt;&gt;= 1;
+        if (a &amp; (1u &lt;&lt; (N-1)))              /* habrá desbordamiento */
+            a = ((a &lt;&lt; 1) ^ MOD) &amp; ((1u &lt;&lt; N) - 1);
+        else
+            a &lt;&lt;= 1;
+    }
+    return r;
+}</code></pre>
+<div class="callout nota"><p><strong>Nota de seguridad.</strong> El <code>if (b &amp; 1)</code> es un salto que depende del dato y abre un canal lateral de tiempo. Las implementaciones criptográficas usan versiones de tiempo constante con máscaras (<code>m = -(b &amp; 1); r ^= a &amp; m;</code>) o la instrucción PCLMULQDQ.</p></div>
+<figure class="figcaso"><figcaption class="figcaso-title">Flujo de aritmética rápida en computadora</figcaption>
+<div class="fig">@@FIG:gf_flujo@@</div>
+<p class="desc"><strong>Descripción:</strong> Contrasta el cálculo paso a paso con xtime / campesino ruso ($O(n)$) frente a las tablas log / exp ($O(1)$) para multiplicar e invertir sin divisiones polinomiales.</p>
+</figure>
+
+<h3>Aplicaciones</h3>
+<p>Los campos finitos son la aritmética con la que corre buena parte de la infraestructura digital.</p>
+<ul>
+<li><strong>AES:</strong> trabaja con bytes en $\mathbb{F}_{256}$; la caja-S usa el inverso $a\mapsto a^{-1}$ (p. ej. $\texttt{0x53}^{-1}=\texttt{0xCA}$) y MixColumns es álgebra lineal sobre $\mathbb{F}_{256}$ con una matriz invertible.</li>
+<li><strong>Reed–Solomon:</strong> evaluar un polinomio de grado $\lt k$ en $n$ puntos da $d=n-k+1$ (el «secreto de la recta» del capítulo 8, en grande). Por eso un código QR se lee con hasta 30 % de daño.</li>
+<li><strong>LFSR:</strong> un registro de $n$ celdas con polinomio primitivo recorre los $2^n-1$ estados no nulos (m-secuencias), usados en GPS, CDMA y pruebas de circuitos.</li>
+</ul>
+<figure class="figcaso"><figcaption class="figcaso-title">Esquema de LFSR con polinomio primitivo frente a no primitivo</figcaption>
+<div class="fig">@@FIG:gf_lfsr@@</div>
+<p class="desc"><strong>Descripción:</strong> Muestra las celdas de desplazamiento y la realimentación XOR ($s_{k+4}=s_{k+1}\oplus s_k$), destacando que un polinomio primitivo logra periodo máximo ($2^n-1$) mientras que uno no primitivo corta el ciclo antes.</p>
+</figure>
+<p class="tcap-out"><strong>Tabla 12.4. Campos finitos en aplicaciones.</strong> Relaciona cada aplicación (AES, GCM, Reed–Solomon / códigos QR / RAID-6, LFSR, compartición de secretos de Shamir, criptografía de llave pública) con el campo y polinomio o estructura empleados.</p>
+@@TAB:gf_aplicaciones@@
+<div class="callout simple"><div class="callout-title">Puente con el resto del curso</div>
+<p>Todo el álgebra lineal (independencia, base, rango, determinante, $Ax=b$, eliminación gaussiana) vale palabra por palabra sobre $\mathbb{F}_q$, porque sus demostraciones sólo usan los axiomas de campo. Lo que cambia es lo métrico: no hay orden ni producto interno positivo, y un vector no nulo puede ser ortogonal a sí mismo ($v=(1,1)$ sobre $\mathbb{F}_2$ cumple $v\cdot v=0$). Por eso los códigos lineales de los capítulos 1 a 7 son subespacios de $\mathbb{F}_2^n$, y $C$ y $C^{\perp}$ pueden traslaparse.</p>
+</div>
+
+@@INTERACTIVO@@
+
+<h3>Ejercicios</h3>
+<p class="ejercicio"><span class="ej-tag">12.1</span> Escribe en notación polinomial los elementos $10110$, $1101$, $0110$ y $111$, e indica en qué campo $\mathbb{F}_{2^n}$ vive cada uno según su longitud.</p>
+<p class="ejercicio"><span class="ej-tag">12.2</span> Demuestra que $x^4+x^2+1$ no es irreducible sobre $\mathbb{F}_2$ y verifica que no tiene raíces. ¿Por qué esto no contradice el criterio para grados 2 y 3?</p>
+<p class="ejercicio"><span class="ej-tag">12.3</span> En $\mathbb{F}_{16}$ con $x^4+x+1$, calcula $B\cdot D$, $7^{-1}$, $E/3$ y $9^5$ usando la tabla de logaritmos.</p>
+<p class="ejercicio"><span class="ej-tag">12.4</span> Lista los subcampos de $\mathbb{F}_{2^{12}}$ y de $\mathbb{F}_{3^6}$.</p>
+<p class="ejercicio"><span class="ej-tag">12.5</span> Cuenta los polinomios mónicos irreducibles de grado 10 sobre $\mathbb{F}_2$ con la fórmula de Gauss.</p>
+<h3>Soluciones</h3>
+<details class="sol"><summary>Solución 12.1</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> El bit de la izquierda es el coeficiente de mayor grado; $n$ bits viven en $\mathbb{F}_{2^n}$.</p>
+<p><strong>Paso a paso.</strong> $10110=x^4+x^2+x$ ($\mathbb{F}_{32}$); $1101=x^3+x^2+1$ ($\mathbb{F}_{16}$); $0110=x^2+x$ ($\mathbb{F}_{16}$); $111=x^2+x+1$ ($\mathbb{F}_8$).</p></div></details>
+<details class="sol"><summary>Solución 12.2</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Un polinomio de grado 4 puede factorizarse en dos de grado 2 sin tener raíces.</p>
+<p><strong>Paso a paso.</strong> $(x^2+x+1)^2=x^4+2x^3+3x^2+2x+1=x^4+x^2+1$ en $\mathbb{F}_2$. No tiene raíces: en $0$ vale 1 y en $1$ vale $1+1+1=1$. El criterio sólo vale para grados 2 y 3, donde cualquier factorización obliga a un factor lineal (es decir, a una raíz).</p></div></details>
+<details class="sol"><summary>Solución 12.3</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Con logaritmos, multiplicar es sumar exponentes módulo 15.</p>
+<p><strong>Paso a paso.</strong> $\log B=7$, $\log D=13$: $7+13=20\equiv5$, $B\cdot D=\alpha^5=6$. $\log7=10$: $7^{-1}=\alpha^{15-10}=\alpha^5=6$ (y $7\cdot6=1$). $\log E=11$, $\log3=4$: $E/3=\alpha^{7}=B$. $\log9=14$: $9^5=\alpha^{70\bmod15}=\alpha^{10}=7$.</p></div></details>
+<details class="sol"><summary>Solución 12.4</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Hay un subcampo $\mathbb{F}_{p^m}$ por cada divisor $m$ de $n$.</p>
+<p><strong>Paso a paso.</strong> Divisores de 12: $1,2,3,4,6,12$, así que $\mathbb{F}_2,\mathbb{F}_4,\mathbb{F}_8,\mathbb{F}_{16},\mathbb{F}_{64},\mathbb{F}_{4096}$. Divisores de 6: $1,2,3,6$, así que $\mathbb{F}_3,\mathbb{F}_9,\mathbb{F}_{27},\mathbb{F}_{729}$.</p></div></details>
+<details class="sol"><summary>Solución 12.5</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Los divisores de 10 son 1, 2, 5, 10 con $\mu=1,-1,-1,1$.</p>
+<p><strong>Paso a paso.</strong> $N_2(10)=\frac{1}{10}\left(2^{10}-2^{5}-2^{2}+2^{1}\right)=\frac{1024-32-4+2}{10}=\frac{990}{10}=99$.</p></div></details>

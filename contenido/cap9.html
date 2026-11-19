@@ -1,0 +1,130 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Toda matriz, por complicada que sea, hace sólo tres cosas seguidas: <strong>gira</strong> (o refleja), <strong>estira</strong> a lo largo de unos ejes y <strong>vuelve a girar</strong>. La descomposición en valores singulares (SVD) separa esos tres pasos: $A=U\Sigma V^{T}$. Los números que estiran, los <em>valores singulares</em> $\sigma_i$, dicen qué tan importante es cada dirección. Quedarse con los más grandes es la mejor forma de resumir una matriz: así se comprimen imágenes y se quita ruido.</p>
+</div>
+
+<h3>Definición</h3>
+<div class="callout defi"><div class="callout-title">Definición. Descomposición en valores singulares</div>
+<p>Sea $A\in\mathbb{R}^{m\times n}$ de rango $r$. Su SVD es una factorización
+$$A=U\,\Sigma\,V^{T},$$
+donde</p>
+<ul>
+<li>$U\in\mathbb{R}^{m\times m}$ es ortogonal; sus columnas $u_i$ (<em>vectores singulares izquierdos</em>) son autovectores ortonormales de $AA^{T}$.</li>
+<li>$V\in\mathbb{R}^{n\times n}$ es ortogonal; sus columnas $v_i$ (<em>vectores singulares derechos</em>) son autovectores ortonormales de $A^{T}A$.</li>
+<li>$\Sigma\in\mathbb{R}^{m\times n}$ tiene la forma $\Sigma=\begin{bmatrix}\Sigma_r&0\\0&0\end{bmatrix}$ con $\Sigma_r=\operatorname{diag}(\sigma_1,\dots,\sigma_r)$ y $\sigma_1\ge\sigma_2\ge\dots\ge\sigma_r\gt0$.</li>
+</ul>
+</div>
+
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Cómo calcular la SVD a mano.</strong> (1) Calcula $M=A^{T}A$. (2) Encuentra sus autovalores $\lambda_1\ge\dots\ge\lambda_n\ge0$; los valores singulares son $\sigma_i=\sqrt{\lambda_i}$ y $r$ es el número de $\sigma_i\gt0$. (3) Para cada $\lambda_i$, resuelve $(M-\lambda_iI)v=0$ y normaliza: así salen las columnas de $V$. (4) Para $i\le r$, calcula $u_i=\dfrac{1}{\sigma_i}Av_i$; si faltan columnas, complétalas con una base ortonormal. (5) Comprueba que $U\Sigma V^{T}=A$.</p>
+</div>
+
+<h3>Existencia y unicidad</h3>
+<div class="callout defi"><div class="callout-title">Teorema. Toda matriz real tiene SVD</div>
+<p><strong>Idea de la prueba.</strong> $A^{T}A$ es simétrica y semidefinida positiva, así que por el Teorema Espectral tiene una base ortonormal de autovectores $v_1,\dots,v_n$ con autovalores $\lambda_1\ge\dots\ge\lambda_n\ge0$. Para $\lambda_i\gt0$ se define $\sigma_i=\sqrt{\lambda_i}$ y $u_i=\frac{1}{\sigma_i}Av_i$. Estos $u_i$ son ortonormales:
+$$\langle u_i,u_j\rangle=\frac{1}{\sigma_i\sigma_j}\,v_i^{T}A^{T}Av_j=\frac{\lambda_j}{\sigma_i\sigma_j}\,v_i^{T}v_j=\delta_{ij}.$$
+Se completan a una base de $\mathbb{R}^m$ y queda $A=U\Sigma V^{T}$.</p>
+<p><strong>Unicidad.</strong> Los $\sigma_i$ están determinados por $A$ (son las raíces de los autovalores no nulos de $A^{T}A$). Si son distintos, cada par $(u_i,v_i)$ es único salvo un cambio de signo simultáneo $(u_i,v_i)\to(-u_i,-v_i)$.</p>
+</div>
+
+<h3>Relación con $A^{T}A$ y $AA^{T}$</h3>
+<ul>
+<li>$A^{T}A=V(\Sigma^{T}\Sigma)V^{T}$: sus autovalores son $\sigma_i^2$ (y ceros) y sus autovectores, las columnas de $V$.</li>
+<li>$AA^{T}=U(\Sigma\Sigma^{T})U^{T}$: tiene los mismos autovalores no nulos $\sigma_i^2$ y sus autovectores son las columnas de $U$.</li>
+<li>Los pares se conectan así: $Av_i=\sigma_iu_i$ y $A^{T}u_i=\sigma_iv_i$ para $i\le r$; para $i\gt r$, $Av_i=0$ y $A^{T}u_i=0$.</li>
+</ul>
+
+<h3>Interpretación geométrica</h3>
+<p>La transformación $x\mapsto Ax$ se descompone en tres pasos: $V^{T}$ gira el espacio de entrada para alinear los $v_i$ con los ejes; $\Sigma$ estira cada eje por $\sigma_i$ (y agrega o quita dimensiones si $m\ne n$); $U$ gira el resultado en el espacio de llegada. Por eso la SVD manda la esfera unitaria de $\mathbb{R}^n$ a un elipsoide de dimensión $r$ cuyos semiejes miden $\sigma_i$ y apuntan en las direcciones $u_i$.</p>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Transformación geométrica del círculo unitario en 2D</figcaption>
+<div class="fig">@@FIG:svd_circulo@@</div>
+<p class="desc"><strong>Descripción:</strong> Muestra cómo una matriz convierte un círculo en una elipse en tres pasos: gira los ejes ($V^{T}$), estira el círculo ($\Sigma$) y vuelve a girar la elipse resultante ($U$).</p>
+</figure>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Diagrama de dimensiones de matrices por bloques</figcaption>
+<div class="fig">@@FIG:svd_bloques@@</div>
+<p class="desc"><strong>Descripción:</strong> Representa el tamaño de cada matriz en $A=U\Sigma V^{T}$ y señala qué bloques guardan la información útil frente a los ceros que se pueden descartar.</p>
+</figure>
+<p>Como sólo los primeros $r$ valores singulares son distintos de cero, basta guardar $U_r$, $\Sigma_r$ y $V_r$: $A=U_r\Sigma_rV_r^{T}=\sum_{i=1}^{r}\sigma_iu_iv_i^{T}$ (forma <em>reducida</em> o <em>diádica</em>).</p>
+
+<h3>Pseudoinversa y mínimos cuadrados</h3>
+<p>Si $A=U\Sigma V^{T}$, la <strong>pseudoinversa de Moore–Penrose</strong> es
+$$A^{+}=V\Sigma^{+}U^{T},\qquad \Sigma^{+}=\begin{bmatrix}\operatorname{diag}(1/\sigma_1,\dots,1/\sigma_r)&0\\0&0\end{bmatrix}\in\mathbb{R}^{n\times m}.$$
+Es decir: se invierten los $\sigma_i$ que no son cero y se transpone. $A^{+}$ es la única matriz que cumple las cuatro condiciones de Penrose:</p>
+<ol>
+<li>$AA^{+}A=A$</li>
+<li>$A^{+}AA^{+}=A^{+}$</li>
+<li>$(AA^{+})^{T}=AA^{+}$ (proyección ortogonal sobre $C(A)$)</li>
+<li>$(A^{+}A)^{T}=A^{+}A$ (proyección ortogonal sobre $C(A^{T})$)</li>
+</ol>
+<p>Si $Ax=b$ no tiene solución, la mejor aproximación (la de menor error $\|Ax-b\|_2$ y, entre ellas, la de norma mínima) es
+$$\hat x=A^{+}b=\sum_{i=1}^{r}\frac{u_i^{T}b}{\sigma_i}\,v_i.$$</p>
+
+<h3>Aproximación de rango bajo (Eckart–Young–Mirsky)</h3>
+<div class="callout defi"><div class="callout-title">Teorema de Eckart–Young–Mirsky</div>
+<p>Si $A=\sum_{i=1}^{r}\sigma_iu_iv_i^{T}$, la matriz truncada $A_k=\sum_{i=1}^{k}\sigma_iu_iv_i^{T}$ ($k\lt r$) es la <strong>mejor aproximación de rango $k$</strong>:</p>
+<ul>
+<li>Norma espectral: $\min\{\|A-B\|_2:\operatorname{rango}B\le k\}=\|A-A_k\|_2=\sigma_{k+1}$.</li>
+<li>Norma de Frobenius: $\min\{\|A-B\|_F:\operatorname{rango}B\le k\}=\|A-A_k\|_F=\sqrt{\sum_{i=k+1}^{r}\sigma_i^2}$.</li>
+</ul>
+</div>
+<p>Éste es el fundamento de la compresión de datos, el filtrado de ruido y la reducción de dimensión: los $\sigma_i$ pequeños aportan poco y se pueden tirar.</p>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Compresión de imagen por rango-$k$</figcaption>
+<div class="fig"><div class="svd-strip" id="svdStrip" data-ks="5,20,50">
+<div class="svd-cell"><canvas width="128" height="128" data-k="orig"></canvas><span>original (rango 128)</span></div>
+<div class="svd-cell"><canvas width="128" height="128" data-k="5"></canvas><span>k = 5</span></div>
+<div class="svd-cell"><canvas width="128" height="128" data-k="20"></canvas><span>k = 20</span></div>
+<div class="svd-cell"><canvas width="128" height="128" data-k="50"></canvas><span>k = 50</span></div>
+<div class="svd-cell wide"><svg class="svgfig" id="svdScree" viewBox="0 0 320 170"></svg><span>caída de los valores singulares $\sigma_i$</span></div>
+</div><p class="calc-status" id="svdStatus">Calculando la SVD de la imagen…</p></div>
+<p class="desc"><strong>Descripción:</strong> Compara cómo recupera nitidez una imagen al usar los primeros $k=5,20,50$ valores singulares mientras disminuye el peso de $\sigma_i$.</p>
+</figure>
+<p class="small">La imagen de $128\times128$ píxeles se genera con código en tu navegador y su SVD se calcula ahí mismo (método de Jacobi). Guardar $A_k$ cuesta $k(m+n+1)$ números en lugar de $mn$: con $k=20$ es el 31 % de los datos.</p>
+
+@@INTERACTIVO@@
+
+<h3>Ejemplos resueltos de SVD</h3>
+<p>Los cinco ejemplos siguen la receta de arriba. El paso 1 es siempre escribir $A$.</p>
+
+<div class="worked"><div class="worked-title">Ejemplo 1. Matriz diagonal simple <span class="lvl">simple</span></div>
+<p>$A=\begin{bmatrix}3&0\\0&4\end{bmatrix}$</p>
+<p><strong>Paso 2:</strong> $M=A^{T}A=\begin{bmatrix}9&0\\0&16\end{bmatrix}$</p>
+<p><strong>Paso 3:</strong> $p(\lambda)=(\lambda-9)(\lambda-16)=0\Rightarrow\sigma_1=4,\ \sigma_2=3,\ r=2$</p>
+<p><strong>Pasos 4 y 5:</strong> $M-16I=\begin{bmatrix}-7&0\\0&0\end{bmatrix}\Rightarrow v_1=\begin{bmatrix}0\\1\end{bmatrix}$; $M-9I=\begin{bmatrix}0&0\\0&7\end{bmatrix}\Rightarrow v_2=\begin{bmatrix}1\\0\end{bmatrix}$; $V=\begin{bmatrix}0&1\\1&0\end{bmatrix}$</p>
+<p><strong>Paso 6:</strong> $u_1=\begin{bmatrix}0\\1\end{bmatrix}$, $u_2=\begin{bmatrix}1\\0\end{bmatrix}$, $U=\begin{bmatrix}0&1\\1&0\end{bmatrix}$. Verificación de ortonormalidad: $\|u_1\|^2=1$, $u_1\cdot u_2=0$. Comprobación: $U\Sigma V^{T}=A$.</p>
+</div>
+
+<div class="worked"><div class="worked-title">Ejemplo 2. Matriz de rango 1 <span class="lvl">intermedio</span></div>
+<p>$A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$</p>
+<p><strong>Paso 2:</strong> $M=A^{T}A=\begin{bmatrix}5&10\\10&20\end{bmatrix}$</p>
+<p><strong>Paso 3:</strong> $p(\lambda)=\lambda^{2}-25\lambda=0\Rightarrow\sigma_1=5,\ \sigma_2=0,\ r=1$</p>
+<p><strong>Pasos 4 y 5:</strong> $v_1=\frac{1}{\sqrt5}\begin{bmatrix}1\\2\end{bmatrix}$, $v_2=\frac{1}{\sqrt5}\begin{bmatrix}-2\\1\end{bmatrix}$, $V=\frac{1}{\sqrt5}\begin{bmatrix}1&-2\\2&1\end{bmatrix}$</p>
+<p><strong>Paso 6:</strong> $u_1=\frac{1}{\sqrt5}\begin{bmatrix}1\\2\end{bmatrix}$, $u_2=\frac{1}{\sqrt5}\begin{bmatrix}-2\\1\end{bmatrix}$, $U=\frac{1}{\sqrt5}\begin{bmatrix}1&-2\\2&1\end{bmatrix}$. Comprobación: $U\Sigma V^{T}=A$.</p>
+</div>
+
+<div class="worked"><div class="worked-title">Ejemplo 3. Matriz simétrica con valores singulares distintos <span class="lvl">intermedio</span></div>
+<p>$A=\begin{bmatrix}4&0\\0&3\end{bmatrix}$</p>
+<p><strong>Paso 2:</strong> $M=A^{T}A=\begin{bmatrix}16&0\\0&9\end{bmatrix}$</p>
+<p><strong>Paso 3:</strong> $p(\lambda)=(\lambda-16)(\lambda-9)=0\Rightarrow\sigma_1=4,\ \sigma_2=3,\ r=2$</p>
+<p><strong>Pasos 4 y 5:</strong> $V=I$, $v_1=\begin{bmatrix}1\\0\end{bmatrix}$, $v_2=\begin{bmatrix}0\\1\end{bmatrix}$</p>
+<p><strong>Paso 6:</strong> $u_1=\begin{bmatrix}1\\0\end{bmatrix}$, $u_2=\begin{bmatrix}0\\1\end{bmatrix}$, $U=I$. Comprobación: $U\Sigma V^{T}=A$.</p>
+</div>
+
+<div class="worked"><div class="worked-title">Ejemplo 4. Matriz rectangular con coeficientes cruzados <span class="lvl">avanzado</span></div>
+<p>$A=\begin{bmatrix}1&-1\\0&1\\1&0\end{bmatrix}$</p>
+<p><strong>Paso 2:</strong> $M=A^{T}A=\begin{bmatrix}2&-1\\-1&2\end{bmatrix}$</p>
+<p><strong>Paso 3:</strong> $p(\lambda)=(\lambda-3)(\lambda-1)=0\Rightarrow\sigma_1=\sqrt3,\ \sigma_2=1,\ r=2$</p>
+<p><strong>Pasos 4 y 5:</strong> $v_1=\frac{1}{\sqrt2}\begin{bmatrix}-1\\1\end{bmatrix}$, $v_2=\frac{1}{\sqrt2}\begin{bmatrix}1\\1\end{bmatrix}$, $V=\frac{1}{\sqrt2}\begin{bmatrix}-1&1\\1&1\end{bmatrix}$</p>
+<p><strong>Paso 6:</strong> $u_1=\frac{1}{\sqrt6}\begin{bmatrix}-2\\1\\-1\end{bmatrix}$, $u_2=\frac{1}{\sqrt2}\begin{bmatrix}0\\1\\1\end{bmatrix}$, es decir $U=\begin{bmatrix}-2/\sqrt6&0\\1/\sqrt6&1/\sqrt2\\-1/\sqrt6&1/\sqrt2\end{bmatrix}$ (forma reducida). Comprobación: $U\Sigma V^{T}=A$.</p>
+</div>
+
+<div class="worked"><div class="worked-title">Ejemplo 5. Columnas ortogonales, matriz no evidente <span class="lvl">simple</span></div>
+<p>$A=\begin{bmatrix}8&-3\\6&4\end{bmatrix}$</p>
+<p><strong>Paso 2:</strong> $M=A^{T}A=\begin{bmatrix}64+36&-24+24\\-24+24&9+16\end{bmatrix}=\begin{bmatrix}100&0\\0&25\end{bmatrix}$</p>
+<p><strong>Paso 3:</strong> $p(\lambda)=\lambda^{2}-125\lambda+2500=(\lambda-100)(\lambda-25)\Rightarrow\sigma_1=10,\ \sigma_2=5,\ r=2$</p>
+<p><strong>Pasos 4 y 5:</strong> $M-100I=\begin{bmatrix}0&0\\0&-75\end{bmatrix}\Rightarrow v_1=\begin{bmatrix}1\\0\end{bmatrix}$; $M-25I=\begin{bmatrix}75&0\\0&0\end{bmatrix}\Rightarrow v_2=\begin{bmatrix}0\\1\end{bmatrix}$; $V=I$</p>
+<p><strong>Paso 6:</strong> $u_1=\frac{1}{10}\begin{bmatrix}8\\6\end{bmatrix}=\frac15\begin{bmatrix}4\\3\end{bmatrix}$, $u_2=\frac15\begin{bmatrix}-3\\4\end{bmatrix}$, $U=\frac15\begin{bmatrix}4&-3\\3&4\end{bmatrix}$. Verificación de ortonormalidad: $\|u_1\|^2=\frac{16+9}{25}=1$, $u_1\cdot u_2=\frac{-12+12}{25}=0$.</p>
+<p><strong>Comprobación:</strong> $U\Sigma V^{T}=\frac15\begin{bmatrix}4&-3\\3&4\end{bmatrix}\begin{bmatrix}10&0\\0&5\end{bmatrix}=\frac15\begin{bmatrix}40&-15\\30&20\end{bmatrix}=\begin{bmatrix}8&-3\\6&4\end{bmatrix}=A$. Además $\sigma_1\sigma_2=50=|\det A|$ y $\sigma_1^2+\sigma_2^2=125=64+9+36+16$.</p>
+</div>

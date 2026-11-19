@@ -1,0 +1,143 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>En <span class="math inline">\(\mathbb{R}^3\)</span>, lo perpendicular a una recta es un plano (<span class="math inline">\(1+2=3\)</span>) y lo perpendicular a un plano es una recta. Con los códigos pasa igual: el <strong>dual</strong> son las palabras con producto punto 0 con todo el código, y las dimensiones del código y su dual suman <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li><p><span class="math inline">\(G\)</span> y <span class="math inline">\(H\)</span> se intercambian: sus filas son ortogonales (<span class="math inline">\(GH^{T}=0\)</span>) y cada una genera el dual del código de la otra.</p></li>
+<li><p><span class="math inline">\(\#C\cdot\#C^{\perp}=2^n\)</span>.</p></li>
+<li><p>Cuidado: en binario, una palabra de peso par es ortogonal a sí misma, así que <span class="math inline">\(C\)</span> y <span class="math inline">\(C^{\perp}\)</span> pueden compartir palabras (e incluso ser iguales: código <em>autodual</em>).</p></li>
+</ul>
+</div>
+<div class="callout defi"><div class="callout-title">Definición. Código dual</div>
+<p>Si <span class="math inline">\(C\subseteq V_n\)</span> es un código lineal, su dual es <span class="math display">\[C^{\perp}=\{d\in V_n:\ c\cdot d=0 \text{ para toda } c\in C\}.\]</span> Es el núcleo de <span class="math inline">\(d\mapsto Gd^{T}\)</span>, así que también es un código lineal.</p>
+</div>
+<div class="callout defi"><div class="callout-title">Resultados fundamentales</div>
+<p>Sea <span class="math inline">\(C\)</span> un código <span class="math inline">\([n,k]\)</span> con matrices <span class="math inline">\(G\)</span> (<span class="math inline">\(k\times n\)</span>) y <span class="math inline">\(H\)</span> (<span class="math inline">\((n-k)\times n\)</span>).</p>
+<ol>
+<li><p><span class="math inline">\(\dim C+\dim C^{\perp}=n\)</span>: <span class="math inline">\(C^{\perp}\)</span> es un código <span class="math inline">\([n,n-k]\)</span> y <span class="math inline">\(\#C\cdot\#C^{\perp}=2^n\)</span>.</p></li>
+<li><p>Las filas de <span class="math inline">\(H\)</span> generan a <span class="math inline">\(C^{\perp}\)</span>: <span class="math inline">\(C^{\perp}=\{uH:u\in\mathbb{F}_2^{\,n-k}\}\)</span>.</p></li>
+<li><p><span class="math inline">\((C^{\perp})^{\perp}=C\)</span>; <span class="math inline">\(H\)</span> es generadora de <span class="math inline">\(C^{\perp}\)</span> y <span class="math inline">\(G\)</span> es su matriz de control.</p></li>
+<li><p>Basta revisar las bases: <span class="math inline">\(c\cdot d=0\)</span> para todo par <span class="math inline">\(\iff GH^{T}=0\)</span>.</p></li>
+<li><p>Si <span class="math inline">\(G=(I_k\mid A)\)</span>, entonces <span class="math inline">\(H=(A^{T}\mid I_{n-k})\)</span> genera a <span class="math inline">\(C^{\perp}\)</span>.</p></li>
+</ol>
+</div>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;">lo genera</th>
+<th style="text-align: center;">lo controla</th>
+<th style="text-align: center;">dimensión</th>
+<th style="text-align: center;">palabras</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Código <span class="math inline">\(C\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(G\)</span> (<span class="math inline">\(k\times n\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(H\)</span> (<span class="math inline">\((n-k)\times n\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(k\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2^k\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dual <span class="math inline">\(C^{\perp}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(G\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(n-k\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2^{n-k}\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="callout nota">
+<p><strong>Cuidado: sobre <span class="math inline">\(\mathbb{F}_2\)</span>, <span class="math inline">\(C\)</span> y <span class="math inline">\(C^{\perp}\)</span> pueden traslaparse.</strong> Como <span class="math inline">\(x\cdot x=\mathrm{w}(x)\bmod 2\)</span>, toda palabra de peso par es ortogonal a sí misma, y por eso <span class="math inline">\(C\cap C^{\perp}\)</span> puede tener palabras no nulas. Si <span class="math inline">\(C^{\perp}=C\)</span>, el código es <em>autodual</em> (exige <span class="math inline">\(k=n/2\)</span>); si <span class="math inline">\(C\subseteq C^{\perp}\)</span>, es <em>autoortogonal</em>.</p>
+</div>
+<h3>Ejemplos resueltos</h3>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Caso</th>
+<th style="text-align: center;"><span class="math inline">\(G\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(H\)</span> (genera <span class="math inline">\(C^{\perp}\)</span>)</th>
+<th style="text-align: center;"><span class="math inline">\(C^{\perp}\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(C\cap C^{\perp}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(V_3\)</span>, paridad</td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;0\\0&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{000,111\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{000\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(V_3\)</span>, <span class="math inline">\(c_2+c_3=0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;0\\0&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}0&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{000,011\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{000,011\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(V_4\)</span>, paridad</td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;0&amp;1\\0&amp;1&amp;0&amp;1\\0&amp;0&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0000,1111\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0000,1111\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(V_4\)</span>, repetición</td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;1&amp;0\\0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;1&amp;0\\0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0000,0101,1010,1111\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0000,0101,1010,1111\}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(V_4\)</span>, pesos 2 y 3</td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;1&amp;1\\0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;1&amp;0\\1&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0000,0111,1010,1101\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{0000\}\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Cómo leer la tabla: en el primer caso <span class="math inline">\(C\cap C^{\perp}=\{000\}\)</span> (como en <span class="math inline">\(\mathbb{R}^n\)</span>); en el segundo, <span class="math inline">\(C^{\perp}\subset C\)</span>; en el cuarto, <span class="math inline">\(C^{\perp}=C\)</span> y el código es autodual.</p>
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Cómo hallar el dual.</strong> (1) Si el código viene dado por <span class="math inline">\(G\)</span>, obtén <span class="math inline">\(H\)</span> (con <span class="math inline">\(G=(I\mid A)\)</span>, <span class="math inline">\(H=(A^{T}\mid I)\)</span>). (2) Las filas de <span class="math inline">\(H\)</span> generan el dual. (3) Escribe las <span class="math inline">\(2^{n-k}\)</span> combinaciones de esas filas. (4) Comprueba que <span class="math inline">\(GH^{T}=0\)</span>. Para saber si es autodual: todas las filas de <span class="math inline">\(G\)</span> deben ser ortogonales entre sí y consigo mismas (<span class="math inline">\(C\subseteq C^{\perp}\)</span>) y <span class="math inline">\(\dim C=n/2\)</span>.</p>
+</div>
+@@INTERACTIVO@@
+<h3 id="ejercicios">Ejercicios</h3>
+<p class="ejercicio"><span class="ej-tag">2.1</span> Completa: para un código <span class="math inline">\([n,k]\)</span> calcula <span class="math inline">\(\dim C^{\perp}\)</span> y <span class="math inline">\(\#C^{\perp}\)</span> en los casos <span class="math inline">\([7,4]\)</span>, <span class="math inline">\([6,2]\)</span> y <span class="math inline">\([10,3]\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">2.2</span> Calcula el dual de <span class="math inline">\(C=\{000,011,101,110\}\)</span> y comprueba que <span class="math inline">\(GH^{T}=0\)</span> con <span class="math inline">\(G=\left(\begin{smallmatrix}1&amp;0&amp;1\\0&amp;1&amp;1\end{smallmatrix}\right)\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">2.3</span> Demuestra que el código de repetición <span class="math inline">\(C=\{0000,0101,1010,1111\}\)</span> de <span class="math inline">\(V_4\)</span> es autodual.</p>
+<p class="ejercicio"><span class="ej-tag">2.4</span> Para el código <span class="math inline">\([5,2,3]\)</span> con <span class="math inline">\(G=\left(\begin{smallmatrix}1&amp;0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;1&amp;1\end{smallmatrix}\right)\)</span>, calcula <span class="math inline">\(H\)</span>, las palabras de <span class="math inline">\(C^{\perp}\)</span> y su distancia mínima.</p>
+<p class="ejercicio"><span class="ej-tag">2.5</span> Sea <span class="math inline">\(C\)</span> generado por <span class="math inline">\(G=\left(\begin{smallmatrix}1&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;1\end{smallmatrix}\right)\)</span>. Decide si <span class="math inline">\(C\)</span> es autoortogonal y si es autodual.</p>
+<p class="ejercicio"><span class="ej-tag">2.6</span> Para <span class="math inline">\(G=(I_3\mid A)\)</span> con <span class="math inline">\(A=\left(\begin{smallmatrix}0&amp;1&amp;1\\1&amp;0&amp;1\\1&amp;1&amp;0\end{smallmatrix}\right)\)</span>, ¿es <span class="math inline">\(C\)</span> autodual? (Pista: <span class="math inline">\(GG^{T}=I+AA^{T}\)</span>.)</p>
+<p class="ejercicio"><span class="ej-tag">2.7</span> Calcula el dual del código de Hamming <span class="math inline">\([7,4,3]\)</span> (con <span class="math inline">\(G=(I_4\mid A)\)</span>, <span class="math inline">\(A\)</span> de filas <span class="math inline">\(110\)</span>, <span class="math inline">\(101\)</span>, <span class="math inline">\(011\)</span>, <span class="math inline">\(111\)</span>): sus palabras y su distribución de pesos.</p>
+<p class="ejercicio"><span class="ej-tag">2.8</span> Sea <span class="math inline">\(C=\{000,011\}\subseteq V_3\)</span>. Halla <span class="math inline">\(C^{\perp}\)</span> y <span class="math inline">\(C\cap C^{\perp}\)</span>. ¿Es <span class="math inline">\(C\oplus C^{\perp}=V_3\)</span>?</p>
+<p class="ejercicio"><span class="ej-tag">2.9</span> Verifica que <span class="math inline">\((C^{\perp})^{\perp}=C\)</span> para <span class="math inline">\(C=\{00000,10110,01011,11101\}\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">2.10</span> Sea <span class="math inline">\(C\)</span> el código con matriz de control <span class="math inline">\(H=\left(\begin{smallmatrix}1&amp;1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span>. Halla una matriz generadora de <span class="math inline">\(C^{\perp}\)</span> y las matrices <span class="math inline">\(G\)</span> y <span class="math inline">\(H\)</span> del dual; compara <span class="math inline">\(d(C)\)</span> y <span class="math inline">\(d(C^{\perp})\)</span>.</p>
+<h3 id="soluciones">Soluciones</h3>
+<details class="sol"><summary>Solución 2.1</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Las dimensiones del código y su dual suman <span class="math inline">\(n\)</span> (como una recta y su plano perpendicular en <span class="math inline">\(\mathbb{R}^3\)</span>).</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(\dim C^{\perp}=n-k\)</span> y <span class="math inline">\(\#C^{\perp}=2^{n-k}\)</span>: <span class="math inline">\([7,4]\to[7,3]\)</span> con 8 palabras; <span class="math inline">\([6,2]\to[6,4]\)</span> con 16; <span class="math inline">\([10,3]\to[10,7]\)</span> con 128.</p>
+</div></details><details class="sol"><summary>Solución 2.2</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> El dual son las palabras con producto punto 0 con todas las del código; basta que lo sean con las filas de <span class="math inline">\(G\)</span>.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(H=(1\ 1\ 1)\)</span> y <span class="math inline">\(C^{\perp}=\{000,111\}\)</span>. Se comprueba <span class="math inline">\(101\cdot111=1+1=0\)</span> y <span class="math inline">\(011\cdot111=1+1=0\)</span>, es decir, <span class="math inline">\(GH^{T}=\left(\begin{smallmatrix}0\\0\end{smallmatrix}\right)\)</span>. Aquí <span class="math inline">\(C\cap C^{\perp}=\{000\}\)</span> (porque <span class="math inline">\(111\)</span> tiene peso impar).</p>
+</div></details><details class="sol"><summary>Solución 2.3</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Autodual significa <span class="math inline">\(C^{\perp}=C\)</span>. Primero demuestra <span class="math inline">\(C\subseteq C^{\perp}\)</span> (todo es ortogonal) y luego compara dimensiones.</p>
+<p><strong>Paso a paso.</strong> Con <span class="math inline">\(G=(I_2\mid I_2)\)</span> se tiene <span class="math inline">\(H=(I_2\mid I_2)=G\)</span>, así que <span class="math inline">\(C^{\perp}\)</span> está generado por las mismas filas: <span class="math inline">\(C^{\perp}=C\)</span>. Directamente: <span class="math inline">\(1010\cdot1010=1+1=0\)</span>, <span class="math inline">\(1010\cdot0101=0\)</span>, <span class="math inline">\(0101\cdot0101=0\)</span>, luego <span class="math inline">\(C\subseteq C^{\perp}\)</span>, y como <span class="math inline">\(\dim C=\dim C^{\perp}=2\)</span>, son iguales.</p>
+</div></details><details class="sol"><summary>Solución 2.4</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Con <span class="math inline">\(G=(I\mid A)\)</span>, las filas de <span class="math inline">\(H\)</span> generan el dual. Haz las 8 combinaciones y busca el menor peso.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(H=(A^{T}\mid I_3)=\left(\begin{smallmatrix}1&amp;0&amp;1&amp;0&amp;0\\1&amp;1&amp;0&amp;1&amp;0\\0&amp;1&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span>. El dual es <span class="math inline">\([5,3]\)</span> con 8 palabras: <span class="math inline">\(\{00000,00111,01001,01110,10011,10100,11010,11101\}\)</span>. Pesos: <span class="math inline">\(3,2,3,3,2,3,4\)</span>, así que <span class="math inline">\(d(C^{\perp})=2\)</span> (el dual no hereda la distancia de <span class="math inline">\(C\)</span>).</p>
+</div></details><details class="sol"><summary>Solución 2.5</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Si <span class="math inline">\(GG^{T}=0\)</span> todas las filas son ortogonales entre sí y consigo mismas: el código está dentro de su dual.</p>
+<p><strong>Paso a paso.</strong> Las filas cumplen <span class="math inline">\(1100\cdot1100=0\)</span>, <span class="math inline">\(0011\cdot0011=0\)</span> y <span class="math inline">\(1100\cdot0011=0\)</span>, así que <span class="math inline">\(GG^{T}=0\)</span> y <span class="math inline">\(C\subseteq C^{\perp}\)</span>. Como <span class="math inline">\(\dim C=2=4-2=\dim C^{\perp}\)</span>, <span class="math inline">\(C^{\perp}=C\)</span>: es autodual.</p>
+</div></details><details class="sol"><summary>Solución 2.6</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Con <span class="math inline">\(G=(I\mid A)\)</span>, <span class="math inline">\(GG^{T}=I+AA^{T}\)</span>. El código es autodual sólo si <span class="math inline">\(AA^{T}=I\)</span>; calcula ese producto.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(AA^{T}=\left(\begin{smallmatrix}0&amp;1&amp;1\\1&amp;0&amp;1\\1&amp;1&amp;0\end{smallmatrix}\right)\neq I_3\)</span>, luego <span class="math inline">\(GG^{T}=I_3+AA^{T}=\left(\begin{smallmatrix}1&amp;1&amp;1\\1&amp;1&amp;1\\1&amp;1&amp;1\end{smallmatrix}\right)\neq0\)</span>: <span class="math inline">\(C\not\subseteq C^{\perp}\)</span>. (Un código <span class="math inline">\((I\mid A)\)</span> es autodual si y sólo si <span class="math inline">\(AA^{T}=I\)</span>.)</p>
+</div></details><details class="sol"><summary>Solución 2.7</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> El dual de Hamming se genera con las filas de <span class="math inline">\(H\)</span>. Haz las combinaciones y cuenta pesos.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(H=\left(\begin{smallmatrix}1&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0\\1&amp;0&amp;1&amp;1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;1&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span> genera <span class="math inline">\(C^{\perp}\)</span>, un código <span class="math inline">\([7,3]\)</span> con 8 palabras: <span class="math inline">\(\{0000000,0001111,0110110,0111001,1010101,1011010,1100011,1101100\}\)</span>. Distribución de pesos: <span class="math inline">\(w=0\)</span>: 1, <span class="math inline">\(w=4\)</span>: 7. Todas las palabras no nulas tienen peso 4, así que es un <span class="math inline">\([7,3,4]\)</span> (el código símplex).</p>
+</div></details><details class="sol"><summary>Solución 2.8</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Resuelve primero la ecuación de ortogonalidad para obtener <span class="math inline">\(C^{\perp}\)</span> y luego busca qué palabras están en los dos conjuntos.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(C^{\perp}=\{d:d_2+d_3=0\}=\{000,011,100,111\}\)</span>. <span class="math inline">\(C\cap C^{\perp}=\{000,011\}=C\)</span>, porque <span class="math inline">\(011\cdot011=1+1=0\)</span>. Por tanto <span class="math inline">\(C+C^{\perp}=C^{\perp}\neq V_3\)</span>: las dimensiones suman <span class="math inline">\(1+2=3\)</span>, pero los subespacios no son complementarios.</p>
+</div></details><details class="sol"><summary>Solución 2.9</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Hacer el dual dos veces regresa al original. Comprueba que <span class="math inline">\(C\)</span> está dentro de <span class="math inline">\((C^{\perp})^{\perp}\)</span> y que las dimensiones coinciden.</p>
+<p><strong>Paso a paso.</strong> Por el ejercicio 2.4, <span class="math inline">\(C^{\perp}=\ker G\)</span> tiene 8 palabras y su dual tiene <span class="math inline">\(2^{5-3}=4\)</span>. Toda <span class="math inline">\(c\in C\)</span> es ortogonal a <span class="math inline">\(C^{\perp}\)</span>, así que <span class="math inline">\(C\subseteq(C^{\perp})^{\perp}\)</span>, y como ambos tienen dimensión 2, son iguales. Calculando directamente <span class="math inline">\((C^{\perp})^{\perp}=\{00000,01011,10110,11101\}=C\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 2.10</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Las filas de <span class="math inline">\(H\)</span> generan el dual; después calcula el menor peso de cada uno y compáralos.</p>
+<p><strong>Paso a paso.</strong> Las filas de <span class="math inline">\(H\)</span> generan <span class="math inline">\(C^{\perp}\)</span>: <span class="math inline">\(C^{\perp}=\{00000,01101,10111,11010\}\)</span> es un <span class="math inline">\([5,2]\)</span> con <span class="math inline">\(d(C^{\perp})=3\)</span>. El código <span class="math inline">\(C=\ker H\)</span> es un <span class="math inline">\([5,3]\)</span> con <span class="math inline">\(d(C)=2\)</span>. En el dual los papeles se intercambian: <span class="math inline">\(G_{C^{\perp}}=H\)</span> y <span class="math inline">\(H_{C^{\perp}}=G\)</span>.</p>
+</div></details>

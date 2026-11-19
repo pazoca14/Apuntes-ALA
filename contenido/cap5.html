@@ -1,0 +1,331 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p><span class="math inline">\(V_7\)</span> tiene 128 palabras y en él vive el <strong>código de Hamming <span class="math inline">\([7,4,3]\)</span></strong>: corrige cualquier error de un bit con tasa <span class="math inline">\(4/7\)</span> y es <em>perfecto</em> (las 16 burbujas de 8 palabras llenan exactamente las 128 palabras). Su dual es el <strong>símplex <span class="math inline">\([7,3,4]\)</span></strong>, en el que todas las palabras no nulas pesan lo mismo. Y la repetición <span class="math inline">\([7,1,7]\)</span> corrige 3 errores.</p>
+</div>
+<div class="callout defi"><div class="callout-title">Cota de esferas para <span class="math inline">\(n=7\)</span></div>
+<p>Con <span class="math inline">\(t=1\)</span>: <span class="math inline">\(2^k\cdot8\le128\)</span>, es decir <span class="math inline">\(k\le4\)</span>, y con <span class="math inline">\(k=4\)</span> hay igualdad: <span class="math inline">\(16\cdot8=128=2^7\)</span>. Por eso Hamming es perfecto. Con <span class="math inline">\(r=3\)</span> hay <span class="math inline">\(2^3-1=7\)</span> síndromes no nulos, uno para cada posición.</p>
+</div>
+<div class="callout nota">
+<p><strong>Dualidad.</strong> El símplex <span class="math inline">\([7,3,4]\)</span> es el dual del Hamming <span class="math inline">\([7,4,3]\)</span>: la matriz de control de uno es la generadora del otro. La repetición <span class="math inline">\([7,1,7]\)</span> es el dual de la paridad <span class="math inline">\([7,6,2]\)</span>.</p>
+</div>
+<h3>Los siete casos</h3>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">#</th>
+<th style="text-align: left;">Nombre</th>
+<th style="text-align: center;"><span class="math inline">\(H\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\#C\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d\)</span></th>
+<th style="text-align: center;">tasa</th>
+<th style="text-align: left;">Capacidad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Paridad <span class="math inline">\([7,6,2]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1&amp;1&amp;1&amp;1&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(6/7\)</span></td>
+<td style="text-align: left;">detecta 1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Detector <span class="math inline">\([7,5,2]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1&amp;0&amp;0&amp;1&amp;0\\0&amp;0&amp;1&amp;1&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(5/7\)</span></td>
+<td style="text-align: left;">detecta 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Hamming <span class="math inline">\([7,4,3]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\(4/7\)</span></td>
+<td style="text-align: left;">corrige 1 o detecta 2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Columnas repetidas <span class="math inline">\([7,4,2]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}0&amp;1&amp;1&amp;0&amp;1&amp;0&amp;0\\1&amp;0&amp;1&amp;1&amp;0&amp;1&amp;0\\1&amp;1&amp;0&amp;1&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(4/7\)</span></td>
+<td style="text-align: left;">detecta 1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Símplex <span class="math inline">\([7,3,4]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1&amp;0&amp;0&amp;0&amp;0\\1&amp;0&amp;0&amp;1&amp;1&amp;0&amp;0\\0&amp;1&amp;0&amp;1&amp;0&amp;1&amp;0\\1&amp;1&amp;0&amp;1&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><span class="math inline">\(3/7\)</span></td>
+<td style="text-align: left;">corrige 1 o detecta 3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">Bloques <span class="math inline">\([7,2,4]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;0&amp;0&amp;0&amp;0&amp;0\\0&amp;1&amp;1&amp;0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0\\0&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;0&amp;1&amp;1&amp;0&amp;0\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><span class="math inline">\(2/7\)</span></td>
+<td style="text-align: left;">corrige 1 o detecta 3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">Repetición <span class="math inline">\([7,1,7]\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;0&amp;0&amp;0&amp;0&amp;0\\1&amp;0&amp;1&amp;0&amp;0&amp;0&amp;0\\1&amp;0&amp;0&amp;1&amp;0&amp;0&amp;0\\1&amp;0&amp;0&amp;0&amp;1&amp;0&amp;0\\1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;0\\1&amp;0&amp;0&amp;0&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"><span class="math inline">\(1/7\)</span></td>
+<td style="text-align: left;">corrige 3 o detecta 6</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tabular">
+<p><span>cllL<span>5.9cm</span></span> # &amp; Nombre &amp; <span class="math inline">\(G\)</span> &amp; Palabras o pesos<br />
+&amp; Paridad &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;0&amp;0&amp;0&amp;0&amp;1\\0&amp;1&amp;0&amp;0&amp;0&amp;0&amp;1\\0&amp;0&amp;1&amp;0&amp;0&amp;0&amp;1\\0&amp;0&amp;0&amp;1&amp;0&amp;0&amp;1\\0&amp;0&amp;0&amp;0&amp;1&amp;0&amp;1\\0&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\#C=64\)</span>; pesos: 0:1, 2:21, 4:35, 6:7<br />
+2 &amp; Detector &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;0\\0&amp;1&amp;0&amp;0&amp;0&amp;1&amp;0\\0&amp;0&amp;1&amp;0&amp;0&amp;1&amp;1\\0&amp;0&amp;0&amp;1&amp;0&amp;0&amp;1\\0&amp;0&amp;0&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\#C=32\)</span>; pesos: 0:1, 2:6, 3:9, 4:9, 5:6, 7:1<br />
+3 &amp; Hamming &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1\\0&amp;0&amp;1&amp;0&amp;1&amp;1&amp;0\\0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\#C=16\)</span>; pesos: 0:1, 3:7, 4:7, 7:1<br />
+4 &amp; Columnas repetidas &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1\\0&amp;0&amp;1&amp;0&amp;1&amp;1&amp;0\\0&amp;0&amp;0&amp;1&amp;0&amp;1&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\#C=16\)</span>; pesos: 0:1, 2:1, 3:6, 4:5, 5:2, 6:1<br />
+5 &amp; Símplex (no estándar) &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\{0000000,0001111,0110011,0111100,\)</span> <span class="math inline">\(1010101,1011010,1100110,1101001\}\)</span><br />
+6 &amp; Bloques (no estándar) &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1&amp;0&amp;1&amp;1&amp;1\\0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\{0000000,0001111,1110111,1111000\}\)</span><br />
+7 &amp; Repetición &amp; <span class="math inline">\(\left(\begin{smallmatrix}1&amp;1&amp;1&amp;1&amp;1&amp;1&amp;1\end{smallmatrix}\right)\)</span> &amp; <span class="math inline">\(\{0000000,1111111\}\)</span><br />
+</p>
+</div>
+</div>
+<h3>Hamming en <span class="math inline">\(V_7\)</span>: el síndrome dice la posición del error</h3>
+<p>Con <span class="math inline">\(H=\left(\begin{smallmatrix}0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span>, la columna <span class="math inline">\(j\)</span> es el número <span class="math inline">\(j\)</span> escrito en binario. Si el síndrome del vector recibido es <span class="math inline">\(s\neq0\)</span>, el error está en la posición cuyo número binario es <span class="math inline">\(s\)</span> (el bit más significativo es el de la primera fila). Distribución de pesos: <span class="math inline">\(w=0\)</span>: 1, <span class="math inline">\(w=3\)</span>: 7, <span class="math inline">\(w=4\)</span>: 7, <span class="math inline">\(w=7\)</span>: 1.</p>
+<h3>Panorama de todos los códigos de <span class="math inline">\(V_7\)</span></h3>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(k\)</span></th>
+<th style="text-align: center;">códigos</th>
+<th style="text-align: center;"><span class="math inline">\(d=1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=2\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=3\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=4\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=5\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=6\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=7\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">127</td>
+<td style="text-align: center;">126</td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">2667</td>
+<td style="text-align: center;">2303</td>
+<td style="text-align: center;"><strong>364</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">11811</td>
+<td style="text-align: center;">7000</td>
+<td style="text-align: center;">4781</td>
+<td style="text-align: center;"><strong>30</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">11811</td>
+<td style="text-align: center;">3941</td>
+<td style="text-align: center;">6265</td>
+<td style="text-align: center;">1575</td>
+<td style="text-align: center;"><strong>30</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2667</td>
+<td style="text-align: center;">420</td>
+<td style="text-align: center;">1022</td>
+<td style="text-align: center;">945</td>
+<td style="text-align: center;"><strong>280</strong></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">127</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">35</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Con <span class="math inline">\(k=4\)</span> la cota de esferas se cumple con igualdad: los 30 códigos <span class="math inline">\([7,4,3]\)</span> son equivalentes al de Hamming y todos son perfectos; sus duales son los 30 símplex <span class="math inline">\([7,3,4]\)</span>.</p>
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>Receta para <span class="math inline">\(V_7\)</span>.</strong> Cota de esferas para saber qué cabe en <span class="math inline">\(V_7\)</span>; columnas de <span class="math inline">\(H\)</span> para hallar <span class="math inline">\(d\)</span>; síndrome para decodificar. En el Hamming con columnas <span class="math inline">\(=\)</span> números binarios, el síndrome es directamente la posición del error.</p>
+</div>
+<h3>Figuras: mapas de distancias y distribuciones de pesos</h3>
+<p>Como en el capítulo anterior, cada figura tiene dos partes. A la izquierda, el <strong>mapa de las 128 palabras</strong> de <span class="math inline">\(V_7\)</span>: la fila indica los bits <span class="math inline">\(c_1c_2c_3\)</span>, la columna los bits <span class="math inline">\(c_4c_5c_6c_7\)</span>, y cada celda muestra la distancia de esa palabra a la palabra del código más cercana. A la derecha, la <strong>distribución de pesos</strong> del código; la barra naranja marca la distancia mínima <span class="math inline">\(d\)</span>.</p>
+@@RAW:leyenda_mapa@@
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 1 — Paridad <span class="math inline">\([7,6,2]\)</span> (tasa <span class="math inline">\(6/7\)</span>, <span class="math inline">\(\#C=64\)</span>, detecta 1 error)</figcaption>
+<div class="fig">@@FIG:v7_1@@</div>
+<p><strong>Visual:</strong> mapa de las 128 palabras con 64 en el código y 64 a distancia 1; la distribución de pesos está concentrada en los pesos pares (2, 4 y 6).</p>
+<p><strong>Explica:</strong> un bit de paridad sobre 6 bits detecta cualquier error simple, pero todas las palabras quedan a lo sumo a distancia 1 del código y no se puede corregir ninguno.</p>
+</figure>
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 2 — Detector <span class="math inline">\([7,5,2]\)</span> (tasa <span class="math inline">\(5/7\)</span>, <span class="math inline">\(\#C=32\)</span>, detecta 1 error)</figcaption>
+<div class="fig">@@FIG:v7_2@@</div>
+<p><strong>Visual:</strong> cuadrícula de 128 palabras (32 en el código y 96 a distancia 1) y distribución de pesos con <span class="math inline">\(d=2\)</span> y palabras no nulas de pesos 2, 3, 4, 5 y 7.</p>
+<p><strong>Explica:</strong> con 2 ecuaciones de paridad sólo hay 3 síndromes no nulos para 7 posiciones; detecta los errores de 1 bit, pero no puede corregirlos todos (la cota de esferas impide <span class="math inline">\(d=3\)</span>).</p>
+</figure>
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 3 — Hamming <span class="math inline">\([7,4,3]\)</span> (tasa <span class="math inline">\(4/7\)</span>, <span class="math inline">\(\#C=16\)</span>, corrige 1 error)</figcaption>
+<div class="fig">@@FIG:v7_3@@</div>
+<p><strong>Visual:</strong> mapa de 128 palabras (16 en el código y 112 a distancia 1, ninguna más lejos) y perfil de pesos cuya primera entrada no nula está en el peso 3 (<span class="math inline">\(d=3\)</span>).</p>
+<p><strong>Explica:</strong> es perfecto (<span class="math inline">\(16\times8=128\)</span>): sus 3 bits de redundancia generan 7 síndromes no nulos distintos que apuntan exactamente a cada posición de un error de 1 bit.</p>
+</figure>
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 4 — Columnas repetidas <span class="math inline">\([7,4,2]\)</span> (tasa <span class="math inline">\(4/7\)</span>, <span class="math inline">\(\#C=16\)</span>, detecta 1 error)</figcaption>
+<div class="fig">@@FIG:v7_4@@</div>
+<p><strong>Visual:</strong> cuadrícula de 128 palabras (16 en el código, 96 a distancia 1 y 16 a distancia 2) y diagrama de pesos con mínimo en el peso 2 (<span class="math inline">\(d=2\)</span>).</p>
+<p><strong>Explica:</strong> tiene la misma tasa que Hamming, pero con columnas repetidas en <span class="math inline">\(H\)</span> (los bits 1 y 4 comparten síndrome). Eso baja <span class="math inline">\(d\)</span> a 2 e impide garantizar la corrección de errores simples.</p>
+</figure>
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 5 — Símplex <span class="math inline">\([7,3,4]\)</span> (tasa <span class="math inline">\(3/7\)</span>, <span class="math inline">\(\#C=8\)</span>, corrige 1 y detecta 2 a la vez, o detecta 3)</figcaption>
+<div class="fig">@@FIG:v7_5@@</div>
+<p><strong>Visual:</strong> mapa de 128 palabras (8 en el código, 56 a distancia 1, 56 a distancia 2 y 8 a distancia 3) y gráfica de pesos con todas las palabras no nulas de peso 4 (<span class="math inline">\(d=4\)</span>).</p>
+<p><strong>Explica:</strong> es el dual del código de Hamming y es equidistante (cualquier par de palabras distintas está a distancia 4), lo que da una detección alta (<span class="math inline">\(d-1=3\)</span>) con tasa <span class="math inline">\(3/7\)</span>.</p>
+</figure>
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 6 — Bloques <span class="math inline">\([7,2,4]\)</span> (tasa <span class="math inline">\(2/7\)</span>, <span class="math inline">\(\#C=4\)</span>, corrige 1 y detecta 2 a la vez, o detecta 3)</figcaption>
+<div class="fig">@@FIG:v7_6@@</div>
+<p><strong>Visual:</strong> cuadrícula de 128 palabras (4 en el código, 28 a distancia 1, 60 a distancia 2 y 36 a distancia 3) y distribución de pesos con valores en 4 y 6 (<span class="math inline">\(d=4\)</span>).</p>
+<p><strong>Explica:</strong> se construye con dos bloques de 4 bits que se traslapan en el bit 4 (<span class="math inline">\(1111000\)</span> y <span class="math inline">\(0001111\)</span>) y cuya suma pesa 6. Alcanza <span class="math inline">\(d=4\)</span>, la misma distancia que el símplex, que lleva un bit de mensaje más: añadir redundancia no siempre aumenta la distancia mínima.</p>
+</figure>
+<figure class="figcaso"><figcaption class="figcaso-title">Caso 7 — Repetición <span class="math inline">\([7,1,7]\)</span> (tasa <span class="math inline">\(1/7\)</span>, <span class="math inline">\(\#C=2\)</span>, corrige 3 errores)</figcaption>
+<div class="fig">@@FIG:v7_7@@</div>
+<p><strong>Visual:</strong> mapa de 128 palabras centrado en <span class="math inline">\(0000000\)</span> y <span class="math inline">\(1111111\)</span> (2 en el código, 14 a distancia 1, 42 a distancia 2 y 70 a distancia 3) y gráfica de pesos con pico en 7 (<span class="math inline">\(d=7\)</span>).</p>
+<p><strong>Explica:</strong> repite 1 bit 7 veces y decide por mayoría; también es perfecto (<span class="math inline">\(2\times64=128\)</span>) y corrige hasta 3 errores, pero con la tasa más baja (<span class="math inline">\(1/7\)</span>).</p>
+</figure>
+@@INTERACTIVO@@
+<h3 id="ejercicios">Ejercicios</h3>
+<p class="ejercicio"><span class="ej-tag">5.1</span> Usa la cota de esferas para <span class="math inline">\(n=7\)</span>, <span class="math inline">\(t=1\)</span> y comprueba la igualdad. ¿Cuántas palabras tiene la bola de radio 1?</p>
+<p class="ejercicio"><span class="ej-tag">5.2</span> Con <span class="math inline">\(H=\left(\begin{smallmatrix}0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span>, decodifica <span class="math inline">\(1011101\)</span>, <span class="math inline">\(0110011\)</span> y <span class="math inline">\(1110110\)</span>. Indica la posición del error.</p>
+<p class="ejercicio"><span class="ej-tag">5.3</span> Escribe las palabras de peso 3 del Hamming de este capítulo y la distribución completa de pesos. Deduce <span class="math inline">\(d\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">5.4</span> Con <span class="math inline">\(H=\left(\begin{smallmatrix}0&amp;1&amp;1&amp;0&amp;1&amp;0&amp;0\\1&amp;0&amp;1&amp;1&amp;0&amp;1&amp;0\\1&amp;1&amp;0&amp;1&amp;0&amp;0&amp;1\end{smallmatrix}\right)\)</span> (columnas repetidas) demuestra que <span class="math inline">\(d=2\)</span> y encuentra una palabra de peso 2.</p>
+<p class="ejercicio"><span class="ej-tag">5.5</span> Calcula el código símplex como dual del Hamming (filas de <span class="math inline">\(H\)</span> como <span class="math inline">\(G\)</span>): palabras y pesos.</p>
+<p class="ejercicio"><span class="ej-tag">5.6</span> Para el código bloques <span class="math inline">\([7,2,4]\)</span> con <span class="math inline">\(H=\left(\begin{smallmatrix}1&amp;1&amp;0&amp;0&amp;0&amp;0&amp;0\\0&amp;1&amp;1&amp;0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0\\0&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;0&amp;1&amp;1&amp;0&amp;0\end{smallmatrix}\right)\)</span>, halla las palabras, <span class="math inline">\(d\)</span> y lo que corrige y detecta.</p>
+<p class="ejercicio"><span class="ej-tag">5.7</span> La repetición <span class="math inline">\([7,1,7]\)</span>: ¿cuántos errores corrige y detecta? Comprueba que es perfecta y decodifica <span class="math inline">\(1101100\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">5.8</span> Para cada uno de los siete códigos de <span class="math inline">\(V_7\)</span> calcula <span class="math inline">\(t=\lfloor(d-1)/2\rfloor\)</span> y comprueba si es perfecto.</p>
+<p class="ejercicio"><span class="ej-tag">5.9</span> Calcula cuántos subespacios de dimensión 4 hay en <span class="math inline">\(V_7\)</span> y compáralo con el panorama.</p>
+<p class="ejercicio"><span class="ej-tag">5.10</span> Calcula el dual de la paridad <span class="math inline">\([7,6,2]\)</span>, del Hamming <span class="math inline">\([7,4,3]\)</span> y del código bloques <span class="math inline">\([7,2,4]\)</span>: parámetros y <span class="math inline">\(d\)</span> del dual.</p>
+<h3 id="soluciones">Soluciones</h3>
+<details class="sol"><summary>Solución 5.1</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Una burbuja de radio 1 en <span class="math inline">\(V_7\)</span> tiene <span class="math inline">\(1+7=8\)</span> palabras. Si 16 burbujas llenan justo 128, el código es perfecto.</p>
+<p><strong>Paso a paso.</strong> Una bola de radio 1 tiene <span class="math inline">\(1+7=8\)</span> palabras. <span class="math inline">\(2^k\cdot8\le2^7\)</span> da <span class="math inline">\(k\le4\)</span> y con <span class="math inline">\(k=4\)</span>: <span class="math inline">\(16\cdot8=128=2^7\)</span>. Las 16 bolas disjuntas cubren todo <span class="math inline">\(V_7\)</span>: el código es perfecto.</p>
+</div></details><details class="sol"><summary>Solución 5.2</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Calcula <span class="math inline">\(Hy^{T}\)</span>. Como las columnas son los números 1 a 7 en binario, el síndrome leído en binario es la posición del error.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(y=1011101\)</span>: <span class="math inline">\(s=100=4\)</span> en binario, error en el bit 4, <span class="math inline">\(\hat c=1010101\in C\)</span>. <span class="math inline">\(y=0110011\)</span>: <span class="math inline">\(s=000\)</span>, es palabra del código, sin error. <span class="math inline">\(y=1110110\)</span>: <span class="math inline">\(s=011=3\)</span> en binario, error en el bit 3, <span class="math inline">\(\hat c=1100110\in C\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 5.3</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Busca las palabras con tres unos que cumplan las ecuaciones y cuenta cuántas palabras hay de cada peso.</p>
+<p><strong>Paso a paso.</strong> Las 7 palabras de peso 3 son <span class="math inline">\(\{0010110,0011001,0100101,0101010,1000011,1001100,1110000\}\)</span>. Distribución: <span class="math inline">\(w=0\)</span>: 1, <span class="math inline">\(w=3\)</span>: 7, <span class="math inline">\(w=4\)</span>: 7, <span class="math inline">\(w=7\)</span>: 1. El peso mínimo no nulo es 3: <span class="math inline">\(d=3\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 5.4</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Si dos columnas de <span class="math inline">\(H\)</span> son iguales, su suma es cero y eso da una palabra de peso 2 en el código.</p>
+<p><strong>Paso a paso.</strong> Las columnas 1 y 4 son iguales (<span class="math inline">\(011\)</span>): <span class="math inline">\(h_1+h_4=0\)</span>, es decir <span class="math inline">\(1001000\in C\)</span>. Ninguna columna es cero, luego <span class="math inline">\(d\ge2\)</span>; así <span class="math inline">\(d=2\)</span>. Palabras de peso 2: <span class="math inline">\(\{1001000\}\)</span>. Detecta 1 error, no corrige (dos errores distintos pueden dar el mismo síndrome).</p>
+</div></details><details class="sol"><summary>Solución 5.5</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> El símplex es el dual de Hamming: usa las filas de <span class="math inline">\(H\)</span> como <span class="math inline">\(G\)</span> y calcula sus combinaciones.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(G=H=\left(\begin{smallmatrix}0&amp;0&amp;0&amp;1&amp;1&amp;1&amp;1\\0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;1\\1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;1\end{smallmatrix}\right)\)</span> genera un <span class="math inline">\([7,3]\)</span>: <span class="math inline">\(\{0000000,0001111,0110011,0111100,1010101,1011010,1100110,1101001\}\)</span>. Todas las palabras no nulas tienen peso 4: <span class="math inline">\(d=4\)</span>; el símplex es de peso constante.</p>
+</div></details><details class="sol"><summary>Solución 5.6</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Resuelve las ecuaciones: tres bits quedan iguales entre sí en cada bloque. Lista las cuatro palabras.</p>
+<p><strong>Paso a paso.</strong> Las ecuaciones dan <span class="math inline">\(c_1=c_2=c_3\)</span>, <span class="math inline">\(c_5=c_6=c_7\)</span> y <span class="math inline">\(c_4=c_1+c_5\)</span>. Palabras: <span class="math inline">\(\{0000000,0001111,1110111,1111000\}\)</span>, con pesos <span class="math inline">\(4,4,6\)</span>. <span class="math inline">\(d=4\)</span>: corrige 1 ó detecta 3; simultáneamente corrige 1 y detecta 2. Tasa <span class="math inline">\(2/7\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 5.7</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> La repetición manda el mismo bit 7 veces; por mayoría se corrigen hasta 3 errores.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(d=7\)</span>: detecta 6 y corrige <span class="math inline">\(t=3\)</span>. Bola de radio 3: <span class="math inline">\(1+7+21+35=64\)</span>; <span class="math inline">\(2\cdot64=128=2^7\)</span>: perfecta. <span class="math inline">\(1101100\)</span> tiene 4 unos: por mayoría se decodifica como <span class="math inline">\(1111111\)</span> (3 errores corregidos).</p>
+</div></details><details class="sol"><summary>Solución 5.8</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Para cada código calcula <span class="math inline">\(t\)</span> y comprueba si <span class="math inline">\(\#C\cdot(\text{tamaño de la burbuja})=128\)</span>.</p>
+<p><strong>Paso a paso.</strong> </p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">#</th>
+<th style="text-align: center;">código</th>
+<th style="text-align: center;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\#C\cdot\sum_{j\le t}\binom7j\)</span></th>
+<th style="text-align: center;">¿perfecto?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\([7,6,2]\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: right;"><span class="math inline">\(64\cdot1=64\)</span></td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\([7,5,2]\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: right;"><span class="math inline">\(32\cdot1=32\)</span></td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\([7,4,3]\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;"><span class="math inline">\(16\cdot8=128\)</span></td>
+<td style="text-align: center;">sí</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><span class="math inline">\([7,4,2]\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: right;"><span class="math inline">\(16\cdot1=16\)</span></td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><span class="math inline">\([7,3,4]\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;"><span class="math inline">\(8\cdot8=64\)</span></td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"><span class="math inline">\([7,2,4]\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;"><span class="math inline">\(4\cdot8=32\)</span></td>
+<td style="text-align: center;">no</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"><span class="math inline">\([7,1,7]\)</span></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;"><span class="math inline">\(2\cdot64=128\)</span></td>
+<td style="text-align: center;">sí</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Sólo son perfectos el Hamming <span class="math inline">\([7,4,3]\)</span> y la repetición <span class="math inline">\([7,1,7]\)</span> (el producto vale <span class="math inline">\(128=2^7\)</span>).</p>
+</div></details><details class="sol"><summary>Solución 5.9</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> Se usa la fórmula de subespacios con <span class="math inline">\(n=7\)</span>, <span class="math inline">\(k=4\)</span> y se compara con la fila del panorama.</p>
+<p><strong>Paso a paso.</strong> <span class="math inline">\(\binom{7}{4}_{2}=\dfrac{(2^7-1)(2^6-1)(2^5-1)(2^4-1)}{(2^1-1)(2^2-1)(2^3-1)(2^4-1)}=\dfrac{127\cdot63\cdot31}{1\cdot3\cdot7}=11811\)</span>, que es el total de la fila <span class="math inline">\(k=4\)</span>. De ellos 7000 tienen <span class="math inline">\(d=1\)</span>, 4781 tienen <span class="math inline">\(d=2\)</span> y sólo 30 tienen <span class="math inline">\(d=3\)</span> (los equivalentes a Hamming). También <span class="math inline">\(\binom{7}{3}_{2}=11811\)</span>: por dualidad hay tantos de dimensión 3 como de dimensión 4.</p>
+</div></details><details class="sol"><summary>Solución 5.10</summary><div class="sol-body"><p><strong><em>Idea.</em></strong> La dimensión del dual es <span class="math inline">\(7-k\)</span>; para su distancia hay que calcular el menor peso de sus palabras.</p>
+<p><strong>Paso a paso.</strong> Cada dual tiene dimensión <span class="math inline">\(7-k\)</span>: <span class="math inline">\([7,6,2]\to[7,1,7]\)</span>; <span class="math inline">\([7,4,3]\to[7,3,4]\)</span>; <span class="math inline">\([7,2,4]\to[7,5,2]\)</span>. La paridad tiene dual <span class="math inline">\(\{0000000,1111111\}\)</span> (repetición); el dual del Hamming es el símplex. La distancia del dual no se deduce de la del código.</p>
+</div></details>

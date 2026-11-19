@@ -1,0 +1,110 @@
+<h3>Lo esencial</h3>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Cuando los datos tienen muchas columnas, casi siempre unas pocas direcciones concentran casi toda la variación. El Análisis de Componentes Principales (PCA) encuentra esas direcciones: la primera componente (PC1) es la dirección en la que los datos están más dispersos, la segunda es la más dispersa entre las perpendiculares a la primera, y así sucesivamente. Proyectar sobre las primeras componentes resume los datos perdiendo lo menos posible. Matemáticamente, las componentes son los autovectores de la matriz de covarianza, y la SVD las calcula directamente.</p>
+</div>
+
+<h3>Planteamiento</h3>
+<p>Sea $X\in\mathbb{R}^{n\times p}$ una matriz de datos con $n$ muestras (filas) y $p$ variables (columnas). Primero se <strong>centra</strong>: $\tilde X=X-\mathbf{1}\mu^{T}$, donde $\mu=\frac1nX^{T}\mathbf{1}$ es el vector de medias. La matriz de covarianza es $S=\frac{1}{n-1}\tilde X^{T}\tilde X$. El PCA se puede plantear de dos maneras que dan el mismo resultado:</p>
+<ol>
+<li><strong>Maximizar la varianza proyectada.</strong> Buscar $v_1$ con $\|v_1\|_2=1$ tal que la proyección $z_1=\tilde Xv_1$ tenga varianza máxima:
+$$\max_{\|v\|_2=1}\operatorname{var}(\tilde Xv)=\max_{\|v\|_2=1}\frac{1}{n-1}v^{T}\tilde X^{T}\tilde Xv=\max_{\|v\|_2=1}v^{T}Sv.$$</li>
+<li><strong>Minimizar el error de reconstrucción.</strong> Buscar la recta (proyección de rango 1) que deje los datos lo más cerca posible:
+$$\min_{\|v\|_2=1}\|\tilde X-\tilde Xvv^{T}\|_F^{2}.$$</li>
+</ol>
+<p>Las dos son equivalentes porque, por Pitágoras, varianza total = varianza proyectada + error: hacer grande una es hacer pequeña la otra.</p>
+
+<h3>Por qué salen autovectores (multiplicadores de Lagrange)</h3>
+<p>Para maximizar $v^{T}Sv$ con la condición $v^{T}v=1$ se usa la función de Lagrange
+$$L(v,\lambda)=v^{T}Sv-\lambda(v^{T}v-1).$$
+Derivando e igualando a cero:
+$$\nabla_vL=2Sv-2\lambda v=0\ \Longrightarrow\ Sv=\lambda v.$$
+Así, $v$ debe ser un autovector de $S$, y la varianza proyectada vale $v^{T}Sv=\lambda\,v^{T}v=\lambda$. Para que sea máxima se toma el autovector del <strong>mayor autovalor</strong> $\lambda_1$. Repitiendo en el subespacio perpendicular se obtienen $v_2,v_3,\dots$</p>
+
+<div class="callout nota"><p><strong>Conexión con la SVD.</strong> Si $\tilde X=U\Sigma V^{T}$, entonces $S=\frac{1}{n-1}V\Sigma^{T}\Sigma V^{T}$: las direcciones principales son las columnas de $V$ y los autovalores son $\lambda_j=\sigma_j^{2}/(n-1)$. Las coordenadas de los datos en las componentes (<em>scores</em>) son $Z=\tilde XV=U\Sigma$.</p></div>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Nube de puntos 2D con ejes principales</figcaption>
+<div class="fig">@@FIG:pca_nube@@</div>
+<p class="desc"><strong>Descripción:</strong> Muestra los datos centrados en su promedio con el eje de máxima dispersión ($PC1$) y su eje perpendicular ($PC2$).</p>
+</figure>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Proyección ortogonal y residuos</figcaption>
+<div class="fig">@@FIG:pca_proyeccion@@</div>
+<p class="desc"><strong>Descripción:</strong> Ilustra cómo se proyectan los puntos a $90^\circ$ sobre $PC1$, marcando en rojo las distancias de error que PCA minimiza.</p>
+</figure>
+
+<h3>Matriz de rotación y matriz de cargas</h3>
+<p>Sea $V=[v_1,\dots,v_p]$ la matriz ortogonal de autovectores de $S$ (<em>matriz de rotación</em> o direcciones principales). Las componentes principales son $Z=\tilde XV$: es simplemente un cambio de ejes.</p>
+<p>La <strong>matriz de cargas</strong> (<em>loadings</em>) mide cuánto pesa cada variable original en cada componente:
+$$L=V\Lambda^{1/2},\qquad \Lambda=\operatorname{diag}(\lambda_1,\dots,\lambda_p).$$
+La entrada $L_{ij}$ es la covarianza entre la variable $i$ y la componente $j$ (con datos estandarizados, su correlación).</p>
+
+<h3>¿Cuántas componentes conservar?</h3>
+<ol>
+<li><strong>Gráfica de codo (scree plot):</strong> se grafican los $\lambda_j$ de mayor a menor y se busca el «codo», el punto donde dejan de bajar rápido.</li>
+<li><strong>Criterio de Kaiser–Guttman:</strong> con datos estandarizados se conservan las componentes con $\lambda_j\gt1$, es decir, las que explican más que una variable original sola.</li>
+<li><strong>Proporción acumulada de varianza (PVE):</strong> se elige el menor $k$ con
+$$\frac{\sum_{j=1}^{k}\lambda_j}{\operatorname{tr}(S)}\ \ge\ \text{umbral}\quad(\text{normalmente entre }70\%\text{ y }95\%).$$</li>
+</ol>
+
+<figure class="figcaso"><figcaption class="figcaso-title">Gráfica de codo (scree plot) y varianza acumulada</figcaption>
+<div class="fig">@@FIG:pca_scree@@</div>
+<p class="desc"><strong>Descripción:</strong> Indica cuánta información aporta cada componente y cuántos hacen falta para alcanzar el $90\%$–$95\%$ del total.</p>
+</figure>
+
+<h3>Estandarizar o no: matriz $S$ frente a matriz $R$</h3>
+<ul>
+<li><strong>Covarianza $S$ o correlación $R$.</strong> Si las variables tienen unidades distintas o varianzas muy diferentes, el PCA sobre $S$ queda dominado por las de mayor escala. En ese caso se estandariza: $X_{\text{std}}=\tilde XD^{-1/2}$ con $D=\operatorname{diag}(s_1^2,\dots,s_p^2)$, lo que equivale a usar la matriz de correlaciones $R=D^{-1/2}SD^{-1/2}$.</li>
+<li><strong>PCA robusto.</strong> El PCA clásico es muy sensible a valores atípicos. El PCA robusto usa estimadores de dispersión resistentes (como MCD, <em>Minimum Covariance Determinant</em>) o separa los datos como $\tilde X=L_0+S_0$, con $L_0$ de rango bajo y $S_0$ rala (pocas perturbaciones grandes), resolviendo un problema de optimización convexa (<em>Principal Component Pursuit</em>).</li>
+</ul>
+
+<h3>Biplots</h3>
+<p>Un biplot dibuja en el mismo plano las muestras y las variables:</p>
+<ol>
+<li><strong>Muestras (puntos):</strong> sus coordenadas $(z_{i1},z_{i2})$ en las dos primeras componentes.</li>
+<li><strong>Variables (flechas):</strong> sus cargas $(L_{j1},L_{j2})$. El coseno del ángulo entre dos flechas aproxima la correlación entre esas variables, y la longitud de la flecha indica cuánta de su varianza queda representada en el plano.</li>
+</ol>
+
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>PCA paso a paso.</strong> (1) Centra los datos (y estandariza si las escalas difieren). (2) Calcula $S$ o, mejor, la SVD de $\tilde X$. (3) Ordena los autovalores de mayor a menor. (4) Elige $k$ con el codo, Kaiser o la PVE. (5) Proyecta: $Z_k=\tilde XV_k$. (6) Para reconstruir: $\hat X=\mu^{T}+Z_kV_k^{T}$.</p>
+</div>
+
+@@INTERACTIVO@@
+
+<h3>Ejemplos resueltos de PCA (eigenfaces)</h3>
+<p>En reconocimiento de caras, cada imagen se convierte en un vector columna de píxeles; las componentes principales se llaman <em>eigenfaces</em>. Para clasificar una cara nueva se proyecta sobre las eigenfaces y se busca la cara de entrenamiento más cercana. Aquí las «imágenes» tienen 4 píxeles y van en las <strong>columnas</strong> de $X$, por eso la covarianza se escribe $C=\frac{1}{N-1}AA^{T}$.</p>
+
+<div class="worked"><div class="worked-title">Ejemplo 1: Tres caras de entrenamiento (4 píxeles)</div>
+<p>Imágenes $I_1=[2,0,0,0]^{T}$, $I_2=[0,2,0,0]^{T}$, $I_3=[0,0,2,0]^{T}$. Matriz $X=\begin{bmatrix}2&0&0\\0&2&0\\0&0&2\\0&0&0\end{bmatrix}$.</p>
+<ol>
+<li><strong>Media:</strong> $\mu=[2/3,2/3,2/3,0]^{T}\approx[0.666667,0.666667,0.666667,0]^{T}$.</li>
+<li><strong>Imágenes centradas $A$:</strong> $A=\begin{bmatrix}1.333333&-0.666667&-0.666667\\-0.666667&1.333333&-0.666667\\-0.666667&-0.666667&1.333333\\0&0&0\end{bmatrix}$.</li>
+<li><strong>Covarianza:</strong> $C=\frac12AA^{T}$.</li>
+<li><strong>Autovalores y eigenfaces:</strong> $\lambda_1=2,\ \lambda_2=2,\ \lambda_3=0,\ \lambda_4=0$. $u_1\approx[0.816497,-0.408248,-0.408248,0]^{T}$, $u_2\approx[0.091556,-0.748425,0.656869,0]^{T}$ (como $\lambda_1=\lambda_2$, cualquier base ortonormal de ese plano sirve).</li>
+<li><strong>Proyección:</strong> $W=U^{T}A\approx\begin{bmatrix}1.632993&-0.816497&-0.816497\\0.183111&-1.496850&1.313739\end{bmatrix}$.</li>
+<li><strong>Clasificación:</strong> $I_{\text{probe}}=[1,1,1,0]^{T}\Rightarrow w_{\text{probe}}\approx[0,0]^{T}$. Distancias a las columnas de $W$: $1.643$, $1.705$ y $1.547$. La menor es a $I_3$ $\Rightarrow$ misma persona que $I_3$.</li>
+</ol>
+</div>
+
+<div class="worked"><div class="worked-title">Ejemplo 2: Nuevo conjunto de caras</div>
+<p>$J_1=[1,1,0,0]^{T}$, $J_2=[0,1,1,0]^{T}$, $J_3=[1,0,1,0]^{T}$. Matriz $X'=\begin{bmatrix}1&0&1\\1&1&0\\0&1&1\\0&0&0\end{bmatrix}$.</p>
+<ol>
+<li><strong>Media:</strong> $\mu'\approx[0.666667,0.666667,0.666667,0]^{T}$.</li>
+<li><strong>Matriz centrada $A'$:</strong> $A'=X'-\mu'\mathbf{1}^{T}$.</li>
+<li><strong>Covarianza:</strong> $C'=\frac12A'A'^{T}$.</li>
+<li><strong>Autovalores y autovectores:</strong> $\lambda_1=0.5,\ \lambda_2=0.5$; $v_1\approx[0.816497,-0.408248,-0.408248,0]^{T}$, $v_2\approx[0,0.707107,-0.707107,0]^{T}$.</li>
+<li><strong>Pesos:</strong> $W'=V^{T}A'\approx\begin{bmatrix}0.408248&-0.816497&0.408248\\0.707107&0&-0.707107\end{bmatrix}$.</li>
+<li><strong>Clasificación:</strong> $J_{\text{probe}}=[1,0,0,0]^{T}\Rightarrow w'_{\text{probe}}\approx[0.816497,0]^{T}$. Distancias: a $J_1$ $0.816$, a $J_2$ $1.633$, a $J_3$ $0.816$. Hay un <strong>empate entre $J_1$ y $J_3$</strong>: la sonda sólo tiene encendido el píxel 1, que comparten ambas caras, así que el método no puede decidir entre ellas (sí descarta a $J_2$). En la práctica se rompe el empate con más datos o con un umbral de rechazo.</li>
+</ol>
+</div>
+
+<div class="worked"><div class="worked-title">Ejemplo 3: Ejemplo robusto (4 imágenes, 3 eigenfaces)</div>
+<p>$I_1=[3,1,0,0]^{T}$, $I_2=[1,3,0,0]^{T}$, $I_3=[0,1,3,0]^{T}$, $I_4=[0,0,1,3]^{T}$.</p>
+<ol>
+<li><strong>Media:</strong> $\mu=[1.0,1.25,1.0,0.75]^{T}$.</li>
+<li><strong>Matriz centrada:</strong> $A=X-\mu\mathbf{1}^{T}$.</li>
+<li><strong>Covarianza:</strong> $C=\frac13AA^{T}$.</li>
+<li><strong>Autovalores:</strong> $\lambda\approx(0,\ 1.186581,\ 2.358110,\ 4.288642)$. Se toman las tres eigenfaces de autovalor no nulo, $U\in\mathbb{R}^{4\times3}$.</li>
+<li><strong>Proyección:</strong> $W=U^{T}A\in\mathbb{R}^{3\times4}$.</li>
+<li><strong>Clasificación:</strong> $I_{\text{probe}}=[2,1,1,0]^{T}\Rightarrow w_{\text{probe}}=U^{T}(I_{\text{probe}}-\mu)$. Distancias: $1.414$, $2.449$, $2.828$ y $3.742$. La menor es a $I_1$ $\Rightarrow$ misma persona que $I_1$.</li>
+</ol>
+</div>

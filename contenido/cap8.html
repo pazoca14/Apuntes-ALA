@@ -1,0 +1,247 @@
+<p><em>Basado en el documento «El secreto de la recta» del Dr. José de Jesús Ángel Ángel.</em></p>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Por dos puntos pasa una sola recta. Si mandamos más puntos de los necesarios, los que sobran sirven de <strong>testigos</strong>: si alguno miente, los demás lo delatan. Eso es un código de Reed–Solomon, aquí con rectas en lugar de polinomios de grado alto. Se usa en códigos QR, CD, DVD, televisión digital y sondas espaciales.</p>
+</div>
+<h3>El problema: el mundo es ruidoso</h3>
+<p>Al enviar un mensaje, algunos símbolos pueden llegar dañados. Hay dos tipos de daño:</p>
+<ul>
+<li><p><strong>Borrado:</strong> el símbolo llega ilegible, pero sabemos dónde está el hueco (como una mancha de café sobre un número).</p></li>
+<li><p><strong>Error:</strong> el símbolo llega cambiado por otro y no sabemos cuál fue. Es el caso difícil.</p></li>
+</ul>
+<p>La solución ingenua es repetir cada dato (por ejemplo, 7, 7, 7, y gana la mayoría). Funciona, pero es carísima: para proteger un dato se mandan tres.</p>
+<h3>El truco: esconder el mensaje en una recta</h3>
+<p>El mensaje son dos números <span class="math inline">\((a,b)\)</span>. Se construye la recta <span class="math inline">\(y=a+bx\)</span> y se envían sus valores en <span class="math inline">\(x=1,2,3,4,5\)</span>. Con <span class="math inline">\((a,b)=(3,2)\)</span>:</p>
+<div class="center">
+<div class="table-wrap"><table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(y=3+2x\)</span></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">13</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Se mandan 5 números para proteger 2 (repitiendo tres veces serían 6).</p>
+<div class="callout defi"><div class="callout-title">Idea clave</div>
+<p>Dos valores bastan para reconstruir la recta. Los demás son testigos.</p>
+</div>
+<p><strong>Con borrados.</strong> Llega <span class="math inline">\(5,\square,9,\square,13\)</span>. De 5 a 9 hay dos pasos, así que cada paso vale 2 y se rellena <span class="math inline">\(5,7,9,11,13\)</span>. Con cualquier par de valores que sobreviva se reconstruye todo: este envío aguanta hasta 3 huecos.</p>
+<p><strong>Con un error.</strong> Llega <span class="math inline">\(5,7,10,11,13\)</span>. Los saltos entre valores consecutivos son <span class="math inline">\(+2,+3,+1,+2\)</span>. En una recta todos los saltos son iguales: aquí casi todos valen 2, y los que tocan al 10 no. El culpable es el tercer valor (debía ser 9).</p>
+<h3>El reloj de <span class="math inline">\(p\)</span> horas (aritmética módulo <span class="math inline">\(p\)</span>)</h3>
+<div class="callout defi"><div class="callout-title">Definición. Congruencia módulo <span class="math inline">\(p\)</span></div>
+<p>Se hace la cuenta normal y se toma el residuo al dividir entre <span class="math inline">\(p\)</span>. Se escribe <span class="math inline">\(a\equiv r\pmod p\)</span>. En el reloj de 7 horas: <span class="math inline">\(5+4=9\equiv2\)</span>, <span class="math inline">\(3\cdot5=15\equiv1\)</span>, <span class="math inline">\(2-6=-4\equiv3\)</span>.</p>
+</div>
+<div class="callout simple"><div class="callout-title">En palabras simples</div>
+<p>Es la aritmética del reloj: si te pasas de la última hora, das la vuelta. Se usa porque los números normales crecen sin parar y las computadoras prefieren un conjunto fijo de símbolos.</p>
+</div>
+<p>El mismo truco funciona dentro del reloj. Con <span class="math inline">\((a,b)=(3,2)\)</span> y <span class="math inline">\(x=1,\dots,6\)</span>:</p>
+<div class="center">
+<div class="table-wrap"><table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(3+2x\)</span> (normal)</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(3+2x\)</span> (reloj de 7)</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>En el reloj el paso sigue siendo <span class="math inline">\(+2\)</span> (<span class="math inline">\(5\to0\to2\to4\dots\)</span>). Esto ya es un código de Reed–Solomon: los matemáticos llaman a este reloj el <em>campo finito</em> <span class="math inline">\(\mathbb{F}_7\)</span>.</p>
+<div class="callout nota">
+<p><strong>¿Por qué un reloj primo?</strong> Si <span class="math inline">\(p\)</span> es primo siempre se puede dividir; por ejemplo, para todo <span class="math inline">\(s\)</span> existe un único <span class="math inline">\(y\)</span> con <span class="math inline">\(y+y\equiv s\)</span>. En el reloj de 12 horas eso falla (ninguna hora sumada consigo misma da 7) y el truco de reconstruir la recta se descompone. Un reloj de <span class="math inline">\(p\)</span> horas ofrece <span class="math inline">\(p-1\)</span> valores de <span class="math inline">\(x\)</span> distintos (<span class="math inline">\(x=1,\dots,p-1\)</span>): más testigos, más errores corregibles.</p>
+</div>
+<div class="callout receta"><div class="callout-title">Receta</div>
+<p><strong>El método de los saltos (receta).</strong></p>
+<ol>
+<li><p>Escribe los saltos <span class="math inline">\(y_{i+1}-y_i\)</span> (en el reloj, módulo <span class="math inline">\(p\)</span>).</p></li>
+<li><p>El paso verdadero <span class="math inline">\(b\)</span> es el salto que más se repite.</p></li>
+<li><p>Los saltos distintos rodean al valor equivocado: un error en un valor interior rompe sus dos saltos vecinos (en un extremo sólo se rompe uno).</p></li>
+<li><p>Corrige ese valor con el paso verdadero y recupera <span class="math inline">\(a=y_1-b\)</span>.</p></li>
+<li><p>Con huecos: de un valor conocido a otro hay <span class="math inline">\(m\)</span> pasos; resuelve <span class="math inline">\(m\cdot b\equiv\)</span> diferencia.</p></li>
+</ol>
+</div>
+<h3>Cuántos testigos hacen falta: la conexión con los códigos</h3>
+<p>Los <span class="math inline">\(n\)</span> valores <span class="math inline">\((a+bx_1,\dots,a+bx_n)\)</span> forman un código lineal sobre <span class="math inline">\(\mathbb{F}_p\)</span> con matriz generadora <span class="math inline">\(G=\left(\begin{smallmatrix}1&amp;\cdots&amp;1\\x_1&amp;\cdots&amp;x_n\end{smallmatrix}\right)\)</span>, de dimensión <span class="math inline">\(k=2\)</span>. Dos rectas distintas coinciden en a lo sumo un punto, así que dos palabras distintas difieren en al menos <span class="math inline">\(n-1\)</span> posiciones: <span class="math inline">\(d=n-1\)</span>, que alcanza la cota de Singleton <span class="math inline">\(d\le n-k+1\)</span>. Con <span class="math inline">\(x=1,2,\dots,n\)</span>, la prueba de los saltos es la matriz de control: los saltos de los saltos <span class="math inline">\(y_{i+2}-2y_{i+1}+y_i\)</span> son los síndromes, y todos valen 0 cuando el vector es una recta.</p>
+<div class="center">
+<div class="table-wrap"><table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">valores <span class="math inline">\(n\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(d=n-1\)</span></th>
+<th style="text-align: center;">detecta errores</th>
+<th style="text-align: center;">corrige errores</th>
+<th style="text-align: center;">rellena borrados</th>
+<th style="text-align: center;">combinado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(2t+e\le1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(2t+e\le2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\(2t+e\le3\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;"><span class="math inline">\(2t+e\le4\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;"><span class="math inline">\(2t+e\le5\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"><span class="math inline">\(2t+e\le6\)</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>«Combinado» significa <span class="math inline">\(t\)</span> errores y <span class="math inline">\(e\)</span> borrados a la vez. Con 5 valores se corrige 1 error o se rellenan 3 huecos; con 8 valores se corrigen 3 errores.</p>
+@@INTERACTIVO@@
+<h3 id="retos">Retos</h3>
+<p class="ejercicio"><span class="ej-tag">8.1</span> Tu mensaje es <span class="math inline">\(a=1\)</span>, <span class="math inline">\(b=4\)</span>. ¿Qué cinco números envías (con <span class="math inline">\(x=1,\dots,5\)</span>)?</p>
+<p class="ejercicio"><span class="ej-tag">8.2</span> Llega la lista <span class="math inline">\(4,7,10,14,16\)</span>. Uno de los números se cambió. ¿Cuál? ¿Cuál era el mensaje <span class="math inline">\((a,b)\)</span>?</p>
+<p class="ejercicio"><span class="ej-tag">8.3</span> Llega <span class="math inline">\(\square,8,\square,14,\square\)</span>. Rellena los huecos y descubre el mensaje.</p>
+<p class="ejercicio"><span class="ej-tag">8.4</span> (el límite del truco) Llega <span class="math inline">\(1,3,5,8,11\)</span> y te dicen que hubo dos errores. Muestra que la recta <span class="math inline">\(y=2x-1\)</span> explica la lista con dos errores, pero la recta <span class="math inline">\(y=3x-4\)</span> también. ¿Qué nos dice esto sobre cuántos errores puede curar este código?</p>
+<p class="ejercicio"><span class="ej-tag">8.5</span> Calcula <span class="math inline">\(6+6\)</span>, <span class="math inline">\(4\cdot5\)</span> y <span class="math inline">\(1-3\)</span> en el reloj de 7 horas.</p>
+<p class="ejercicio"><span class="ej-tag">8.6</span> Se envió una recta evaluada en <span class="math inline">\(x=1,\dots,6\)</span> (reloj de 7) y llegó <span class="math inline">\(4,0,3,1,2,5\)</span>. Un valor está cambiado. Encuéntralo usando los saltos. (Recuerda que en el reloj, <span class="math inline">\(0-4\equiv3\)</span>.)</p>
+<p class="ejercicio"><span class="ej-tag">8.7</span> Llega <span class="math inline">\(\square,3,\square,\square,1,\square\)</span> (reloj de 7, <span class="math inline">\(x=1,\dots,6\)</span>). Rellena los huecos y da el mensaje. Pista: necesitas un número que, sumado tres veces, dé 5.</p>
+<p class="ejercicio"><span class="ej-tag">8.8</span> Calcula <span class="math inline">\(8+9\)</span>, <span class="math inline">\(7\cdot8\)</span> y <span class="math inline">\(3-10\)</span> en el reloj de 11 horas.</p>
+<p class="ejercicio"><span class="ej-tag">8.9</span> Llega <span class="math inline">\(2,8,3,3,4,10\)</span> (reloj de 11, <span class="math inline">\(x=1,\dots,6\)</span>). Un dato está cambiado. ¿Cuál era el valor correcto y cuál el mensaje?</p>
+<p class="ejercicio"><span class="ej-tag">8.10</span> Calcula <span class="math inline">\(9+7\)</span>, <span class="math inline">\(5\cdot8\)</span> y <span class="math inline">\(2-9\)</span> en el reloj de 13 horas.</p>
+<p class="ejercicio"><span class="ej-tag">8.11</span> Tu mensaje es <span class="math inline">\(a=4\)</span>, <span class="math inline">\(b=9\)</span>. ¿Qué seis números envías en el reloj de 13 horas (con <span class="math inline">\(x=1,\dots,6\)</span>)?</p>
+<p class="ejercicio"><span class="ej-tag">8.12</span> Llega <span class="math inline">\(12,8,9,1,6,11\)</span> (reloj de 13, <span class="math inline">\(x=1,\dots,6\)</span>). Un dato está cambiado. ¿Cuál, y cuánto debía valer?</p>
+<p class="ejercicio"><span class="ej-tag">8.13</span> Llega <span class="math inline">\(\square,\square,3,\square,10,\square\)</span> (reloj de 13, <span class="math inline">\(x=1,\dots,6\)</span>). Rellena los huecos. Pista: necesitas un número que, sumado dos veces, dé 7.</p>
+<p class="ejercicio"><span class="ej-tag">8.14</span> Llega <span class="math inline">\(9,11,2,6,10,1\)</span> (reloj de 13). Esta vez sólo un salto sale raro. ¿Qué dato está mal?</p>
+<p class="ejercicio"><span class="ej-tag">8.15</span> Calcula <span class="math inline">\(15+9\)</span>, <span class="math inline">\(6\cdot6\)</span> y <span class="math inline">\(2-11\)</span> en el reloj de 17 horas.</p>
+<p class="ejercicio"><span class="ej-tag">8.16</span> Se envían ocho valores de una recta en el reloj de 17 horas y llega <span class="math inline">\(5,3,12,7,2,14,2,4\)</span>. Hubo dos errores. Encuéntralos y corrígelos.</p>
+<p class="ejercicio"><span class="ej-tag">8.17</span> ¿Es <span class="math inline">\(3,8,13,18,4,9\)</span> una recta válida en el reloj de 19 horas? Si lo es, ¿cuál es el mensaje <span class="math inline">\((a,b)\)</span>?</p>
+<p class="ejercicio"><span class="ej-tag">8.18</span> Ahora se envían ocho valores (<span class="math inline">\(x=1,\dots,8\)</span>) de una recta en el reloj de 19 horas y llega <span class="math inline">\(12,0,11,14,1,9,16,4\)</span>. Hubo dos errores. Encuéntralos y corrígelos.</p>
+<p class="ejercicio"><span class="ej-tag">8.19</span> (detectar no es corregir) En el reloj de 19 horas se envían sólo tres valores (<span class="math inline">\(x=1,2,3\)</span>) y llega <span class="math inline">\(5,12,1\)</span>. ¿Hay un error? ¿Puedes corregirlo?</p>
+<p class="ejercicio"><span class="ej-tag">8.20</span> Calcula <span class="math inline">\(17+14\)</span>, <span class="math inline">\(9\cdot5\)</span> y <span class="math inline">\(4-19\)</span> en el reloj de 23 horas.</p>
+<p class="ejercicio"><span class="ej-tag">8.21</span> Llega <span class="math inline">\(12,4,19,11,9,18\)</span> (reloj de 23, <span class="math inline">\(x=1,\dots,6\)</span>). Encuentra y corrige el dato cambiado.</p>
+<p class="ejercicio"><span class="ej-tag">8.22</span> (para el equipo) En parejas: uno elige un reloj primo (7, 11, 13, 17, 19 o 23 horas) y un mensaje <span class="math inline">\((a,b)\)</span> en secreto, calcula seis valores, cambia uno y le pasa la lista al otro. ¿Quién descubre más rápido el intruso y el mensaje? En los relojes de 17 o más horas, prueben con ocho valores y dos errores.</p>
+<h3 id="tarea">Tarea</h3>
+<p class="ejercicio"><span class="ej-tag">8.T1</span> (Números normales) Tu mensaje es <span class="math inline">\((a,b)=(2,7)\)</span>. Escribe los cinco valores que envías con <span class="math inline">\(x=1,\dots,5\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">8.T2</span> (Números normales) Llega <span class="math inline">\(3,8,13,19,23\)</span>. Encuentra el dato cambiado, corrígelo y da el mensaje <span class="math inline">\((a,b)\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">8.T3</span> (Reloj de 7) Calcula <span class="math inline">\(3\cdot4\)</span>, <span class="math inline">\(5-6\)</span>, <span class="math inline">\(2+5\)</span> y <span class="math inline">\(6\cdot6\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">8.T4</span> (Reloj de 7) Codifica el mensaje <span class="math inline">\((5,3)\)</span> con <span class="math inline">\(x=1,\dots,6\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">8.T5</span> (Reloj de 11) Encuentra el número <span class="math inline">\(s\)</span> tal que <span class="math inline">\(s+s\equiv5\)</span>. Verifica además que <span class="math inline">\(3\cdot4\equiv1\)</span>. ¿Qué crees que signifique dividir entre 3 en este reloj?</p>
+<p class="ejercicio"><span class="ej-tag">8.T6</span> (Reloj de 11) Llega <span class="math inline">\(7,10,6,5,8,0\)</span> (<span class="math inline">\(x=1,\dots,6\)</span>). Corrige el dato cambiado y da el mensaje.</p>
+<p class="ejercicio"><span class="ej-tag">8.T7</span> (Reloj de 13) Llega <span class="math inline">\(\square,6,\square,\square,8,\square\)</span>. Rellena los huecos y da el mensaje.</p>
+<p class="ejercicio"><span class="ej-tag">8.T8</span> (Reloj de 13) Llega <span class="math inline">\(6,1,9,4,12,9\)</span>. Corrige el dato cambiado. ¿Por qué aquí sólo se rompe un salto?</p>
+<p class="ejercicio"><span class="ej-tag">8.T9</span> (Reloj de 17) Codifica el mensaje <span class="math inline">\((3,11)\)</span> con <span class="math inline">\(x=1,\dots,6\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">8.T10</span> (Reloj de 17) Se envían ocho valores y llega <span class="math inline">\(11,16,5,9,14,11,7,12\)</span>. Hubo dos errores: corrígelos.</p>
+<p class="ejercicio"><span class="ej-tag">8.T11</span> (Reloj de 23) Llega <span class="math inline">\(0,6,18,4,13,22\)</span>. Corrige el dato cambiado y da el mensaje.</p>
+<p class="ejercicio"><span class="ej-tag">8.T12</span> (Para pensar) Si el mensaje es una recta, ¿cuántos valores hay que enviar como mínimo para detectar un error? ¿Y para corregir uno? ¿Y para corregir dos?</p>
+<p class="ejercicio"><span class="ej-tag">8.T13</span> (Para pensar) En un reloj de <span class="math inline">\(p\)</span> horas, ¿cuántos valores distintos de <span class="math inline">\(x\)</span> hay disponibles (sin usar <span class="math inline">\(x=0\)</span>)? En el reloj de 23 horas, ¿cuántos errores se podrían corregir como máximo?</p>
+<p class="ejercicio"><span class="ej-tag">8.T14</span> (Contar) En el reloj de 13 horas, ¿cuántos mensajes <span class="math inline">\((a,b)\)</span> distintos hay? ¿Cuántas listas de seis valores hay en total? Si una lista se escoge al azar, ¿qué probabilidad tiene de ser una recta?</p>
+<p class="ejercicio"><span class="ej-tag">8.T15</span> (El reloj de 12 no sirve) En el reloj de 12 horas, la recta <span class="math inline">\(y=3+4x\)</span> da <span class="math inline">\(7,11,3,7,11,3\)</span>. Si llega <span class="math inline">\(7,\square,\square,7\)</span>, muestra que hay tres rectas distintas que encajan. ¿Por qué ocurre esto?</p>
+<p class="ejercicio"><span class="ej-tag">8.T16</span> (Rumbo a las parábolas) La parábola <span class="math inline">\(y=1+x+x^2\)</span> da <span class="math inline">\(3,7,13,21,31\)</span> en <span class="math inline">\(x=1,\dots,5\)</span>. Sus saltos no son iguales, pero los saltos de los saltos sí. Usa esa idea para encontrar el error en <span class="math inline">\(3,7,14,21,31\)</span>.</p>
+<p class="ejercicio"><span class="ej-tag">8.T17</span> (Diseño) Inventa un reto en un reloj primo de tu elección, con ocho valores y dos errores. Escribe su solución completa e intercámbialo con un compañero.</p>
+<h3 id="soluciones-de-los-retos">Soluciones de los retos</h3>
+<details class="sol"><summary>Solución 8.1</summary><div class="sol-body"><p>La recta es <span class="math inline">\(y=1+4x\)</span>. Se envía <span class="math inline">\(5,9,13,17,21\)</span>: cada salto vale <span class="math inline">\(+4\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.2</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(3,3,4,2\)</span>. Los dos últimos tocan al cuarto valor y los demás valen 3: el intruso es el 14, que debía ser <span class="math inline">\(10+3=13\)</span>. Para hallar <span class="math inline">\(a\)</span> se da un paso hacia atrás desde <span class="math inline">\(x=1\)</span>: <span class="math inline">\(a=4-3=1\)</span>. El mensaje es <span class="math inline">\((a,b)=(1,3)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.3</summary><div class="sol-body"><p>De 8 (en <span class="math inline">\(x=2\)</span>) a 14 (en <span class="math inline">\(x=4\)</span>) hay dos pasos que suman 6: cada paso vale 3. La lista es <span class="math inline">\(5,8,11,14,17\)</span> y el mensaje <span class="math inline">\((a,b)=(2,3)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.4</summary><div class="sol-body"><p>La recta <span class="math inline">\(y=2x-1\)</span> da <span class="math inline">\(1,3,5,7,9\)</span>: coincide salvo en las posiciones 4 y 5. La recta <span class="math inline">\(y=3x-4\)</span> da <span class="math inline">\(-1,2,5,8,11\)</span>: coincide salvo en las posiciones 1 y 2. Con dos errores hay dos respuestas igual de buenas y no se puede decidir. Con cinco valores sólo se garantiza curar un error (o rellenar hasta tres huecos). Para curar más hacen falta más testigos (reto 18).</p>
+</div></details><details class="sol"><summary>Solución 8.5</summary><div class="sol-body"><p><span class="math inline">\(6+6=12\equiv5\)</span>, <span class="math inline">\(4\cdot5=20\equiv6\)</span>, <span class="math inline">\(1-3=-2\equiv5\)</span> (retroceder dos horas desde la 1 lleva a la 6 y luego a la 5).</p>
+</div></details><details class="sol"><summary>Solución 8.6</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(3,3,5,1,3\)</span>. Los dos que tocan al cuarto valor están mal; los demás valen 3. El cuarto valor debía ser <span class="math inline">\(3+3=6\)</span>. La lista correcta es <span class="math inline">\(4,0,3,6,2,5\)</span> y la recta <span class="math inline">\(y=1+3x\)</span> en el reloj de 7.</p>
+</div></details><details class="sol"><summary>Solución 8.7</summary><div class="sol-body"><p>De <span class="math inline">\(x=2\)</span> a <span class="math inline">\(x=5\)</span> hay tres pasos y se avanza <span class="math inline">\(1-3=-2\equiv5\)</span>. Se busca <span class="math inline">\(s\)</span> con <span class="math inline">\(s+s+s\equiv5\)</span>: probando, <span class="math inline">\(4+4+4=12\equiv5\)</span>, así que <span class="math inline">\(s=4\)</span>. La lista es <span class="math inline">\(6,3,0,4,1,5\)</span> y, retrocediendo un paso desde <span class="math inline">\(x=1\)</span>, <span class="math inline">\(a=6-4=2\)</span>. El mensaje es <span class="math inline">\((a,b)=(2,4)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.8</summary><div class="sol-body"><p><span class="math inline">\(8+9=17\equiv6\)</span>, <span class="math inline">\(7\cdot8=56=5\cdot11+1\equiv1\)</span>, <span class="math inline">\(3-10=-7\equiv4\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.9</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(6,6,0,1,6\)</span>. El paso verdadero es 6; los saltos 0 y 1 rodean al cuarto valor, que debía ser <span class="math inline">\(3+6=9\)</span>. Lista correcta: <span class="math inline">\(2,8,3,9,4,10\)</span>. Mensaje: <span class="math inline">\(b=6\)</span> y <span class="math inline">\(a=2-6=-4\equiv7\)</span>, es decir <span class="math inline">\((7,6)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.10</summary><div class="sol-body"><p><span class="math inline">\(9+7=16\equiv3\)</span>, <span class="math inline">\(5\cdot8=40=3\cdot13+1\equiv1\)</span>, <span class="math inline">\(2-9=-7\equiv6\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.11</summary><div class="sol-body"><p>Se suma 9 cada vez, dando la vuelta al pasar de 12: <span class="math inline">\(4+9=13\equiv0\)</span>, luego <span class="math inline">\(9\)</span>, <span class="math inline">\(18\equiv5\)</span>, <span class="math inline">\(14\equiv1\)</span>, <span class="math inline">\(10\)</span>, <span class="math inline">\(19\equiv6\)</span>. Se envía <span class="math inline">\(0,9,5,1,10,6\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.12</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(9,1,5,5,5\)</span>. Los tres últimos coinciden en 5; los dos primeros, que tocan al segundo valor, no. El segundo dato debía ser <span class="math inline">\(12+5=17\equiv4\)</span>. Lista correcta: <span class="math inline">\(12,4,9,1,6,11\)</span>; recta <span class="math inline">\(y=7+5x\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.13</summary><div class="sol-body"><p>De <span class="math inline">\(x=3\)</span> a <span class="math inline">\(x=5\)</span> hay dos pasos y se avanza <span class="math inline">\(10-3=7\)</span>. Se busca <span class="math inline">\(s\)</span> con <span class="math inline">\(s+s\equiv7\)</span>: como <span class="math inline">\(10+10=20\equiv7\)</span>, el paso es <span class="math inline">\(s=10\)</span>. Hacia adelante: <span class="math inline">\(3+10=13\equiv0\)</span> y <span class="math inline">\(0+10=10\)</span>, <span class="math inline">\(10+10\equiv7\)</span>. Hacia atrás: <span class="math inline">\(3-10\equiv6\)</span> y <span class="math inline">\(6-10\equiv9\)</span>. La lista es <span class="math inline">\(9,6,3,0,10,7\)</span> y la recta <span class="math inline">\(y=12+10x\)</span>. (En el reloj de 12 horas este reto no tendría solución.)</p>
+</div></details><details class="sol"><summary>Solución 8.14</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(2,4,4,4,4\)</span>. Sólo el primero está roto. Si el error estuviera en el segundo valor, también se rompería el segundo salto; como no es así, el culpable es el primer valor, que tiene un solo vecino. Debía ser <span class="math inline">\(11-4=7\)</span>. La recta es <span class="math inline">\(y=3+4x\)</span>. (Lo mismo pasa con un error en el último valor.)</p>
+</div></details><details class="sol"><summary>Solución 8.15</summary><div class="sol-body"><p><span class="math inline">\(15+9=24\equiv7\)</span>, <span class="math inline">\(6\cdot6=36=2\cdot17+2\equiv2\)</span>, <span class="math inline">\(2-11=-9\equiv8\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.16</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(15,9,12,12,12,5,2\)</span>. El paso verdadero es 12. Los saltos rotos rodean al segundo valor <span class="math inline">\((15,9)\)</span> y al séptimo <span class="math inline">\((5,2)\)</span>. El segundo debía ser <span class="math inline">\(5+12=17\equiv0\)</span> y el séptimo <span class="math inline">\(14+12=26\equiv9\)</span>. Lista correcta: <span class="math inline">\(5,0,12,7,2,14,9,4\)</span>, recta <span class="math inline">\(y=10+12x\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.17</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(5,5,5,4-18=-14\equiv5,5\)</span>: todos iguales, así que sí es una recta y no se detecta ningún error. El paso es <span class="math inline">\(b=5\)</span> y, retrocediendo desde <span class="math inline">\(x=1\)</span>, <span class="math inline">\(a=3-5=-2\equiv17\)</span>. El mensaje es <span class="math inline">\((17,5)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.18</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(7,11,3,6,8,7,7\)</span>. El salto 7 aparece tres veces y ningún otro se repite: el paso verdadero es 7. Los saltos rotos vienen en parejas, alrededor del tercer valor <span class="math inline">\((11,3)\)</span> y del quinto <span class="math inline">\((6,8)\)</span>. El tercero debía ser <span class="math inline">\(0+7=7\)</span> y el quinto <span class="math inline">\(14+7=21\equiv2\)</span>. Lista correcta: <span class="math inline">\(12,0,7,14,2,9,16,4\)</span>, recta <span class="math inline">\(y=5+7x\)</span>. A diferencia del reto 4, aquí hay testigos suficientes: con ocho valores se curan hasta tres errores.</p>
+</div></details><details class="sol"><summary>Solución 8.19</summary><div class="sol-body"><p>Los saltos son 7 y <span class="math inline">\(1-12=-11\equiv8\)</span>: no coinciden, así que sí hay un error. Pero no sabemos cuál dato es: si el malo es el tercero, debía ser <span class="math inline">\(12+7\equiv0\)</span>; si es el primero, debía ser <span class="math inline">\(12-8=4\)</span>; si es el segundo, el paso <span class="math inline">\(s\)</span> cumple <span class="math inline">\(s+s\equiv1-5\equiv15\)</span>, o sea <span class="math inline">\(s=17\)</span>, y debía ser <span class="math inline">\(5+17\equiv3\)</span>. Las tres correcciones son igual de válidas. Con un testigo de más se detecta un error, pero se necesitan dos testigos de más para corregirlo.</p>
+</div></details><details class="sol"><summary>Solución 8.20</summary><div class="sol-body"><p><span class="math inline">\(17+14=31\equiv8\)</span>, <span class="math inline">\(9\cdot5=45\equiv22\)</span>, <span class="math inline">\(4-19=-15\equiv8\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.21</summary><div class="sol-body"><p>Los saltos son <span class="math inline">\(4-12\equiv15\)</span>, <span class="math inline">\(15\)</span>, <span class="math inline">\(11-19\equiv15\)</span>, <span class="math inline">\(9-11\equiv21\)</span>, <span class="math inline">\(18-9=9\)</span>. El paso es 15 y los dos últimos saltos rodean al quinto valor, que debía ser <span class="math inline">\(11+15=26\equiv3\)</span>. Lista correcta: <span class="math inline">\(12,4,19,11,3,18\)</span>; recta <span class="math inline">\(y=20+15x\)</span> (pues <span class="math inline">\(a=12-15\equiv20\)</span>).</p>
+</div></details><details class="sol"><summary>Solución 8.22</summary><div class="sol-body"><p>Actividad abierta. Receta para quien decodifica: escribe los saltos, localiza el salto que más se repite (el paso verdadero) y busca el valor que rodean los saltos rotos.</p>
+</div></details><h3 id="soluciones-de-la-tarea">Soluciones de la tarea</h3>
+<details class="sol"><summary>Solución 8.T1</summary><div class="sol-body"><p><span class="math inline">\(y=2+7x\)</span>: <span class="math inline">\(9,16,23,30,37\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T2</summary><div class="sol-body"><p>Saltos: <span class="math inline">\(5,5,6,4\)</span>. El paso es 5 y el cuarto valor está mal: debía ser <span class="math inline">\(13+5=18\)</span>. Mensaje: <span class="math inline">\(b=5\)</span>, <span class="math inline">\(a=3-5=-2\)</span>, es decir <span class="math inline">\(y=-2+5x\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T3</summary><div class="sol-body"><p><span class="math inline">\(3\cdot4=12\equiv5\)</span>, <span class="math inline">\(5-6=-1\equiv6\)</span>, <span class="math inline">\(2+5=7\equiv0\)</span>, <span class="math inline">\(6\cdot6=36\equiv1\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T4</summary><div class="sol-body"><p><span class="math inline">\(y=5+3x\)</span> módulo 7: <span class="math inline">\(1,4,0,3,6,2\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T5</summary><div class="sol-body"><p><span class="math inline">\(s=8\)</span> porque <span class="math inline">\(8+8=16\equiv5\)</span>. Además <span class="math inline">\(3\cdot4=12\equiv1\)</span>. Como 4 es el número que multiplicado por 3 da 1, dividir entre 3 significa multiplicar por 4 (el inverso de 3).</p>
+</div></details><details class="sol"><summary>Solución 8.T6</summary><div class="sol-body"><p>Saltos: <span class="math inline">\(3,7,10,3,3\)</span>. El paso es 3 y los saltos rotos rodean al tercer valor, que debía ser <span class="math inline">\(10+3=13\equiv2\)</span>. Lista correcta: <span class="math inline">\(7,10,2,5,8,0\)</span>. Mensaje: <span class="math inline">\(b=3\)</span>, <span class="math inline">\(a=7-3=4\)</span>, es decir <span class="math inline">\((4,3)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T7</summary><div class="sol-body"><p>De <span class="math inline">\(x=2\)</span> a <span class="math inline">\(x=5\)</span> hay tres pasos y se avanza <span class="math inline">\(8-6=2\)</span>: <span class="math inline">\(3b\equiv2\)</span>. Como <span class="math inline">\(3\cdot9=27\equiv1\)</span>, <span class="math inline">\(b=2\cdot9=18\equiv5\)</span> (comprobación: <span class="math inline">\(3\cdot5=15\equiv2\)</span>). La lista es <span class="math inline">\(1,6,11,3,8,0\)</span> y el mensaje <span class="math inline">\((a,b)=(9,5)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T8</summary><div class="sol-body"><p>Saltos: <span class="math inline">\(8,8,8,8,10\)</span>. El paso es 8 y sólo se rompe el último: el valor equivocado es el último, y un valor en un extremo tiene un solo vecino, así que rompe un solo salto. Debía ser <span class="math inline">\(12+8=20\equiv7\)</span>. Mensaje: <span class="math inline">\(a=6-8\equiv11\)</span>, <span class="math inline">\(y=11+8x\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T9</summary><div class="sol-body"><p><span class="math inline">\(y=3+11x\)</span> módulo 17: <span class="math inline">\(14,8,2,13,7,1\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T10</summary><div class="sol-body"><p>Saltos: <span class="math inline">\(5,6,4,5,14,13,5\)</span>. El paso verdadero es 5 (aparece tres veces). Los saltos rotos son <span class="math inline">\(6,4\)</span> (alrededor del tercer valor) y <span class="math inline">\(14,13\)</span> (alrededor del sexto). El tercero debía ser <span class="math inline">\(16+5=21\equiv4\)</span> y el sexto <span class="math inline">\(14+5=19\equiv2\)</span>. Lista correcta: <span class="math inline">\(11,16,4,9,14,2,7,12\)</span>; recta <span class="math inline">\(y=6+5x\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T11</summary><div class="sol-body"><p>Saltos: <span class="math inline">\(6,12,9,9,9\)</span>. El paso verdadero es 9 (aparece tres veces). Los dos primeros saltos rodean al segundo valor, que debía ser <span class="math inline">\(0+9=9\)</span>. Lista correcta: <span class="math inline">\(0,9,18,4,13,22\)</span> (por ejemplo <span class="math inline">\(18+9=27\equiv4\)</span>). Mensaje: <span class="math inline">\(b=9\)</span>, <span class="math inline">\(a=0-9\equiv14\)</span>, es decir <span class="math inline">\((14,9)\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T12</summary><div class="sol-body"><p>Con <span class="math inline">\(n\)</span> valores <span class="math inline">\(d=n-1\)</span>. Detectar un error exige <span class="math inline">\(d\ge2\)</span>: <span class="math inline">\(n\ge3\)</span>. Corregir uno exige <span class="math inline">\(d\ge3\)</span>: <span class="math inline">\(n\ge4\)</span>. Corregir dos exige <span class="math inline">\(d\ge5\)</span>: <span class="math inline">\(n\ge6\)</span>. Mínimos: 3, 4 y 6 valores.</p>
+</div></details><details class="sol"><summary>Solución 8.T13</summary><div class="sol-body"><p>Hay <span class="math inline">\(p-1\)</span> valores (<span class="math inline">\(x=1,\dots,p-1\)</span>). Con <span class="math inline">\(p=23\)</span>, <span class="math inline">\(n=22\)</span>, <span class="math inline">\(d=21\)</span> y se corrigen <span class="math inline">\(\lfloor(21-1)/2\rfloor=10\)</span> errores.</p>
+</div></details><details class="sol"><summary>Solución 8.T14</summary><div class="sol-body"><p>Mensajes: <span class="math inline">\(13^2=169\)</span>. Listas de seis valores: <span class="math inline">\(13^6=4826809\)</span>. Probabilidad de ser recta: <span class="math inline">\(\dfrac{13^2}{13^6}=\dfrac{1}{13^4}=\dfrac{1}{28561}\approx0.0035\,\%\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T15</summary><div class="sol-body"><p>Hay que cumplir <span class="math inline">\(a+b\equiv7\)</span> y <span class="math inline">\(a+4b\equiv7\)</span>; restando, <span class="math inline">\(3b\equiv0\pmod{12}\)</span>, que tiene tres soluciones <span class="math inline">\(b=0,4,8\)</span> (con <span class="math inline">\(a=7,3,11\)</span>): las rectas <span class="math inline">\(y=7\)</span>, <span class="math inline">\(y=3+4x\)</span> y <span class="math inline">\(y=11+8x\)</span> dan todas 7 en <span class="math inline">\(x=1\)</span> y <span class="math inline">\(x=4\)</span>. Ocurre porque 3 no tiene inverso módulo 12 (<span class="math inline">\(\gcd(3,12)=3\)</span>): no se puede dividir entre 3. En un reloj primo <span class="math inline">\(3b\equiv0\)</span> sólo da <span class="math inline">\(b=0\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T16</summary><div class="sol-body"><p>Saltos de <span class="math inline">\(3,7,13,21,31\)</span>: <span class="math inline">\(4,6,8,10\)</span>; saltos de los saltos: <span class="math inline">\(2,2,2\)</span>. Para <span class="math inline">\(3,7,14,21,31\)</span>: saltos <span class="math inline">\(4,7,7,10\)</span> y saltos de los saltos <span class="math inline">\(3,0,3\)</span>; ninguno vale 2. Un valor interior aparece en tres diferencias segundas consecutivas, y aquí se rompen las tres: el culpable es el tercer valor. Si ese valor tiene un exceso <span class="math inline">\(e\)</span>, las tres diferencias pasan a ser <span class="math inline">\(2+e\)</span>, <span class="math inline">\(2-2e\)</span>, <span class="math inline">\(2+e\)</span>; con <span class="math inline">\(3,0,3\)</span> resulta <span class="math inline">\(e=1\)</span>. Entonces el tercer valor debía ser <span class="math inline">\(14-1=13\)</span> y la parábola es <span class="math inline">\(y=1+x+x^2\)</span>.</p>
+</div></details><details class="sol"><summary>Solución 8.T17</summary><div class="sol-body"><p>Respuesta libre. Ejemplo: reloj de 17, mensaje <span class="math inline">\((4,9)\)</span>: lista correcta <span class="math inline">\(13,5,14,6,15,7,16,8\)</span>. Si se cambian el segundo y el quinto valores, la lista que llega es <span class="math inline">\(13,8,14,6,3,7,16,8\)</span>; el paso verdadero es 9 y los saltos rotos rodean a los valores segundo y quinto.</p>
+</div></details>
